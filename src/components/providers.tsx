@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { RecoilRoot } from "recoil";
+import { ApiProvider } from "@/lib/providers/api-provider";
 
 type TProvidersProps = {
   children: React.ReactNode;
@@ -8,11 +9,13 @@ type TProvidersProps = {
 
 function providers({ children }: TProvidersProps) {
   return (
-    <RecoilRoot>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        {children}
-      </ThemeProvider>
-    </RecoilRoot>
+    <ApiProvider>
+      <RecoilRoot>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          {children}
+        </ThemeProvider>
+      </RecoilRoot>
+    </ApiProvider>
   );
 }
 
