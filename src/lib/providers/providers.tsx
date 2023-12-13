@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/lib/providers/theme-provider/theme-provider";
 import { RecoilRoot } from "recoil";
 import { ApiProvider } from "@/lib/providers/api-provider";
 
@@ -7,7 +7,7 @@ type TProvidersProps = {
   children: React.ReactNode;
 };
 
-function providers({ children }: TProvidersProps) {
+export const Providers = ({ children }: TProvidersProps) => {
   return (
     <ApiProvider>
       <RecoilRoot>
@@ -17,6 +17,4 @@ function providers({ children }: TProvidersProps) {
       </RecoilRoot>
     </ApiProvider>
   );
-}
-
-export default providers;
+};
