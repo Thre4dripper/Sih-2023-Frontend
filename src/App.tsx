@@ -3,6 +3,7 @@ import Home from "@/pages/Home";
 import ProtectedRoute from "@/components/protected-routes/protected-route";
 import { Providers } from "@/lib/providers/providers";
 import { LandingPage } from "./pages/Landing";
+import { Detection } from "./pages/Detection";
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/check"
+            element={
+              <ProtectedRoute>
+                <Detection />
               </ProtectedRoute>
             }
           />
