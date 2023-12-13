@@ -63,7 +63,10 @@ const CreateAccount = () => {
       //   }
     }
 
-    // api call to save user to database
+    // api call to save user to database (also check for existing user)
+
+    setSearchParams({});
+    setOpen(false);
   };
 
   const handleImage = (

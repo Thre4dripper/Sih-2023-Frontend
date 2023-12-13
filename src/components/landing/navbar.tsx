@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import CreateAccount from "../Register/Register";
+import UserLogin from "../Login/Login";
 
 const LandingPageNavbar = () => {
   return (
     <div className="w-full p-4 px-4 z-30 flex border-b border-gray-200 sticky top-0 bg-white">
       <CreateAccount />
+      <UserLogin />
       LOGO/ICON
       <div className="flex gap-x-3 ml-auto">
         <Link
