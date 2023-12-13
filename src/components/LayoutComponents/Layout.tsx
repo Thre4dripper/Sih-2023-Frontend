@@ -8,7 +8,7 @@ const links = [
   { title: "Dashboard", target: "/", icon: <HomeIcon /> },
   { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
   { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
-  { title: "Dashboard", target: "/", icon: <HomeIcon /> },
+  // { title: "Dashboard", target: "/", icon: <HomeIcon /> },
   { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
   { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
 ];
