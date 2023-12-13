@@ -1,5 +1,11 @@
+import Layout from "@/components/LayoutComponents/Layout";
+
 const Home = () => {
-  return <div>i am at home</div>;
+  return (
+    <Layout>
+      <div className="h-[200vh]">Hi</div>
+    </Layout>
+  );
 };
 
 export default Home;
