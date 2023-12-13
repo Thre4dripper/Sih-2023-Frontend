@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { NProps } from "./LayoutProps";
 
-// navbar collapse krne ke liye button dena hai abhi
+// navbar collapse krne ke liye button dena hai abhi sath me scroll krke dekhe ho tm ??
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 
 const Navbar = ({ email, name, links }: NProps) => {
   return (
-    <div className="w-full p-4 px-4 flex border-b border-gray-200 sticky top-0 bg-white">
+    <div className="w-full p-4 px-4 flex border-b border-gray-200 sticky top-0 bg-primary-foreground">
       <div className="flex items-center"></div>
       <div className="ml-auto">
         <DropdownMenu>

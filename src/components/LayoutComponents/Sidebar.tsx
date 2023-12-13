@@ -25,8 +25,8 @@ const LeftSidebar = ({ links }: LProps) => {
                     to={item.target}
                     className={({ isActive }) =>
                       isActive
-                        ? `bg-gray-50 text-indigo-600 group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
-                        : `text-gray-700 hover:text-indigo-600 hover:bg-gray-50 group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+                        ? `bg-gray-50 text-primary group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+                        : `text-gray-700 hover:text-primary/90 hover:bg-gray-50 group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
                     }
                   >
                     {({ isActive }) => (
@@ -34,8 +34,8 @@ const LeftSidebar = ({ links }: LProps) => {
                         <span
                           className={`${
                             isActive
-                              ? "text-indigo-600 h-6 w-6 shrink-0"
-                              : "text-gray-400 group-hover:text-indigo-600 h-6 w-6 shrink-0"
+                              ? "text-primary h-6 w-6 shrink-0"
+                              : "text-gray-400 group-hover:text-primary h-6 w-6 shrink-0"
                           }`}
                         >
                           {item.icon}
