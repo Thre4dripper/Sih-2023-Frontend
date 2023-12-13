@@ -39,6 +39,11 @@ const features = [
     description: "YooMAloo Has to add respective icons",
     icon: ArrowBigUp,
   },
+  {
+    name: "Feedback Mechanism",
+    description: "YooMAloo Has to add respective icons",
+    icon: ArrowBigUp,
+  },
 ];
 
 export const FeatureSection = () => {
@@ -57,9 +62,9 @@ export const FeatureSection = () => {
             experience for organizers and candidates altogether. With vast
             features in the hand of organization we maintain high standards of
             integrity fortified by intelligent and manual surveillance.<br></br>
-            Explore some of our cutting edge features like specification guided administrators,
-            choosing examination type, providing technical support, data
-            security and so much more.
+            Explore some of our cutting edge features like specification guided
+            administrators, choosing examination type, providing technical
+            support, data security and so much more.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
