@@ -1,10 +1,7 @@
 const HeroSection = () => {
   return (
-    <div className="relative isolate pt-14">
-      <div
-        className="absolute inset-x-0 z-10 transform-gpu overflow-hidden blur-3xl top-80"
-        aria-hidden="true"
-      >
+    <div className="bg-foreground">
+      <div className="relative isolate pt-14">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true"
@@ -21,19 +18,17 @@ const HeroSection = () => {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                Code Shield India
-              </h1>
-              <h1 className="text-1xl font-bold tracking-tight text-white sm:text-3xl">
-                AI vigilance for fair examinations
+                Medusa AI
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                Embrace a new era of online examinations where trust is fortified by
-                intelligent surveillance and seamless access controls at all levels.
+                Embrace a new era of online examinations where trust is
+                fortified by intelligent surveillance and seamless access
+                controls at all levels.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
                   href="#"
-                  className="rounded-md bg-primary/90 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/50"
+                  className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-60"
                 >
                   Get started
                 </a>
