@@ -16,13 +16,15 @@ const HeroSection = () => {
       <div className="py-24 sm:py-32 lg:pb-40">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Data to enrich your online business
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+              Code Shield India
+            </h1>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              AI Vigilance for Fair Examinations
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-              fugiat aliqua.
+              Embrace a new era of online testing where trust is fortified by
+              intelligent surveillance.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
