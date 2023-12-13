@@ -5,3 +5,8 @@ export interface LProps {
     icon: React.ReactNode; // or string ???
   }[];
 }
+
+export interface NProps extends LProps {
+    email: string;
+    name: string;
+}
