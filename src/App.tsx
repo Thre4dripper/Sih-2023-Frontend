@@ -10,6 +10,7 @@ import socketIO from "socket.io-client";
 import { useEffect } from "react";
 
 const ws = import.meta.env.VITE_APP_API_HOST;
+import ViewProctors from "./pages/ViewProctors";
 
 function App() {
   useEffect(() => {
@@ -46,10 +47,10 @@ function App() {
             }
           />
           <Route
-            path="/organization/createProctor"
+            path="/organization/allProctors"
             element={
               <ProtectedRoute>
-                <AddProctor />
+                <ViewProctors />
               </ProtectedRoute>
             }
           />
