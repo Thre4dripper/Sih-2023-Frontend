@@ -17,3 +17,15 @@ export interface GetAllProctorsProps {
 export interface RemoveProctorProps {
   body: { proctorId: number };
 }
+
+export interface CreateExamProps {
+  body: {
+    name: string;
+    description: string;
+    duration: number;
+    startTime: string;
+    passingMarks: number;
+    totalQuestions: number;
+    examType: string;
+  };
+}

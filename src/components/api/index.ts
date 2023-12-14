@@ -1,5 +1,5 @@
+import { useMutation } from "@tanstack/react-query";
 import * as ENDPOINTS from "./endpoints";
-import { useQuery, useMutation } from "@tanstack/react-query";
 
 export const QUERY_KEYS = {
   createAdmin: "createAdmin",
@@ -7,6 +7,7 @@ export const QUERY_KEYS = {
   createProctor: "createProctor",
   getAllProctors: "getAllProctors",
   removeProctor: "removeProctor",
+  createExam: "createExam",
 };
 
 export const useCreateAdminMutation = () => {
@@ -28,3 +29,7 @@ export const useGetAllProctorsMutation = () => {
 export const useRemoveProctorMutation = () => {
   return useMutation([QUERY_KEYS.removeProctor], ENDPOINTS.removeProctor);
 };
+
+export const useCreateExamMutation = () => {
+  return useMutation([QUERY_KEYS.createExam], ENDPOINTS.createExam);
+}
