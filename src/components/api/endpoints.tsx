@@ -1,6 +1,7 @@
 import { apiClient } from "@/lib/providers/api-provider";
 import {
   CreateAdminProps,
+  CreateExamProps,
   CreateProctorProps,
   GetAllProctorsProps,
   LoginUserProps,
@@ -56,3 +57,14 @@ export const removeProctor = ({ body }: RemoveProctorProps): Promise<any> =>
     },
     body: JSON.stringify(body),
   });
+
+export const createExam = ({ body }: CreateExamProps): Promise<any> => {
+  return apiClient("/api/v1/create-exam/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });
+};
