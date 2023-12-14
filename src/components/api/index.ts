@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
   loginUser: "loginUser",
   createProctor: "createProctor",
   getAllProctors: "getAllProctors",
+  removeProctor: "removeProctor",
 };
 
 export const useCreateAdminMutation = () => {
@@ -22,4 +23,8 @@ export const useCreateProctorMutation = () => {
 
 export const useGetAllProctorsMutation = () => {
   return useMutation([QUERY_KEYS.getAllProctors], ENDPOINTS.getAllProctors);
+};
+
+export const useRemoveProctorMutation = () => {
+  return useMutation([QUERY_KEYS.removeProctor], ENDPOINTS.removeProctor);
 };

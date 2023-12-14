@@ -4,6 +4,7 @@ import {
   CreateProctorProps,
   GetAllProctorsProps,
   LoginUserProps,
+  RemoveProctorProps,
 } from "./APIProps";
 
 export const createAdmin = ({ body }: CreateAdminProps): Promise<any> =>
@@ -45,3 +46,13 @@ export const getAllProctors = ({ body }: GetAllProctorsProps): Promise<any> => {
     }
   );
 };
+
+export const removeProctor = ({ body }: RemoveProctorProps): Promise<any> =>
+  apiClient("/api/v1/remove-proctor/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });

@@ -13,3 +13,7 @@ export interface CreateProctorProps {
 export interface GetAllProctorsProps {
   body: { limit: Number; offset: Number };
 }
+
+export interface RemoveProctorProps {
+  body: { proctorId: number };
+}

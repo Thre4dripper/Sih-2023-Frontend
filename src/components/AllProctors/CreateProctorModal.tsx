@@ -26,9 +26,10 @@ import { useCreateProctorMutation } from "../api";
 interface IProps {
   open: boolean;
   setOpen: (x: boolean) => any;
+  refetchData: () => any;
 }
 
-const CreateProctorModal = ({ open, setOpen }: IProps) => {
+const CreateProctorModal = ({ open, setOpen, refetchData }: IProps) => {
   const { mutate: registerProctorFn } = useCreateProctorMutation();
   const [serverErrors, setServerErrors] = useState({
     email: false,
@@ -56,6 +57,7 @@ const CreateProctorModal = ({ open, setOpen }: IProps) => {
         onSuccess: (data: any) => {
           console.log(data);
           form?.reset();
+          refetchData();
           setOpen(false);
         },
         onError: (err: any) => {

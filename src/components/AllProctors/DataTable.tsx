@@ -30,7 +30,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAllProctorsMutation } from "../api";
+import { useGetAllProctorsMutation, useRemoveProctorMutation } from "../api";
 import { useSearchParams } from "react-router-dom";
 import CreateProctorModal from "./CreateProctorModal";
 
@@ -40,64 +40,6 @@ export type Payment = {
   name: string;
   email: string;
 };
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ChevronsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "organizationId",
-    header: () => <div className="text-right">organizationId</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="text-right font-medium">
-          {row.getValue("organizationId")}
-        </div>
-      );
-    },
-  },
-  {
-    id: "actions",
-    accessorKey: "Actions",
-    enableHiding: false,
-    cell: () => {
-      //   console.log(row?.original?.id);
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <GripHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>Remove Proctor</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
 
 export function DataTableDemo() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -111,6 +53,72 @@ export function DataTableDemo() {
   const [data, setData] = React.useState<Payment[]>([]);
   const [count, setCount] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
+
+  const columns: ColumnDef<Payment>[] = [
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Email
+            <ChevronsUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("email")}</div>
+      ),
+    },
+    {
+      accessorKey: "organizationId",
+      header: () => <div className="text-right">organizationId</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="text-right font-medium">
+            {row.getValue("organizationId")}
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      accessorKey: "Actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        //   console.log(row?.original?.id);
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <GripHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>View customer</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => removeProctor({ proctorId: row?.original?.id })}
+              >
+                Remove Proctor
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data,
@@ -130,12 +138,28 @@ export function DataTableDemo() {
     },
   });
 
+  const { mutate: removeProctorFn } = useRemoveProctorMutation();
   const { mutate: getFilteredProductsFn } = useGetAllProctorsMutation();
 
   interface IProps {
     limit: number;
     offset: number;
   }
+
+  const removeProctor = (body: { proctorId: number }) => {
+    removeProctorFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+          refetchData();
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
 
   const getFilteredProducts = (body: IProps) => {
     getFilteredProductsFn(
@@ -157,6 +181,16 @@ export function DataTableDemo() {
     );
   };
 
+  const refetchData = () => {
+    getFilteredProducts({
+      limit: 10,
+      offset:
+        Number(searchParams.get("page")) >= 1
+          ? (Number(searchParams.get("page")) - 1) * 10
+          : 0,
+    });
+  };
+
   useEffect(() => {
     getFilteredProducts({
       limit: 10,
@@ -169,7 +203,11 @@ export function DataTableDemo() {
 
   return (
     <div className="w-full">
-      <CreateProctorModal open={open} setOpen={setOpen} />
+      <CreateProctorModal
+        open={open}
+        setOpen={setOpen}
+        refetchData={refetchData}
+      />
       <div className="flex items-center justify-between py-4">
         <h1 className="text-xl font-semibold">All Protors</h1>
         <Button
