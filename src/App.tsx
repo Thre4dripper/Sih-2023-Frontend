@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "@/pages/Home";
+import Organization from "@/pages/OrganizationHome";
 import ProtectedRoute from "@/components/protected-routes/protected-route";
 import { Providers } from "@/lib/providers/providers";
 import { LandingPage } from "./pages/Landing";
@@ -19,10 +19,10 @@ function App() {
             }
           />
           <Route
-            path="/home"
+            path="/organization"
             element={
               <ProtectedRoute>
-                <Home />
+                <Organization />
               </ProtectedRoute>
             }
           />
