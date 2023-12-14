@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const LeftSidebar = ({ links }: LProps) => {
   return (
     <div
-      className={`flex h-screen sticky top-0 max-lg:w-auto w-[20%] flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white pl-6`}
+      className={`flex h-screen sticky top-0 max-lg:w-auto w-[20%] flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-primary-foreground pl-6`}
     >
       <div className="flex justify-between h-16 shrink-0 items-center pr-4">
         <img
@@ -25,8 +25,8 @@ const LeftSidebar = ({ links }: LProps) => {
                     to={item.target}
                     className={({ isActive }) =>
                       isActive
-                        ? `bg-gray-50 text-primary group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
-                        : `text-gray-700 hover:text-primary/90 hover:bg-gray-50 group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+                        ? `bg-gray-200 text-primary group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+                        : `text-gray-700 hover:text-primary/90 hover:bg-gray-100 group flex max-lg:justify-center gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
                     }
                   >
                     {({ isActive }) => (

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -6,16 +7,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProctorValidation } from "@/lib/validations/user";
 import { z } from "zod";
-import { useCreateAdminMutation } from "../api";
+import { useCreateProctorMutation } from "../api";
 
 const CreateProctor = () => {
-  //   const { sendRequest: imageUpload } = useCloudinary();
-  const { mutate: registerAdminFn } = useCreateAdminMutation();
+  const { mutate: registerProctorFn } = useCreateProctorMutation();
+  const [serverErrors, setServerErrors] = useState({
+    email: false,
+  });
 
   const form = useForm({
     resolver: zodResolver(ProctorValidation),
@@ -33,21 +37,33 @@ const CreateProctor = () => {
   }
 
   const createUser = (body: BProps) => {
-    // registerAdminFn(
-    //   { body },
-    //   {
-    //     onSuccess: (data: any) => {
-    //       console.log(data);
-    //     },
-    //     onError: (err: any) => {
-    //       console.log(err);
-    //     },
-    //   }
-    // );
+    registerProctorFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+          form?.reset();
+        },
+        onError: (err: any) => {
+          console.log(err);
+          setServerErrors((prev) => {
+            return {
+              email: true,
+            };
+          });
+        },
+      }
+    );
   };
 
   const onSubmit = async (values: z.infer<typeof ProctorValidation>) => {
     console.log(values);
+
+    createUser({
+      name: values?.name,
+      email: values?.email,
+      password: values?.password,
+    });
   };
 
   return (
@@ -72,14 +88,21 @@ const CreateProctor = () => {
                   <FormLabel className="text-base text-gray-500">
                     Name
                   </FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input
-                      placeholder="Enter your name"
-                      type="text"
-                      className=""
-                      {...field}
-                    />
-                  </FormControl>
+                  <div className="col-span-3">
+                    <FormControl className="">
+                      <Input
+                        placeholder="Enter your name"
+                        type="text"
+                        className=""
+                        {...field}
+                      />
+                    </FormControl>
+                    {form?.formState?.errors?.name && (
+                      <FormMessage>
+                        {form?.formState?.errors?.name?.message}
+                      </FormMessage>
+                    )}
+                  </div>
                 </FormItem>
               )}
             />
@@ -91,14 +114,29 @@ const CreateProctor = () => {
                   <FormLabel className="text-base text-gray-500">
                     Email
                   </FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input
-                      placeholder="Email"
-                      type="email"
-                      className="focus-visible:ring-0 ring-0"
-                      {...field}
-                    />
-                  </FormControl>
+                  <div className="col-span-3">
+                    <FormControl
+                      onChange={() =>
+                        setServerErrors((prev) => ({ ...prev, email: false }))
+                      }
+                      className=""
+                    >
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        className="focus-visible:ring-0 ring-0"
+                        {...field}
+                      />
+                    </FormControl>
+                    {form?.formState?.errors?.email && (
+                      <FormMessage>
+                        {form?.formState?.errors?.email?.message}
+                      </FormMessage>
+                    )}
+                    {serverErrors.email && (
+                      <FormMessage>Email Already Exists!</FormMessage>
+                    )}
+                  </div>
                 </FormItem>
               )}
             />
@@ -110,18 +148,25 @@ const CreateProctor = () => {
                   <FormLabel className="text-base text-gray-500">
                     Password
                   </FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input
-                      placeholder="Enter a password"
-                      type="password"
-                      className=""
-                      {...field}
-                    />
-                  </FormControl>
+                  <div className="col-span-3">
+                    <FormControl className="">
+                      <Input
+                        placeholder="Enter a password"
+                        type="password"
+                        className=""
+                        {...field}
+                      />
+                    </FormControl>
+                    {form?.formState?.errors?.password && (
+                      <FormMessage>
+                        {form?.formState?.errors?.password?.message}
+                      </FormMessage>
+                    )}
+                  </div>
                 </FormItem>
               )}
             />
-            <Button className="mt-[1rem] bg-gray-700" type="submit">
+            <Button variant={"default"} className="mt-[1rem]" type="submit">
               Submit
             </Button>
           </form>
