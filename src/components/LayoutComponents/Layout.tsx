@@ -1,22 +1,19 @@
 import React from "react";
 import LeftSidebar from "./Sidebar";
-import {
-  HomeIcon,
-  LayoutDashboard,
-  UserPlus,
-  BookOpenCheck,
-  BookPlus,
-  Users,
-} from "lucide-react";
+import { LayoutDashboard, BookOpenCheck, BookPlus, Users } from "lucide-react";
 import Navbar from "./Navbar";
 import { User2Icon } from "lucide-react";
 
 const links = [
-  { title: "Dashboard", target: "/organization/dashboard", icon: <LayoutDashboard /> },
   {
-    title: "Create Proctor",
-    target: "/organization/createProctor",
-    icon: <UserPlus />,
+    title: "Dashboard",
+    target: "/organization/dashboard",
+    icon: <LayoutDashboard />,
+  },
+  {
+    title: "All Proctors",
+    target: "/organization/allProctors?page=1",
+    icon: <Users />,
   },
   {
     title: "All Exams",
@@ -27,11 +24,6 @@ const links = [
     title: "Create Exam",
     target: "/organization/createExam",
     icon: <BookPlus />,
-  },
-  {
-    title: "All Proctors",
-    target: "/organization/allProctors?page=1",
-    icon: <Users />,
   },
 ];
 

@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/table";
 import { useGetAllProctorsMutation } from "../api";
 import { useSearchParams } from "react-router-dom";
+import CreateProctorModal from "./CreateProctorModal";
 
 export type Payment = {
   id: number;
@@ -109,6 +110,7 @@ export function DataTableDemo() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [data, setData] = React.useState<Payment[]>([]);
   const [count, setCount] = React.useState<number>(0);
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const table = useReactTable({
     data,
@@ -167,8 +169,18 @@ export function DataTableDemo() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <CreateProctorModal open={open} setOpen={setOpen} />
+      <div className="flex items-center justify-between py-4">
         <h1 className="text-xl font-semibold">All Protors</h1>
+        <Button
+          variant="default"
+          size="sm"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Add Proctor
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
