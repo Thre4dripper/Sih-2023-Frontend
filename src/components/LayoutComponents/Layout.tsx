@@ -12,7 +12,7 @@ import Navbar from "./Navbar";
 import { User2Icon } from "lucide-react";
 
 const links = [
-  { title: "Dashboard", target: "/organization", icon: <LayoutDashboard /> },
+  { title: "Dashboard", target: "/organization/dashboard", icon: <LayoutDashboard /> },
   {
     title: "Create Proctor",
     target: "/organization/createProctor",

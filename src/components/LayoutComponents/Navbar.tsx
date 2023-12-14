@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ email, name, links }: NProps) => {
   return (
-    <div className="w-full p-4 px-4 flex border-b border-gray-200 sticky top-0 bg-primary-foreground">
+    <div className="w-full z-10 p-4 px-4 flex border-b border-gray-200 sticky top-0 bg-primary-foreground">
       <div className="flex items-center"></div>
       <div className="ml-auto">
         <DropdownMenu>
