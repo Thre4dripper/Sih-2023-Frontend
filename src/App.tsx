@@ -4,7 +4,7 @@ import ProtectedRoute from "@/components/protected-routes/protected-route";
 import { Providers } from "@/lib/providers/providers";
 import { LandingPage } from "./pages/Landing";
 import { Detection } from "./pages/Detection";
-import AddProctor from "./pages/AddProctor";
+import ViewProctors from "./pages/ViewProctors";
 
 function App() {
   return (
@@ -36,10 +36,10 @@ function App() {
             }
           />
           <Route
-            path="/organization/createProctor"
+            path="/organization/allProctors"
             element={
               <ProtectedRoute>
-                <AddProctor />
+                <ViewProctors />
               </ProtectedRoute>
             }
           />
