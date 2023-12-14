@@ -6,8 +6,16 @@ import { LandingPage } from "./pages/Landing";
 import { Detection } from "./pages/Detection";
 import AddProctor from "./pages/AddProctor";
 import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
+import socketIO from "socket.io-client";
+import { useEffect } from "react";
+
+const ws = import.meta.env.VITE_APP_API_HOST;
 
 function App() {
+  useEffect(() => {
+    const socket = socketIO(ws);
+    console.log("socket connected", socket);
+  }, []);
   return (
     <Providers>
       <BrowserRouter>
