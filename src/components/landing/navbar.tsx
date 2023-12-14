@@ -5,10 +5,16 @@ import { Button } from "../ui/button";
 
 const LandingPageNavbar = () => {
   return (
-    <div className="w-full p-4 px-4 z-30 flex border-b border-border sticky top-0 bg-foreground">
+    <div className="w-full p-4 px-4 z-30 flex border-b border-border sticky top-0 bg-foreground items-center">
       <CreateAccount />
       <UserLogin />
-      LOGO/ICON
+      <img
+        src="/medusalogo.png"
+        alt="logo"
+        className="h-16
+      p-1 scale-150 
+      "
+      />
       <div className="flex gap-x-3 ml-auto">
         <Link className="" to="/?modal=login">
           <Button variant={"default"}>Login</Button>
