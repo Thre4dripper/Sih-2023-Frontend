@@ -23,10 +23,12 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginValidation } from "@/lib/validations/user";
 import { z } from "zod";
+import { useLoginUserMutation } from "../api";
 
 const UserLogin = () => {
   const [open, setOpen] = useState(false);
   let [searchParams, setSearchParams] = useSearchParams();
+  const { mutate: loginUserFn } = useLoginUserMutation();
 
   const form = useForm({
     resolver: zodResolver(LoginValidation),
@@ -44,13 +46,37 @@ const UserLogin = () => {
     }
   }, [searchParams.get("modal")]);
 
+  interface BProps {
+    email: string;
+    password: string;
+  }
+
+  const loginUser = (body: BProps) => {
+    loginUserFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+
+          setSearchParams({});
+          setOpen(false);
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
   const onSubmit = async (values: z.infer<typeof LoginValidation>) => {
     console.log(values);
 
     // api call to save user to database
 
-    setSearchParams({});
-    setOpen(false);
+    loginUser({
+      email: values?.email,
+      password: values?.password,
+    });
   };
 
   return (

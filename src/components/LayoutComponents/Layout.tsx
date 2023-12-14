@@ -1,17 +1,41 @@
 import React from "react";
 import LeftSidebar from "./Sidebar";
-import { HomeIcon } from "lucide-react";
+import {
+  HomeIcon,
+  LayoutDashboard,
+  UserPlus,
+  BookOpenCheck,
+  BookPlus,
+  Users,
+} from "lucide-react";
 import Navbar from "./Navbar";
 import { User2Icon } from "lucide-react";
 
 const links = [
-  { title: "Dashboard", target: "/", icon: <HomeIcon /> },
-  { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
-  { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
-  // { title: "Dashboard", target: "/", icon: <HomeIcon /> },
-  { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
-  { title: "Dashboard", target: "/kjk", icon: <HomeIcon /> },
+  { title: "Dashboard", target: "/organization/dashboard", icon: <LayoutDashboard /> },
+  {
+    title: "Create Proctor",
+    target: "/organization/createProctor",
+    icon: <UserPlus />,
+  },
+  {
+    title: "All Exams",
+    target: "/organization/allExams",
+    icon: <BookOpenCheck />,
+  },
+  {
+    title: "Create Exam",
+    target: "/organization/createExam",
+    icon: <BookPlus />,
+  },
+  {
+    title: "All Proctors",
+    target: "/organization/allProctors",
+    icon: <Users />,
+  },
 ];
+
+// create sets of links for orgs, proctors and superadmin. Check the url for organization etc and if the role matches, the user can access the page.
 
 const User = {
   name: "Bilal Sajid",
