@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Detection } from "./pages/Detection";
 import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
+
 import Exam from "./pages/Organization/Exam";
 
 // TODO: Routes Seperated into different files according to the access level
