@@ -9,3 +9,15 @@ export interface LoginUserProps {
 export interface CreateProctorProps {
   body: { email: string; password: string; name: string };
 }
+
+export interface CreateExamProps {
+  body: {
+    name: string;
+    description: string;
+    duration: number;
+    startTime: string;
+    passingMarks: number;
+    totalQuestions: number;
+    examType: string;
+  };
+}

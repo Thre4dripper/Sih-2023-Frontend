@@ -1,10 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import * as ENDPOINTS from "./endpoints";
-import { useQuery, useMutation } from "@tanstack/react-query";
 
 export const QUERY_KEYS = {
   createAdmin: "createAdmin",
   loginUser: "loginUser",
   createProctor: "createProctor",
+  createExam: "createExam",
 };
 
 export const useCreateAdminMutation = () => {
@@ -18,3 +19,7 @@ export const useLoginUserMutation = () => {
 export const useCreateProctorMutation = () => {
   return useMutation([QUERY_KEYS.createProctor], ENDPOINTS.createProctor);
 };
+
+export const useCreateExamMutation = () => {
+  return useMutation([QUERY_KEYS.createExam], ENDPOINTS.createExam);
+}
