@@ -2,6 +2,7 @@ import { apiClient } from "@/lib/providers/api-provider";
 import {
   CreateAdminProps,
   CreateProctorProps,
+  GetAllProctorsProps,
   LoginUserProps,
 } from "./APIProps";
 
@@ -32,3 +33,15 @@ export const createProctor = ({ body }: CreateProctorProps): Promise<any> =>
     },
     body: JSON.stringify(body),
   });
+
+export const getAllProctors = ({ body }: GetAllProctorsProps): Promise<any> => {
+  return apiClient(
+    `/api/v1/get-all-proctors?limit=${body?.limit}&offset=${body?.offset}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      },
+    }
+  );
+};

@@ -9,3 +9,7 @@ export interface LoginUserProps {
 export interface CreateProctorProps {
   body: { email: string; password: string; name: string };
 }
+
+export interface GetAllProctorsProps {
+  body: { limit: Number; offset: Number };
+}

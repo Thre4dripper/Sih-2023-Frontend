@@ -5,6 +5,7 @@ import { Providers } from "@/lib/providers/providers";
 import { LandingPage } from "./pages/Landing";
 import { Detection } from "./pages/Detection";
 import AddProctor from "./pages/AddProctor";
+import ViewProctors from "./pages/ViewProctors";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AddProctor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organization/allProctors"
+            element={
+              <ProtectedRoute>
+                <ViewProctors />
               </ProtectedRoute>
             }
           />

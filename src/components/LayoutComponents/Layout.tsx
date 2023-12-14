@@ -30,7 +30,7 @@ const links = [
   },
   {
     title: "All Proctors",
-    target: "/organization/allProctors",
+    target: "/organization/allProctors?page=1",
     icon: <Users />,
   },
 ];
