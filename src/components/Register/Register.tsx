@@ -25,17 +25,19 @@ import { UserValidation } from "@/lib/validations/user";
 import { z } from "zod";
 import { isBase64Image } from "@/lib/utils";
 import useCloudinary from "./useCloudinary";
+import { useCreateAdminMutation } from "../api";
 
 const CreateAccount = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [open, setOpen] = useState(false);
   let [searchParams, setSearchParams] = useSearchParams();
   const { sendRequest: imageUpload } = useCloudinary();
+  const { mutate: registerAdminFn } = useCreateAdminMutation();
 
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      profile_photo: "",
+      profilePic: "",
       name: "",
       email: "",
       password: "",
@@ -50,10 +52,34 @@ const CreateAccount = () => {
     }
   }, [searchParams.get("modal")]);
 
+  interface BProps {
+    profilePic: string;
+    name: string;
+    email: string;
+    password: string;
+  }
+
+  const createUser = (body: BProps) => {
+    registerAdminFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+
+          setSearchParams({});
+          setOpen(false);
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     console.log(values);
 
-    const blob = values?.profile_photo;
+    const blob = values?.profilePic;
 
     console.log(blob);
 
@@ -72,17 +98,20 @@ const CreateAccount = () => {
         },
         (res) => {
           console.log(res);
+
+          // api call to save to database
+          createUser({
+            name: values?.name,
+            email: values?.email,
+            password: values?.password,
+            profilePic: res,
+          });
         },
         (err) => {
           console.log(err);
         }
       );
     }
-
-    // api call to save user to database (also check for existing user)
-
-    setSearchParams({});
-    setOpen(false);
   };
 
   const handleImage = (
@@ -129,7 +158,7 @@ const CreateAccount = () => {
           >
             <FormField
               control={form.control}
-              name="profile_photo"
+              name="profilePic"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 items-center gap-4">
                   <FormLabel className="">
