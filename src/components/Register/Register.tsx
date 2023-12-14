@@ -24,11 +24,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
 import { z } from "zod";
 import { isBase64Image } from "@/lib/utils";
+import useCloudinary from "./useCloudinary";
 
 const CreateAccount = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [open, setOpen] = useState(false);
   let [searchParams, setSearchParams] = useSearchParams();
+  const { sendRequest: imageUpload } = useCloudinary();
 
   const form = useForm({
     resolver: zodResolver(UserValidation),
@@ -53,14 +55,28 @@ const CreateAccount = () => {
 
     const blob = values?.profile_photo;
 
+    console.log(blob);
+
     const hasImageChanged = isBase64Image(blob);
 
     if (hasImageChanged) {
-      // create a startUpload function to upload to cloudinary
-      //   const imgRes = await startUpload(files);
-      //   if (imgRes && imgRes[0]?.url) {
-      //     values.profile_photo = imgRes[0].url;
-      //   }
+      const data = new FormData();
+      data.append("file", blob);
+      data.append("upload_preset", "blogapppreset");
+
+      imageUpload(
+        {
+          url: "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
+          method: "POST",
+          body: data,
+        },
+        (res) => {
+          console.log(res);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
 
     // api call to save user to database (also check for existing user)
@@ -198,7 +214,7 @@ const CreateAccount = () => {
                   <FormControl className="col-span-3">
                     <Input
                       placeholder="Enter a password"
-                      type="text"
+                      type="password"
                       className=""
                       {...field}
                     />
