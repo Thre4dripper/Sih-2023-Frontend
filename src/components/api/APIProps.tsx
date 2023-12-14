@@ -5,3 +5,7 @@ export interface CreateAdminProps {
 export interface LoginUserProps {
   body: { email: string; password: string };
 }
+
+export interface CreateProctorProps {
+  body: { email: string; password: string; name: string };
+}

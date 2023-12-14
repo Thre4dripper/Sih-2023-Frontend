@@ -57,7 +57,7 @@ const UserLogin = () => {
       {
         onSuccess: (data: any) => {
           console.log(data);
-
+          localStorage.setItem("OrgToken", data?.data?.accessTokens?.accessToken);
           setSearchParams({});
           setOpen(false);
         },

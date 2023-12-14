@@ -1,5 +1,9 @@
 import { apiClient } from "@/lib/providers/api-provider";
-import { CreateAdminProps, LoginUserProps } from "./APIProps";
+import {
+  CreateAdminProps,
+  CreateProctorProps,
+  LoginUserProps,
+} from "./APIProps";
 
 export const createAdmin = ({ body }: CreateAdminProps): Promise<any> =>
   apiClient("/api/v1/register-organization/", {
@@ -15,6 +19,16 @@ export const UserLogin = ({ body }: LoginUserProps): Promise<any> =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+export const createProctor = ({ body }: CreateProctorProps): Promise<any> =>
+  apiClient("/api/v1/create-proctor/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
     },
     body: JSON.stringify(body),
   });
