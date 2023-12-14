@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import CreateAccount from "../Register/Register";
 import UserLogin from "../Login/Login";
+import { Button } from "../ui/button";
 
 const LandingPageNavbar = () => {
   return (
@@ -9,17 +10,11 @@ const LandingPageNavbar = () => {
       <UserLogin />
       LOGO/ICON
       <div className="flex gap-x-3 ml-auto">
-        <Link
-          className="bg-secondary text-gray-700 p-2 px-4 rounded-sm cursor-pointer hover:bg-secondary/90"
-          to="/?modal=login"
-        >
-          Login
+        <Link className="" to="/?modal=login">
+          <Button variant={"default"}>Login</Button>
         </Link>
-        <Link
-          className="bg-primary p-2 px-4  rounded-sm cursor-pointer"
-          to="/?modal=signup"
-        >
-          Register
+        <Link className="" to="/?modal=signup">
+          <Button variant={"secondary"}>Register</Button>
         </Link>
       </div>
     </div>
