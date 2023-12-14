@@ -4,11 +4,7 @@ import {
   Settings2,
   FileSearch,
   ArrowBigUp,
-  AxeIcon,
-  Fingerprint,
-  LockIcon,
 } from "lucide-react";
-import { text } from "stream/consumers";
 const features = [
   {
     name: "Live Proctoring",
@@ -16,11 +12,12 @@ const features = [
       <>
         Features real-time <strong>webcam and audio monitoring</strong>,
         capturing a live video feed and ambient sounds for identity verification
-        and detection of irregularities. <br></br><strong>Screen sharing</strong>{" "}
-        functionality, <strong>browser activity</strong> monitoring, capturing
-        and analysing <strong>keystroke logging</strong>, preventing
-        unauthorized searches or access to websites ticks up high checkmarks for
-        upholding proctored exams.
+        and detection of irregularities. <br></br>
+        <strong>Screen sharing</strong> functionality,{" "}
+        <strong>browser activity</strong> monitoring, capturing and analysing{" "}
+        <strong>keystroke logging</strong>, preventing unauthorized searches or
+        access to websites ticks up high checkmarks for upholding proctored
+        exams.
       </>
     ),
     icon: Camera,
@@ -45,19 +42,41 @@ const features = [
     name: "Exam Setup and Configuration",
     description: (
       <>
-        Tailor the hackathon environment by defining crucial parameters such as the <strong>hackathon title, designated
-        duration, date and time of commencement, allowed resources</strong>, providing a
-        framework for participants to understand the boundaries of the hackathon. <br></br>MedusaAI adapts to various <strong>hackathon types</strong>, specifying focus areas like <strong>MCQs, subjective QAs, data structures and software development</strong> ensuring evaluation criteria aligning with the objectives of the chosen category.
+        Tailor the hackathon environment by defining crucial parameters such as
+        the{" "}
+        <strong>
+          hackathon title, designated duration, date and time of commencement,
+          allowed resources
+        </strong>
+        , providing a framework for participants to understand the boundaries of
+        the hackathon. <br></br>MedusaAI adapts to various{" "}
+        <strong>hackathon types</strong>, specifying focus areas like{" "}
+        <strong>
+          MCQs, subjective QAs, data structures and software development
+        </strong>{" "}
+        ensuring evaluation criteria aligning with the objectives of the chosen
+        category.
       </>
     ),
     icon: Settings2,
   },
   {
     name: "Analytics and Reporting",
-    description:
-    (
+    description: (
       <>
-      This robust feature provides a comprehensive <strong>overview of exam performance</strong> with generation of <strong>detailed reports, granular analysis of candidate scores, completion rates</strong> and <strong>trends</strong> over time ensuring that the educators can derive valuable insights from the gathered data.<br></br>By <strong>analyzing historical data</strong>, administrators can <strong>identify patterns,</strong> pinpoint <strong>data-driven improvements</strong>, make <strong>informed decisions</strong> and enhance the overall efficacy ensuring fair and optimized examination process.
+        This robust feature provides a comprehensive{" "}
+        <strong>overview of exam performance</strong> with generation of{" "}
+        <strong>
+          detailed reports, granular analysis of candidate scores, completion
+          rates
+        </strong>{" "}
+        and <strong>trends</strong> over time ensuring that the educators can
+        derive valuable insights from the gathered data.<br></br>By{" "}
+        <strong>analyzing historical data</strong>, administrators can{" "}
+        <strong>identify patterns,</strong> pinpoint{" "}
+        <strong>data-driven improvements</strong>, make{" "}
+        <strong>informed decisions</strong> and enhance the overall efficacy
+        ensuring fair and optimized examination process.
       </>
     ),
     icon: FileSearch,
@@ -96,13 +115,15 @@ export const FeatureSection = () => {
             Ultimate guardianship of the MAI realm.
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            MedusaAI(MAI) provides seamless proctored examination
-            experience for organizers and candidates altogether. With vast
-            features in the hand of organization we maintain high standards of
-            integrity fortified by intelligent and manual surveillance.<br></br>
-            <i>Explore some of our cutting-edge features like specification guided
-            administrators, choosing examination type, providing technical
-            support, data security and so much more.</i>
+            MedusaAI(MAI) provides seamless proctored examination experience for
+            organizers and candidates altogether. With vast features in the hand
+            of organization we maintain high standards of integrity fortified by
+            intelligent and manual surveillance.<br></br>
+            <i>
+              Explore some of our cutting-edge features like specification
+              guided administrators, choosing examination type, providing
+              technical support, data security and so much more.
+            </i>
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">

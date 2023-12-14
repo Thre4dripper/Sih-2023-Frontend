@@ -5,6 +5,7 @@ import { Providers } from "@/lib/providers/providers";
 import { LandingPage } from "./pages/Landing";
 import { Detection } from "./pages/Detection";
 import AddProctor from "./pages/AddProctor";
+import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
             path="/check"
             element={
               <ProtectedRoute>
-                <Detection />
+                <FacialAuthRegister />
+                {/* <Detection /> */}
               </ProtectedRoute>
             }
           />

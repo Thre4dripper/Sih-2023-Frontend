@@ -124,6 +124,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.18.20.tgz#786c5f41f043b07afb1af37683d7c33668858f6d"
   integrity sha512-kTdfRcSiDfQca/y9QIkng02avJ+NCaQvrMejlsB3RRv5sE9rRoeBPISaZpKxHELzRxZyLvNts1P27W3wV+8geQ==
 
+"@faceio/fiojs@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@faceio/fiojs/-/fiojs-1.1.0.tgz#7536157b86efb059fccb8ba4c2781b713c35df71"
+  integrity sha512-JCn1mDi7MYwpyj2OvmPofNJPcawVF4vuCeH2GTD49NcSITHkSSM2/MrSwqj3vvy1OX3LHJ3hvHUbKDPSg4iweQ==
+
 "@floating-ui/core@^1.4.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.5.2.tgz#53a0f7a98c550e63134d504f26804f6b83dbc071"
@@ -2024,6 +2029,7 @@ yargs@^16.0.3:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
 zod@^3.22.4:
   version "3.22.4"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"

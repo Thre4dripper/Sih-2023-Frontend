@@ -13,11 +13,8 @@ const LandingPageNavbar = () => {
         <Link className="" to="/?modal=login">
           <Button variant={"default"}>Login</Button>
         </Link>
-        <Link
-          className="bg-primary p-2 px-4 text-white rounded-sm cursor-pointer"
-          to="/?modal=signup"
-        >
-          Register
+        <Link className="" to="/?modal=signup">
+          <Button variant={"secondary"}>Register</Button>
         </Link>
       </div>
     </div>
