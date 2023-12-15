@@ -4,8 +4,10 @@ import {
   CreateExamProps,
   CreateProctorProps,
   GetAllProctorsProps,
+  GetExamByIdProps,
   LoginUserProps,
   RemoveProctorProps,
+  UpdateExamProps,
 } from "./APIProps";
 
 export const createAdmin = ({ body }: CreateAdminProps): Promise<any> =>
@@ -68,3 +70,35 @@ export const createExam = ({ body }: CreateExamProps): Promise<any> => {
     body: JSON.stringify(body),
   });
 };
+
+export const getAllExams = ({ body }: GetAllProctorsProps): Promise<any> => {
+  return apiClient(
+    `/api/v1/get-all-exams?limit=${body?.limit}&offset=${body?.offset}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      },
+    }
+  );
+};
+
+export const updateExam = ({ body }: UpdateExamProps): Promise<any> =>
+  apiClient("/api/v1/update-exam/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });
+
+export const getExamById = ({ body }: GetExamByIdProps): Promise<any> =>
+  apiClient(`/api/v1/get-exam-by-id?examId=${body?.examId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+  });

@@ -29,3 +29,24 @@ export interface CreateExamProps {
     examType: string;
   };
 }
+
+export interface GetAllExamsProps {
+  body: { limit: Number; offset: Number };
+}
+
+export interface UpdateExamProps {
+  body: {
+    id: number;
+    name: string;
+    description: string;
+    duration: number;
+    startTime: string;
+    passingMarks: number;
+    totalQuestions: number;
+    examType: string;
+  };
+}
+
+export interface GetExamByIdProps {
+  body: { examId: number };
+}

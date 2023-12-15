@@ -31,7 +31,7 @@ function App() {
             }
           />
           <Route
-            path="/organization/createExam"
+            path="/organization/exams"
             element={
               <ProtectedRoute>
                 <Exam />

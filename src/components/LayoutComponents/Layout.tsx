@@ -16,14 +16,9 @@ const links = [
     icon: <Users />,
   },
   {
-    title: "All Exams",
-    target: "/organization/allExams",
+    title: "Exams",
+    target: "/organization/exams?page=1",
     icon: <BookOpenCheck />,
-  },
-  {
-    title: "Create Exam",
-    target: "/organization/createExam",
-    icon: <BookPlus />,
   },
 ];
 
