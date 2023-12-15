@@ -10,7 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ChevronsUpDown, GripHorizontal } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -35,29 +35,33 @@ import { SDFormat } from "@/helper/DateHelper";
 import { useSearchParams } from "react-router-dom";
 import { useGetAllExamsMutation } from "../api";
 import CreateExamModal from "./create-update-exam-modal";
+import AllQuestionsModal from "./questions/all-question-modal";
 
-export type Payment = {
+export type ExamTableType = {
   id: number;
-  organizationId: number;
   name: string;
-  email: string;
+  duration: number;
+  startTime: string;
+  totalQuestions: number;
+  examType: string;
+  desription: string;
+  passingMarks: number;
 };
 
 export function DataTableDemo() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   let [searchParams, setSearchParams] = useSearchParams();
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = React.useState<Payment[]>([]);
-  const [count, setCount] = React.useState<number>(0);
-  const [openCreateModal, setOpenCreateModal] = React.useState<boolean>(false);
-  const [openUpdateModal, setOpenUpdateModal] = React.useState<boolean>(false);
+  const [data, setData] = useState<ExamTableType[]>([]);
+  const [count, setCount] = useState<number>(0);
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+  const [openAllQuestionsModal, setOpenAllQuestionsModal] =
+    useState<boolean>(false);
 
-  const columns: ColumnDef<Payment>[] = [
+  const columns: ColumnDef<ExamTableType>[] = [
     {
       accessorKey: "name",
       header: "Name",
@@ -140,12 +144,23 @@ export function DataTableDemo() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Add Questions</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  setSearchParams((prev) => {
+                    prev.set("examId", String(row?.original?.id));
+                    prev.set("qpage", "1");
+                    return prev;
+                  });
+                  setOpenAllQuestionsModal(true);
+                }}
+              >
+                Add Questions
+              </DropdownMenuItem>
               <DropdownMenuItem>Add Students</DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   setSearchParams((prev) => {
-                    prev.append("examId", String(row?.original?.id));
+                    prev.set("examId", String(row?.original?.id));
                     return prev;
                   });
                   setOpenUpdateModal(true);
@@ -232,6 +247,10 @@ export function DataTableDemo() {
         isCreateModal={openCreateModal}
         setOpen={openCreateModal ? setOpenCreateModal : setOpenUpdateModal}
         refetchData={refetchData}
+      />
+      <AllQuestionsModal
+        open={openAllQuestionsModal}
+        setOpen={setOpenAllQuestionsModal}
       />
       <div className="flex items-center justify-between py-4">
         <h1 className="text-xl font-semibold">All Exams</h1>

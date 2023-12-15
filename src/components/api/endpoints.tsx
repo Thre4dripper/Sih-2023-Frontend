@@ -4,6 +4,7 @@ import {
   CreateExamProps,
   CreateProctorProps,
   GetAllProctorsProps,
+  GetExamAllQuestionsProps,
   GetExamByIdProps,
   LoginUserProps,
   RemoveProctorProps,
@@ -102,3 +103,17 @@ export const getExamById = ({ body }: GetExamByIdProps): Promise<any> =>
       Authorization: "Bearer " + localStorage.getItem("OrgToken"),
     },
   });
+
+export const getAllExamQuestions = ({
+  body,
+}: GetExamAllQuestionsProps): Promise<any> =>
+  apiClient(
+    `/api/v1/get-all-exam-questions?limit=${body?.limit}&offset=${body?.offset}&examId=${body?.examId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      },
+    }
+  );

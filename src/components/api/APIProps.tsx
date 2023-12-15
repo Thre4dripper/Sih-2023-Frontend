@@ -50,3 +50,7 @@ export interface UpdateExamProps {
 export interface GetExamByIdProps {
   body: { examId: number };
 }
+
+export interface GetExamAllQuestionsProps {
+  body: { examId: number; limit: Number; offset: Number };
+}

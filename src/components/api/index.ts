@@ -11,6 +11,7 @@ export const QUERY_KEYS = {
   getAllExams: "getAllExams",
   updateExam: "updateExam",
   getExamById: "getExamById",
+  getAllExamQuestions: "getAllExamsQuestions",
 };
 
 export const useCreateAdminMutation = () => {
@@ -41,10 +42,17 @@ export const useGetAllExamsMutation = () => {
   return useMutation([QUERY_KEYS.getAllExams], ENDPOINTS.getAllExams);
 };
 
-export const useUpdateExamMutation=()=>{
+export const useUpdateExamMutation = () => {
   return useMutation([QUERY_KEYS.updateExam], ENDPOINTS.updateExam);
-}
+};
 
-export const useGetExamByIdMutation=()=>{
+export const useGetExamByIdMutation = () => {
   return useMutation([QUERY_KEYS.getExamById], ENDPOINTS.getExamById);
-}
+};
+
+export const useGetAllExamQuestionsMutation = () => {
+  return useMutation(
+    [QUERY_KEYS.getAllExamQuestions],
+    ENDPOINTS.getAllExamQuestions
+  );
+};
