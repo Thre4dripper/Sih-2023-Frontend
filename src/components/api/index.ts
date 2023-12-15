@@ -8,6 +8,9 @@ export const QUERY_KEYS = {
   getAllProctors: "getAllProctors",
   removeProctor: "removeProctor",
   createExam: "createExam",
+  getAllExams: "getAllExams",
+  updateExam: "updateExam",
+  getExamById: "getExamById",
 };
 
 export const useCreateAdminMutation = () => {
@@ -32,4 +35,16 @@ export const useRemoveProctorMutation = () => {
 
 export const useCreateExamMutation = () => {
   return useMutation([QUERY_KEYS.createExam], ENDPOINTS.createExam);
+};
+
+export const useGetAllExamsMutation = () => {
+  return useMutation([QUERY_KEYS.getAllExams], ENDPOINTS.getAllExams);
+};
+
+export const useUpdateExamMutation=()=>{
+  return useMutation([QUERY_KEYS.updateExam], ENDPOINTS.updateExam);
+}
+
+export const useGetExamByIdMutation=()=>{
+  return useMutation([QUERY_KEYS.getExamById], ENDPOINTS.getExamById);
 }
