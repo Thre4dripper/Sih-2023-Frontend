@@ -10,7 +10,7 @@ import {
   //   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLoginUserMutation } from "../api";
 import { useForm } from "react-hook-form";
 import { LoginValidation } from "@/lib/validations/user";
@@ -25,6 +25,7 @@ interface Props {
 const OrganizationLogin = ({ setOpen }: Props) => {
   let [searchParams, setSearchParams] = useSearchParams();
   const { mutate: loginUserFn } = useLoginUserMutation();
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(LoginValidation),
@@ -45,11 +46,14 @@ const OrganizationLogin = ({ setOpen }: Props) => {
         onSuccess: (data: any) => {
           console.log(data);
           localStorage.setItem(
-            "OrgToken",
+            "accessToken",
             data?.data?.accessTokens?.accessToken
           );
           setSearchParams({});
           setOpen(false);
+          if (data?.data?.role === "organization") {
+            navigate("/organization/dashboard");
+          }
         },
         onError: (err: any) => {
           console.log(err);

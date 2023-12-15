@@ -61,7 +61,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
   //       onSuccess: (data: any) => {
   //         console.log(data);
   //         localStorage.setItem(
-  //           "StudentToken",
+  //           "accessToken",
   //           data?.data?.accessTokens?.accessToken
   //         );
   //         setSearchParams({});
@@ -85,7 +85,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
         onSuccess: (data: any) => {
           console.log(data);
           localStorage.setItem(
-            "ProctorToken",
+            "accessToken",
             data?.data?.accessTokens?.accessToken
           );
           setSearchParams({});
