@@ -251,6 +251,10 @@ export function DataTableDemo() {
       <AllQuestionsModal
         open={openAllQuestionsModal}
         setOpen={setOpenAllQuestionsModal}
+        examType={
+          data.find((x) => x.id === Number(searchParams.get("examId")))
+            ?.examType as keyof typeof EXAM_TYPE_MAPPING
+        }
       />
       <div className="flex items-center justify-between py-4">
         <h1 className="text-xl font-semibold">All Exams</h1>

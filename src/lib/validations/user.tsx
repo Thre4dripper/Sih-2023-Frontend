@@ -66,3 +66,30 @@ export const ExamValidation = z.object({
     .max(100, { message: "Total questions cannot be more than 100." }),
   examType: z.string().min(1, { message: "This field has to be filled." }),
 });
+
+export const QuestionValidation = z.object({
+  examId: z.string().min(1, { message: "This field has to be filled." }),
+  question: z
+    .string()
+    .min(3, { message: "Minimum 3 characters." })
+    .max(200, { message: "Question cannot be longer than 200 characters." }),
+  description: z
+    .string()
+    .min(3, { message: "Minimum 3 characters." })
+    .max(200, { message: "Description cannot be longer than 200 characters." }),
+  questionType: z.string().min(1, { message: "This field has to be filled." }),
+  marks: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .max(10000, { message: "Marks cannot be more than 10000." }),
+  negativeMarks: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .max(10000, { message: "Negative marks cannot be more than 10000." }),
+  options: z.array(
+    z.object({
+      option: z.string().min(1, { message: "This field has to be filled." }),
+      isCorrect: z.boolean(),
+    })
+  ),
+});

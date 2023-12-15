@@ -1,4 +1,7 @@
-import { useGetAllExamQuestionsMutation } from "@/components/api";
+import {
+  useGetAllExamQuestionsMutation,
+  useGetExamByIdMutation,
+} from "@/components/api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { EXAM_TYPE } from "@/constants/ExamType";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,10 +39,13 @@ import {
 import { ChevronsUpDown, GripHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { ExamTableType } from "../exam-data-table";
+import CreateQuestionModal from "./create-question-modal";
 
 interface IProps {
   open: boolean;
   setOpen: (x: boolean) => any;
+  examType: keyof typeof EXAM_TYPE;
 }
 
 export type QuestionsTableType = {
@@ -52,14 +59,14 @@ export type QuestionsTableType = {
   examId: number;
 };
 
-const AllQuestionsModal = ({ open, setOpen }: IProps) => {
+const AllQuestionsModal = ({ open, setOpen, examType }: IProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState<QuestionsTableType[]>([]);
   const [count, setCount] = useState<number>(0);
-
+  const [examData, setExamData] = useState<ExamTableType>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const columns: ColumnDef<QuestionsTableType>[] = [
@@ -153,6 +160,7 @@ const AllQuestionsModal = ({ open, setOpen }: IProps) => {
     },
   });
 
+  const { mutate: getExamByIdFn } = useGetExamByIdMutation();
   const { mutate: getFilteredExamFn } = useGetAllExamQuestionsMutation();
 
   interface IProps {
@@ -196,6 +204,7 @@ const AllQuestionsModal = ({ open, setOpen }: IProps) => {
   };
 
   useEffect(() => {
+    if (!open) return;
     getFilteredProducts({
       limit: 10,
       offset:
@@ -204,117 +213,125 @@ const AllQuestionsModal = ({ open, setOpen }: IProps) => {
           : 0,
     });
   }, [searchParams]);
+
   return (
-    <Dialog
-      open={open}
-      onOpenChange={() => {
-        setOpen(false);
-        setSearchParams((prev) => {
-          prev.delete("qpage");
-          prev.delete("examId");
-          return prev;
-        });
-      }}
-    >
-      <DialogContent className="sm:max-w-[800px]">
-        <DialogHeader className="flex flex-row items-center justify-between mt-4">
-          <DialogTitle>All Questions</DialogTitle>
-          <Button
-            variant="default"
-            size="sm"
-            onClick={() => {
-              //   (true);
-            }}
-          >
-            Add Question
-          </Button>
-        </DialogHeader>
-        <div className="overflow-auto border rounded-md ">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id} // ???
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+    <>
+      <CreateQuestionModal
+        open={openCreateModal}
+        setOpen={setOpenCreateModal}
+        refetchData={refetchData}
+        examType={examType}
+        examId={searchParams.get("examId")!}
+      />
+      <Dialog
+        open={open}
+        onOpenChange={() => {
+          setOpen(false);
+          setSearchParams((prev) => {
+            prev.delete("qpage");
+            prev.delete("examId");
+            return prev;
+          });
+        }}
+      >
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader className="flex flex-row items-center justify-between mt-4">
+            <DialogTitle>All Questions</DialogTitle>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={() => setOpenCreateModal(true)}
+            >
+              Add Question
+            </Button>
+          </DialogHeader>
+          <div className="overflow-auto border rounded-md ">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="flex items-center justify-end py-4 space-x-2">
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                let page = Number(searchParams.get("qpage"));
-                page -= 1;
-                setSearchParams((prev) => {
-                  prev.set("qpage", String(page));
-                  return prev;
-                });
-              }}
-              disabled={Number(searchParams.get("qpage")) === 1}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                let page = Number(searchParams.get("qpage"));
-                page += 1;
-                setSearchParams((prev) => {
-                  prev.set("qpage", String(page));
-                  return prev;
-                });
-              }}
-              disabled={Number(searchParams.get("qpage")) * 10 > count}
-            >
-              Next
-            </Button>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id} // ???
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="flex items-center justify-end py-4 space-x-2">
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  let page = Number(searchParams.get("qpage"));
+                  page -= 1;
+                  setSearchParams((prev) => {
+                    prev.set("qpage", String(page));
+                    return prev;
+                  });
+                }}
+                disabled={Number(searchParams.get("qpage")) === 1}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  let page = Number(searchParams.get("qpage"));
+                  page += 1;
+                  setSearchParams((prev) => {
+                    prev.set("qpage", String(page));
+                    return prev;
+                  });
+                }}
+                disabled={Number(searchParams.get("qpage")) * 10 > count}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

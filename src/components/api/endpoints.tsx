@@ -2,6 +2,7 @@ import { apiClient } from "@/lib/providers/api-provider";
 import {
   CreateAdminProps,
   CreateExamProps,
+  CreateExamQuestionProps,
   CreateProctorProps,
   GetAllProctorsProps,
   GetExamAllQuestionsProps,
@@ -117,3 +118,15 @@ export const getAllExamQuestions = ({
       },
     }
   );
+
+export const createExamQuestion = ({
+  body,
+}: CreateExamQuestionProps): Promise<any> =>
+  apiClient("/api/v1/create-exam-question/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });

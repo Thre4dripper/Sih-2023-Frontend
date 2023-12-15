@@ -12,6 +12,7 @@ export const QUERY_KEYS = {
   updateExam: "updateExam",
   getExamById: "getExamById",
   getAllExamQuestions: "getAllExamsQuestions",
+  createExamQuestion: "createExamQuestion",
 };
 
 export const useCreateAdminMutation = () => {
@@ -54,5 +55,12 @@ export const useGetAllExamQuestionsMutation = () => {
   return useMutation(
     [QUERY_KEYS.getAllExamQuestions],
     ENDPOINTS.getAllExamQuestions
+  );
+};
+
+export const useCreateExamQuestionMutation = () => {
+  return useMutation(
+    [QUERY_KEYS.createExamQuestion],
+    ENDPOINTS.createExamQuestion
   );
 };
