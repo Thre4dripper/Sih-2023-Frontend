@@ -1,14 +1,14 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import faceIO from "@faceio/fiojs";
 import { Button } from "../ui/button";
-import { RoomContext } from "@/lib/providers/socket-provider/socket-context";
+import { SocketContext } from "@/lib/providers/socket-provider/socket-context";
+import { VideoPlayer } from "../video/video-player";
 export const FacialAuthRegister = () => {
   let faceio: any;
   useEffect(() => {
     faceio = new faceIO(import.meta.env.VITE_APP_FIO_PUBLIC_ID);
   }, []);
-
-  const { ws } = useContext(RoomContext);
+  const { ws, me } = useContext(SocketContext);
 
   const handleSignIn = async () => {
     try {
@@ -55,11 +55,21 @@ export const FacialAuthRegister = () => {
     });
   };
 
+  useEffect(() => {
+    if (me) {
+      console.log(me._id);
+      ws.emit("join-exam-room", {
+        peerId: me._id,
+      });
+    }
+  }, [me, ws]);
+
   return (
     <div>
       <Button onClick={handleSignIn}>Register</Button>
       <Button onClick={handleLogIn}>Authenticate</Button>
       <Button onClick={joinRoom}>joinRoom</Button>
+      {/* <VideoPlayer classNames="w-1/2 h-1/2" stream={stream} /> */}
     </div>
   );
 };

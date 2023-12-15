@@ -1,20 +1,34 @@
 import { createContext, useEffect, useState } from "react";
-import socketIOClient from "socket.io-client";
-const WS = import.meta.env.VITE_APP_API_HOST;
 import Peer from "peerjs";
 import { v4 as uuidV4 } from "uuid";
-export const RoomContext = createContext<null | any>(null);
+import { ws } from "./ws";
 
-const ws = socketIOClient(WS);
+// interface ISocketContext {
+//   stream?: MediaStream;
+//   screenStream?: MediaStream;
+//   peers: PeerState;
+//   shareScreen: () => void;
+//   roomId: string;
+//   setRoomId: (id: string) => void;
+//   screenSharingId: string;
+// }
+export const SocketContext = createContext<null | any>(null);
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [me, setMe] = useState<Peer>();
+
+  const getUsers = ({ users }: any) => {
+    console.log(users);
+  };
   useEffect(() => {
     const meId = uuidV4();
     const peer = new Peer(meId);
     setMe(peer);
+    ws.on("users", getUsers);
   }, []);
   return (
-    <RoomContext.Provider value={{ ws, me }}>{children}</RoomContext.Provider>
+    <SocketContext.Provider value={{ ws, me }}>
+      {children}
+    </SocketContext.Provider>
   );
 };
