@@ -5,6 +5,7 @@ import {
   CreateProctorProps,
   GetAllProctorsProps,
   GetExamByIdProps,
+  LoginStudentProps,
   LoginUserProps,
   RemoveProctorProps,
   UpdateExamProps,
@@ -101,4 +102,22 @@ export const getExamById = ({ body }: GetExamByIdProps): Promise<any> =>
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("OrgToken"),
     },
+  });
+
+export const StudentLogin = ({ body }: LoginStudentProps): Promise<any> =>
+  apiClient("/api/v1/login-student/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+export const ProctorLogin = ({ body }: LoginStudentProps): Promise<any> =>
+  apiClient("/api/v1/login-proctor/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
   });

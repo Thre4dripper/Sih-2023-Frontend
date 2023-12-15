@@ -8,9 +8,16 @@ import {
   FormLabel,
   //   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
-import { useLoginUserMutation } from "../api";
+import { useLoginProctorMutation, useLoginStudentMutation } from "../api";
 import { useForm } from "react-hook-form";
 import { StudentProctorValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +29,9 @@ interface Props {
 
 const StudentProctorLogin = ({ setOpen }: Props) => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const { mutate: loginUserFn } = useLoginUserMutation();
+  const { mutate: loginStudentFn } = useLoginStudentMutation();
+
+  const { mutate: loginProctorFn } = useLoginProctorMutation();
 
   const form = useForm({
     resolver: zodResolver(StudentProctorValidation),
@@ -30,21 +39,43 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
       email: "",
       password: "",
       organizationId: "",
+      userType: "",
     },
   });
-  interface BProps {
+  interface BSProps {
     email: string;
     password: string;
+    organizationId: number;
   }
 
-  const loginUser = (body: BProps) => {
-    loginUserFn(
+  const loginStudent = (body: BSProps) => {
+    loginStudentFn(
       { body },
       {
         onSuccess: (data: any) => {
           console.log(data);
           localStorage.setItem(
-            "OrgToken",
+            "StudentToken",
+            data?.data?.accessTokens?.accessToken
+          );
+          setSearchParams({});
+          setOpen(false);
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
+  const loginProctor = (body: BSProps) => {
+    loginProctorFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+          localStorage.setItem(
+            "ProctorToken",
             data?.data?.accessTokens?.accessToken
           );
           setSearchParams({});
@@ -62,10 +93,19 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
 
     // api call to save user to database
 
-    loginUser({
-      email: values?.email,
-      password: values?.password,
-    });
+    if (values?.userType === "student") {
+      loginStudent({
+        email: values?.email,
+        password: values?.password,
+        organizationId: Number(values?.organizationId),
+      });
+    } else if(values?.userType === "proctor") {
+      loginProctor({
+        email: values?.email,
+        password: values?.password,
+        organizationId: Number(values?.organizationId),
+      });
+    }
   };
   return (
     <Form {...form}>
@@ -73,6 +113,28 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-start gap-5"
       >
+        <FormField
+          control={form.control}
+          name="userType"
+          render={({ field }) => (
+            <FormItem className="grid grid-cols-4 items-center w-full">
+              <FormLabel className="text-base-semibold text-light-2">
+                Type
+              </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl className="col-span-3">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="student">Student</SelectItem>
+                  <SelectItem value="proctor">Proctor</SelectItem>
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -122,7 +184,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               <FormControl className="col-span-3">
                 <Input
                   placeholder="Enter the organization Id"
-                  type="number"
+                  type="string"
                   className=""
                   {...field}
                 />
@@ -130,6 +192,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
             </FormItem>
           )}
         />
+
         <Button className="mt-6" type="submit">
           Submit
         </Button>
