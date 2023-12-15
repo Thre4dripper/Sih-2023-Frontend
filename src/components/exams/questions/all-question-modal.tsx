@@ -41,8 +41,8 @@ import {
 import { ChevronsUpDown, GripHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { ExamTableType } from "../exam-data-table";
 import CreateQuestionModal from "./create-question-modal";
+import { IExam } from "../exam-table-config";
 
 interface IProps {
   open: boolean;
@@ -68,7 +68,7 @@ const AllQuestionsModal = ({ open, setOpen, examType }: IProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState<QuestionsTableType[]>([]);
   const [count, setCount] = useState<number>(0);
-  const [examData, setExamData] = useState<ExamTableType>();
+  const [examData, setExamData] = useState<IExam>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const columns: ColumnDef<QuestionsTableType>[] = [

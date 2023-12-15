@@ -14,7 +14,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table.tsx'
-import DataTablePagination from '@/components/admin/DataTablePagination.tsx'
+import DataTablePagination from '@/components/ui/table/data-table-pagination.tsx'
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
