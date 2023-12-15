@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
   //   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -22,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { StudentProctorValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -63,6 +65,10 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
         },
         onError: (err: any) => {
           console.log(err);
+          toast({
+            title:
+              "User Not Found!! Please check your email/password and try again.",
+          });
         },
       }
     );
@@ -99,7 +105,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
         password: values?.password,
         organizationId: Number(values?.organizationId),
       });
-    } else if(values?.userType === "proctor") {
+    } else if (values?.userType === "proctor") {
       loginProctor({
         email: values?.email,
         password: values?.password,
@@ -121,17 +127,27 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               <FormLabel className="text-base-semibold text-light-2">
                 Type
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl className="col-span-3">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="student">Student</SelectItem>
-                  <SelectItem value="proctor">Proctor</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="col-span-3">
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl className="">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="proctor">Proctor</SelectItem>
+                  </SelectContent>
+                </Select>
+                {form?.formState?.errors?.userType && (
+                  <FormMessage>
+                    {form?.formState?.errors?.userType?.message}
+                  </FormMessage>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -143,14 +159,21 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               <FormLabel className="text-base-semibold text-light-2">
                 Email
               </FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  placeholder="Email"
-                  type="email"
-                  className=""
-                  {...field}
-                />
-              </FormControl>
+              <div className="col-span-3">
+                <FormControl className="">
+                  <Input
+                    placeholder="Email"
+                    type="email"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                {form?.formState?.errors?.email && (
+                  <FormMessage>
+                    {form?.formState?.errors?.email?.message}
+                  </FormMessage>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -162,14 +185,21 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               <FormLabel className="text-base-semibold text-light-2">
                 Password
               </FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  placeholder="Enter a password"
-                  type="password"
-                  className=""
-                  {...field}
-                />
-              </FormControl>
+              <div className="col-span-3">
+                <FormControl className="">
+                  <Input
+                    placeholder="Enter a password"
+                    type="password"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                {form?.formState?.errors?.password && (
+                  <FormMessage>
+                    {form?.formState?.errors?.password?.message}
+                  </FormMessage>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -181,14 +211,21 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               <FormLabel className="text-base-semibold text-light-2">
                 Organization Id
               </FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  placeholder="Enter the organization Id"
-                  type="string"
-                  className=""
-                  {...field}
-                />
-              </FormControl>
+              <div className="col-span-3">
+                <FormControl className="">
+                  <Input
+                    placeholder="Enter the organization Id"
+                    type="number"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                {form?.formState?.errors?.organizationId && (
+                  <FormMessage>
+                    {form?.formState?.errors?.organizationId?.message}
+                  </FormMessage>
+                )}
+              </div>
             </FormItem>
           )}
         />

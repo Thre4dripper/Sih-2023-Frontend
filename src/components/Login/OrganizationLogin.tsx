@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
   //   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { LoginValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -51,6 +53,10 @@ const OrganizationLogin = ({ setOpen }: Props) => {
         },
         onError: (err: any) => {
           console.log(err);
+          toast({
+            title:
+              "Organization Not Found!! Please check your email/password and try again.",
+          });
         },
       }
     );
@@ -80,14 +86,21 @@ const OrganizationLogin = ({ setOpen }: Props) => {
               <FormLabel className="text-base-semibold text-light-2">
                 Email
               </FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  placeholder="Email"
-                  type="email"
-                  className=""
-                  {...field}
-                />
-              </FormControl>
+              <div className="col-span-3">
+                <FormControl className="col-span-3">
+                  <Input
+                    placeholder="Email"
+                    type="email"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                {form?.formState?.errors?.email && (
+                  <FormMessage>
+                    {form?.formState?.errors?.email?.message}
+                  </FormMessage>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -99,14 +112,21 @@ const OrganizationLogin = ({ setOpen }: Props) => {
               <FormLabel className="text-base-semibold text-light-2">
                 Password
               </FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  placeholder="Enter a password"
-                  type="password"
-                  className=""
-                  {...field}
-                />
-              </FormControl>
+              <div className="col-span-3">
+                <FormControl className="">
+                  <Input
+                    placeholder="Enter a password"
+                    type="password"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                {form?.formState?.errors?.password && (
+                  <FormMessage>
+                    {form?.formState?.errors?.password?.message}
+                  </FormMessage>
+                )}
+              </div>
             </FormItem>
           )}
         />
