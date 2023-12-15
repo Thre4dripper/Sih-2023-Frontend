@@ -17,6 +17,8 @@ import { LoginValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "../ui/use-toast";
+import { userState } from "@/atoms/userState";
+import { useSetRecoilState } from "recoil";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -26,6 +28,7 @@ const OrganizationLogin = ({ setOpen }: Props) => {
   let [searchParams, setSearchParams] = useSearchParams();
   const { mutate: loginUserFn } = useLoginUserMutation();
   const navigate = useNavigate();
+  const setUser = useSetRecoilState(userState);
 
   const form = useForm({
     resolver: zodResolver(LoginValidation),
@@ -51,6 +54,12 @@ const OrganizationLogin = ({ setOpen }: Props) => {
           );
           setSearchParams({});
           setOpen(false);
+          setUser((prev) => {
+            return {
+              accessToken: data?.data?.accessTokens?.accessToken,
+              role: data?.data?.role,
+            };
+          });
           if (data?.data?.role === "organization") {
             navigate("/organization/dashboard");
           }
