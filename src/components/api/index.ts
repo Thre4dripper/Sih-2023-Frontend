@@ -11,10 +11,17 @@ export const QUERY_KEYS = {
   getAllExams: "getAllExams",
   updateExam: "updateExam",
   getExamById: "getExamById",
+  loginStudent: "loginStudent",
+  loginProctor: "loginProctor",
+  createStudent: "createStudent",
 };
 
 export const useCreateAdminMutation = () => {
   return useMutation([QUERY_KEYS.createAdmin], ENDPOINTS.createAdmin);
+};
+
+export const useCreateStudentMutation = () => {
+  return useMutation([QUERY_KEYS.createStudent], ENDPOINTS.createStudent);
 };
 
 export const useLoginUserMutation = () => {
@@ -41,10 +48,18 @@ export const useGetAllExamsMutation = () => {
   return useMutation([QUERY_KEYS.getAllExams], ENDPOINTS.getAllExams);
 };
 
-export const useUpdateExamMutation=()=>{
+export const useUpdateExamMutation = () => {
   return useMutation([QUERY_KEYS.updateExam], ENDPOINTS.updateExam);
-}
+};
 
-export const useGetExamByIdMutation=()=>{
+export const useGetExamByIdMutation = () => {
   return useMutation([QUERY_KEYS.getExamById], ENDPOINTS.getExamById);
-}
+};
+
+export const useLoginStudentMutation = () => {
+  return useMutation([QUERY_KEYS.loginStudent], ENDPOINTS.StudentLogin);
+};
+
+export const useLoginProctorMutation = () => {
+  return useMutation([QUERY_KEYS.loginProctor], ENDPOINTS.ProctorLogin);
+};
