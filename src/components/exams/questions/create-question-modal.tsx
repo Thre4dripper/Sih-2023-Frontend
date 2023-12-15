@@ -30,6 +30,7 @@ import { QuestionValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { useCreateExamQuestionMutation } from "../../api";
 
@@ -38,7 +39,6 @@ interface IProps {
   setOpen: (x: boolean) => any;
   refetchData: () => any;
   examType: keyof typeof EXAM_TYPE;
-  examId: string;
 }
 
 const CreateQuestionModal = ({
@@ -46,9 +46,9 @@ const CreateQuestionModal = ({
   setOpen,
   refetchData,
   examType,
-  examId,
 }: IProps) => {
   const { mutate: createQuestionFn } = useCreateExamQuestionMutation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [serverErrors, setServerErrors] = useState({
     email: false,
   });
@@ -56,7 +56,7 @@ const CreateQuestionModal = ({
   const form = useForm({
     resolver: zodResolver(QuestionValidation),
     defaultValues: {
-      examId: examId,
+      examId: "1",
       question: "",
       description: "",
       questionType: "",
@@ -81,19 +81,6 @@ const CreateQuestionModal = ({
   }
 
   const createQuestion = (body: BProps) => {
-    if (questionType === EXAM_TYPE.multiple_choice) {
-      let correct_count = 0;
-      for (let i = 0; i < body.options.length; i++) {
-        if (body.options[i].isCorrect) {
-          correct_count++;
-        }
-      }
-      body = {
-        ...body,
-        questionType: correct_count <= 1 ? "single_select" : "multiple_select",
-      };
-    }
-    console.log(body);
     createQuestionFn(
       { body },
       {
@@ -117,11 +104,23 @@ const CreateQuestionModal = ({
 
   const onSubmit = async (values: z.infer<typeof QuestionValidation>) => {
     console.log(values);
+    if (questionType === EXAM_TYPE.multiple_choice) {
+      let correct_count = 0;
+      for (let i = 0; i < values.options.length; i++) {
+        if (values.options[i].isCorrect) {
+          correct_count++;
+        }
+      }
+      values = {
+        ...values,
+        questionType: correct_count <= 1 ? "single_select" : "multiple_select",
+      };
+    }
 
     createQuestion({
+      examId: +searchParams.get("examId")!,
       question: values.question,
       description: values.description,
-      examId: +values.examId,
       questionType: values.questionType,
       marks: +values.marks,
       negativeMarks: +values.negativeMarks,

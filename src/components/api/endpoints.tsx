@@ -4,6 +4,7 @@ import {
   CreateExamProps,
   CreateExamQuestionProps,
   CreateProctorProps,
+  DeleteQuestionProps,
   GetAllProctorsProps,
   GetExamAllQuestionsProps,
   GetExamByIdProps,
@@ -123,6 +124,16 @@ export const createExamQuestion = ({
   body,
 }: CreateExamQuestionProps): Promise<any> =>
   apiClient("/api/v1/create-exam-question/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });
+
+export const deleteExamQuestion = ({ body }: DeleteQuestionProps): Promise<any> =>
+  apiClient("/api/v1/delete-exam-question/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

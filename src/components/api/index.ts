@@ -13,6 +13,7 @@ export const QUERY_KEYS = {
   getExamById: "getExamById",
   getAllExamQuestions: "getAllExamsQuestions",
   createExamQuestion: "createExamQuestion",
+  deleteExamQuestion:"deleteExamQuestion"
 };
 
 export const useCreateAdminMutation = () => {
@@ -64,3 +65,7 @@ export const useCreateExamQuestionMutation = () => {
     ENDPOINTS.createExamQuestion
   );
 };
+
+export const useDeleteQuestionMutation=()=>{
+  return useMutation([QUERY_KEYS.deleteExamQuestion],ENDPOINTS.deleteExamQuestion)
+}

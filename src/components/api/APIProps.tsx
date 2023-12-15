@@ -66,3 +66,7 @@ export interface CreateExamQuestionProps {
     options: { option: string; isCorrect: boolean }[];
   };
 }
+
+export interface DeleteQuestionProps {
+  body: { questionId: number };
+}

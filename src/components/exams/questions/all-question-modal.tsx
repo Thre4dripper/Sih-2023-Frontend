@@ -1,4 +1,5 @@
 import {
+  useDeleteQuestionMutation,
   useGetAllExamQuestionsMutation,
   useGetExamByIdMutation,
 } from "@/components/api";
@@ -10,6 +11,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Table,
   TableBody,
   TableCell,
@@ -18,13 +27,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EXAM_TYPE } from "@/constants/ExamType";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -78,11 +80,9 @@ const AllQuestionsModal = ({ open, setOpen, examType }: IProps) => {
       ),
     },
     {
-      accessorKey: "question_type",
+      accessorKey: "questionType",
       header: "Question Type",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("question_type")}</div>
-      ),
+      cell: ({ row }) => <div className="">{row.getValue("questionType")}</div>,
     },
     {
       accessorKey: "marks",
@@ -135,6 +135,13 @@ const AllQuestionsModal = ({ open, setOpen, examType }: IProps) => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() =>
+                  deleteQuestion({ questionId: row?.original?.id })
+                }
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -162,11 +169,28 @@ const AllQuestionsModal = ({ open, setOpen, examType }: IProps) => {
 
   const { mutate: getExamByIdFn } = useGetExamByIdMutation();
   const { mutate: getFilteredExamFn } = useGetAllExamQuestionsMutation();
+  const { mutate: deleteQuestionFn } = useDeleteQuestionMutation();
 
   interface IProps {
     limit: number;
     offset: number;
   }
+
+  const deleteQuestion = (body: { questionId: number }) => {
+    console.log(body);
+    deleteQuestionFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+          refetchData();
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
 
   const getFilteredProducts = (body: IProps) => {
     const data = {
@@ -221,7 +245,6 @@ const AllQuestionsModal = ({ open, setOpen, examType }: IProps) => {
         setOpen={setOpenCreateModal}
         refetchData={refetchData}
         examType={examType}
-        examId={searchParams.get("examId")!}
       />
       <Dialog
         open={open}

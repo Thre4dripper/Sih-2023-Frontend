@@ -71,7 +71,7 @@ export function DataTableDemo() {
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Email
-            <ChevronsUpDown className="ml-2 h-4 w-4" />
+            <ChevronsUpDown className="w-4 h-4 ml-2" />
           </Button>
         );
       },
@@ -84,7 +84,7 @@ export function DataTableDemo() {
       header: () => <div className="text-right">organizationId</div>,
       cell: ({ row }) => {
         return (
-          <div className="text-right font-medium">
+          <div className="font-medium text-right">
             {row.getValue("organizationId")}
           </div>
         );
@@ -99,9 +99,9 @@ export function DataTableDemo() {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="w-8 h-8 p-0">
                 <span className="sr-only">Open menu</span>
-                <GripHorizontal className="h-4 w-4" />
+                <GripHorizontal className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -220,7 +220,7 @@ export function DataTableDemo() {
           Add Proctor
         </Button>
       </div>
-      <div className="rounded-md border">
+      <div className="border rounded-md">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -270,7 +270,7 @@ export function DataTableDemo() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end py-4 space-x-2">
         <div className="space-x-2">
           <Button
             variant="outline"
