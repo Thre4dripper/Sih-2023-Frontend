@@ -13,10 +13,15 @@ export const QUERY_KEYS = {
   getExamById: "getExamById",
   loginStudent: "loginStudent",
   loginProctor: "loginProctor",
+  createStudent: "createStudent",
 };
 
 export const useCreateAdminMutation = () => {
   return useMutation([QUERY_KEYS.createAdmin], ENDPOINTS.createAdmin);
+};
+
+export const useCreateStudentMutation = () => {
+  return useMutation([QUERY_KEYS.createStudent], ENDPOINTS.createStudent);
 };
 
 export const useLoginUserMutation = () => {

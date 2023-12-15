@@ -2,6 +2,15 @@ export interface CreateAdminProps {
   body: { profilePic: string; name: string; password: string; email: string };
 }
 
+export interface CreateStudentProps {
+  body: {
+    profilePic: string;
+    name: string;
+    password: string;
+    email: string;
+    organizationId: number;
+  };
+}
 export interface LoginUserProps {
   body: { email: string; password: string };
 }

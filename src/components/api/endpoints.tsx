@@ -3,6 +3,7 @@ import {
   CreateAdminProps,
   CreateExamProps,
   CreateProctorProps,
+  CreateStudentProps,
   GetAllProctorsProps,
   GetExamByIdProps,
   LoginStudentProps,
@@ -22,6 +23,15 @@ export const createAdmin = ({ body }: CreateAdminProps): Promise<any> =>
 
 export const UserLogin = ({ body }: LoginUserProps): Promise<any> =>
   apiClient("/api/v1/login-organization/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+export const createStudent = ({ body }: CreateStudentProps): Promise<any> =>
+  apiClient("/api/v1/register-student/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
