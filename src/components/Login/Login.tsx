@@ -41,15 +41,15 @@ const UserLogin = () => {
           </DialogTitle>
           {/* <DialogDescription>Enter Account Credentials.</DialogDescription> */}
         </DialogHeader>
-        <Tabs defaultValue="proctor" className="">
+        <Tabs defaultValue="organization" className="">
           <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="proctor">Organization</TabsTrigger>
-            <TabsTrigger value="student">Student/Proctor</TabsTrigger>
+            <TabsTrigger value="organization">Organization</TabsTrigger>
+            <TabsTrigger value="proctor">Proctor</TabsTrigger>
           </TabsList>
-          <TabsContent value="proctor">
+          <TabsContent value="organization">
             <OrganizationLogin setOpen={setOpen} />
           </TabsContent>
-          <TabsContent value="student">
+          <TabsContent value="proctor">
             <StudentProctorLogin setOpen={setOpen} />
           </TabsContent>
         </Tabs>

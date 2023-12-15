@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,21 +10,20 @@ import {
   FormMessage,
   //   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
-import { useLoginProctorMutation, useLoginStudentMutation } from "../api";
+import { useLoginProctorMutation } from "../api";
 import { useForm } from "react-hook-form";
 import { StudentProctorValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "../ui/use-toast";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -31,7 +31,11 @@ interface Props {
 
 const StudentProctorLogin = ({ setOpen }: Props) => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const { mutate: loginStudentFn } = useLoginStudentMutation();
+  // const { mutate: loginStudentFn } = useLoginStudentMutation();
+  const [serverErrors, setServerErrors] = React.useState({
+    email: false,
+    organizationId: false,
+  });
 
   const { mutate: loginProctorFn } = useLoginProctorMutation();
 
@@ -50,29 +54,29 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
     organizationId: number;
   }
 
-  const loginStudent = (body: BSProps) => {
-    loginStudentFn(
-      { body },
-      {
-        onSuccess: (data: any) => {
-          console.log(data);
-          localStorage.setItem(
-            "StudentToken",
-            data?.data?.accessTokens?.accessToken
-          );
-          setSearchParams({});
-          setOpen(false);
-        },
-        onError: (err: any) => {
-          console.log(err);
-          toast({
-            title:
-              "User Not Found!! Please check your email/password and try again.",
-          });
-        },
-      }
-    );
-  };
+  // const loginStudent = (body: BSProps) => {
+  //   loginStudentFn(
+  //     { body },
+  //     {
+  //       onSuccess: (data: any) => {
+  //         console.log(data);
+  //         localStorage.setItem(
+  //           "StudentToken",
+  //           data?.data?.accessTokens?.accessToken
+  //         );
+  //         setSearchParams({});
+  //         setOpen(false);
+  //       },
+  //       onError: (err: any) => {
+  //         console.log(err);
+  //         toast({
+  //           title:
+  //             "User Not Found!! Please check your email/password and try again.",
+  //         });
+  //       },
+  //     }
+  //   );
+  // };
 
   const loginProctor = (body: BSProps) => {
     loginProctorFn(
@@ -89,6 +93,21 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
         },
         onError: (err: any) => {
           console.log(err);
+          if (err?.error === "Organization not found") {
+            setServerErrors((prev) => {
+              return {
+                email: false,
+                organizationId: true,
+              };
+            });
+          } else {
+            setServerErrors((prev) => {
+              return {
+                email: true,
+                organizationId: false,
+              };
+            });
+          }
         },
       }
     );
@@ -99,19 +118,19 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
 
     // api call to save user to database
 
-    if (values?.userType === "student") {
-      loginStudent({
-        email: values?.email,
-        password: values?.password,
-        organizationId: Number(values?.organizationId),
-      });
-    } else if (values?.userType === "proctor") {
-      loginProctor({
-        email: values?.email,
-        password: values?.password,
-        organizationId: Number(values?.organizationId),
-      });
-    }
+    // if (values?.userType === "student") {
+    //   loginStudent({
+    //     email: values?.email,
+    //     password: values?.password,
+    //     organizationId: Number(values?.organizationId),
+    //   });
+    // } else if (values?.userType === "proctor") {
+    loginProctor({
+      email: values?.email,
+      password: values?.password,
+      organizationId: Number(values?.organizationId),
+    });
+    // }
   };
   return (
     <Form {...form}>
@@ -119,7 +138,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-start gap-5"
       >
-        <FormField
+        {/* <FormField
           control={form.control}
           name="userType"
           render={({ field }) => (
@@ -150,7 +169,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               </div>
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name="email"
@@ -160,7 +179,12 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
                 Email
               </FormLabel>
               <div className="col-span-3">
-                <FormControl className="">
+                <FormControl
+                  onChange={() =>
+                    setServerErrors((prev) => ({ ...prev, email: false }))
+                  }
+                  className=""
+                >
                   <Input
                     placeholder="Email"
                     type="email"
@@ -172,6 +196,9 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
                   <FormMessage>
                     {form?.formState?.errors?.email?.message}
                   </FormMessage>
+                )}
+                {serverErrors.email && (
+                  <FormMessage>Email Not Found!</FormMessage>
                 )}
               </div>
             </FormItem>
@@ -212,7 +239,15 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
                 Organization Id
               </FormLabel>
               <div className="col-span-3">
-                <FormControl className="">
+                <FormControl
+                  onChange={() =>
+                    setServerErrors((prev) => ({
+                      ...prev,
+                      organizationId: false,
+                    }))
+                  }
+                  className=""
+                >
                   <Input
                     placeholder="Enter the organization Id"
                     type="number"
@@ -224,6 +259,9 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
                   <FormMessage>
                     {form?.formState?.errors?.organizationId?.message}
                   </FormMessage>
+                )}
+                {serverErrors.organizationId && (
+                  <FormMessage>Organization Not Found!</FormMessage>
                 )}
               </div>
             </FormItem>
