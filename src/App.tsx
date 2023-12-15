@@ -3,6 +3,10 @@ import { Providers } from "@/lib/providers/providers";
 import Organization from "@/pages/Organization/OrganizationHome";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Detection } from "./pages/Detection";
+import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
+import socketIO from "socket.io-client";
+import { useEffect } from "react";
+const ws = import.meta.env.VITE_APP_API_HOST;
 import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
 
@@ -10,6 +14,10 @@ import Exam from "./pages/Organization/Exam";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
+  useEffect(() => {
+    const socket = socketIO(ws);
+    console.log("socket connected", socket);
+  }, []);
   return (
     <Providers>
       <BrowserRouter>
@@ -42,7 +50,8 @@ function App() {
             path="/check"
             element={
               <ProtectedRoute>
-                <Detection />
+                <FacialAuthRegister />
+                {/* <Detection /> */}
               </ProtectedRoute>
             }
           />

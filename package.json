@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@faceio/fiojs": "^1.1.0",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -23,10 +24,12 @@
     "@tanstack/react-table": "^8.10.7",
     "@tensorflow-models/coco-ssd": "^2.2.3",
     "@tensorflow/tfjs": "^4.15.0",
+    "@types/uuid": "^9.0.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
     "lucide-react": "^0.268.0",
+    "peerjs": "^1.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",
@@ -34,8 +37,10 @@
     "react-webcam": "^7.2.0",
     "recharts": "^2.10.3",
     "recoil": "^0.7.7",
+    "socket.io-client": "^4.7.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
+    "uuid": "^9.0.1",
     "tw-elements": "^1.1.0",
     "zod": "^3.22.4"
   },
