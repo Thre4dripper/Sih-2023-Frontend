@@ -1,12 +1,8 @@
+import { studentExamState } from "@/atoms/student-exam-state";
 import { Pause, TimerIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { Button } from "../ui/button";
-
-const DATA = {
-  startTime: "2021-09-30T18:30:00.000Z",
-  duration: 60,
-  title: "Google Coding Test",
-};
 
 const findTimeString = (timer: number) => {
   const seconds = timer % 60 < 10 ? `0${timer % 60}` : `${timer % 60}`;
@@ -26,7 +22,7 @@ const findTimeString = (timer: number) => {
 const Timer = ({}) => {
   const [timer, setTimer] = useState<number>(0);
   const timerRef = useRef<{ id: NodeJS.Timeout | null }>({ id: null });
-  // Service Call
+  const examState = useRecoilValue(studentExamState);
   const endExamAttempt = () => {};
 
   useEffect(() => {
@@ -57,7 +53,7 @@ const Timer = ({}) => {
     <>
       <div className="flex items-center gap-4 p-4 bg-white border rounded-lg shadow-sm border-1 border-primary">
         <div className="flex items-center gap-1">
-          <h4 className="text-lg">{DATA?.title}</h4>
+          <h4 className="text-lg">{examState.examInfo?.name}</h4>
           <span className="">•</span>
           <TimerIcon className="" />
           <p className="w-[8rem]">
@@ -68,7 +64,9 @@ const Timer = ({}) => {
           <div
             className="h-2 rounded-md bg-primary"
             style={{
-              width: `${100 - (timer / (60 * DATA?.duration)) * 100}%`,
+              width: `${
+                100 - (timer / (60 * examState.examInfo?.duration!)) * 100
+              }%`,
             }}
           ></div>
         </div>
