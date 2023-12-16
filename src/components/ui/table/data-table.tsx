@@ -29,6 +29,7 @@ interface DataTableProps<TData, TValue> {
   setPage: Dispatch<SetStateAction<number>>;
   pageSize: number;
   setPageSize: Dispatch<SetStateAction<number>>;
+  isSelect?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps<any, any>> = <TData, TValue>({
@@ -39,6 +40,7 @@ const DataTable: React.FC<DataTableProps<any, any>> = <TData, TValue>({
   setPage,
   pageSize,
   setPageSize,
+  isSelect,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -125,6 +127,7 @@ const DataTable: React.FC<DataTableProps<any, any>> = <TData, TValue>({
           setPage={setPage}
           pageSize={pageSize}
           setPageSize={setPageSize}
+          isSelect={isSelect}
         />
       </div>
     </div>

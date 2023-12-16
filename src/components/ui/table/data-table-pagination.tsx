@@ -22,6 +22,7 @@ interface DataTablePaginationProps<TData> {
   setPage: Dispatch<SetStateAction<number>>;
   pageSize: number;
   setPageSize: Dispatch<SetStateAction<number>>;
+  isSelect?: boolean;
 }
 
 const DataTablePagination: React.FC<DataTablePaginationProps<any>> = ({
@@ -31,18 +32,22 @@ const DataTablePagination: React.FC<DataTablePaginationProps<any>> = ({
   setPage,
   pageSize,
   setPageSize,
+  isSelect,
 }) => {
   const totalPages = Math.ceil(totalRows / pageSize);
   return (
     <div className="flex items-center justify-between w-full px-2">
       <div className="flex flex-row items-center flex-1 h-10 gap-4 text-sm text-muted-foreground">
-        {/* <div>
-                    {table.getFilteredSelectedRowModel().rows.length} of {totalRows} row(s)
-                    selected.
-                </div> */}
+        {isSelect ? (
+          <div>
+            {table.getFilteredSelectedRowModel().rows.length} of {totalRows}{" "}
+            row(s) selected.
+          </div>
+        ) : (
+          <div className="ms-2">{totalRows} row(s)</div>
+        )}
       </div>
-      <div>
-      </div>
+      <div></div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
