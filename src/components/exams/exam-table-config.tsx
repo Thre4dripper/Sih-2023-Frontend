@@ -165,7 +165,15 @@ const TableConfig = ({ setOpenUpdateModal }: ITableConfig) => {
               >
                 Add Questions
               </DropdownMenuItem>
-              <DropdownMenuItem>Add Students</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate(
+                    `/organization/students?examId=${row?.original?.id}`
+                  );
+                }}
+              >
+                Add Students
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   setSearchParams((prev) => {

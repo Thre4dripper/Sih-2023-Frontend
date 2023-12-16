@@ -4,11 +4,12 @@ import {
   CreateExamProps,
   CreateExamQuestionProps,
   CreateProctorProps,
-  DeleteQuestionProps,
   CreateStudentProps,
+  DeleteQuestionProps,
   GetAllProctorsProps,
   GetExamAllQuestionsProps,
   GetExamByIdProps,
+  GetStudentsProps,
   LoginStudentProps,
   LoginUserProps,
   RemoveProctorProps,
@@ -143,7 +144,9 @@ export const createExamQuestion = ({
     body: JSON.stringify(body),
   });
 
-export const deleteExamQuestion = ({ body }: DeleteQuestionProps): Promise<any> =>
+export const deleteExamQuestion = ({
+  body,
+}: DeleteQuestionProps): Promise<any> =>
   apiClient("/api/v1/delete-exam-question/", {
     method: "POST",
     headers: {
@@ -170,3 +173,25 @@ export const ProctorLogin = ({ body }: LoginStudentProps): Promise<any> =>
     },
     body: JSON.stringify(body),
   });
+
+export const getStudents = ({ body }: GetStudentsProps): Promise<any> =>
+  apiClient(
+    `/api/v1/get-all-students?limit=${body?.limit}&offset=${body?.offset}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      },
+    }
+  );
+
+// export const addStudents = ({ body }: AddStudentsProps): Promise<any> =>
+//   apiClient("/api/v1/add-students/", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+//     },
+//     body: JSON.stringify(body),
+//   });
