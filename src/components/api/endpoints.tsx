@@ -13,6 +13,7 @@ import {
   LoginStudentProps,
   LoginUserProps,
   RemoveProctorProps,
+  SendEmailProps,
   UpdateExamProps,
 } from "./APIProps";
 
@@ -185,6 +186,16 @@ export const getStudents = ({ body }: GetStudentsProps): Promise<any> =>
       },
     }
   );
+
+export const sendEmail = ({ body }: SendEmailProps): Promise<any> =>
+  apiClient("/api/v1/send-exam-mail/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });
 
 // export const addStudents = ({ body }: AddStudentsProps): Promise<any> =>
 //   apiClient("/api/v1/add-students/", {

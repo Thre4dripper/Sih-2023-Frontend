@@ -23,6 +23,8 @@ interface DataTablePaginationProps<TData> {
   pageSize: number;
   setPageSize: Dispatch<SetStateAction<number>>;
   isSelect?: boolean;
+  buttonName?: string;
+  buttonOnClick?: ([]: any) => void;
 }
 
 const DataTablePagination: React.FC<DataTablePaginationProps<any>> = ({
@@ -33,10 +35,12 @@ const DataTablePagination: React.FC<DataTablePaginationProps<any>> = ({
   pageSize,
   setPageSize,
   isSelect,
+  buttonName,
+  buttonOnClick,
 }) => {
   const totalPages = Math.ceil(totalRows / pageSize);
   return (
-    <div className="flex items-center justify-between w-full px-2">
+    <div className="flex items-center justify-between w-full gap-4 px-4">
       <div className="flex flex-row items-center flex-1 h-10 gap-4 text-sm text-muted-foreground">
         {isSelect ? (
           <div>
@@ -44,10 +48,22 @@ const DataTablePagination: React.FC<DataTablePaginationProps<any>> = ({
             row(s) selected.
           </div>
         ) : (
-          <div className="ms-2">{totalRows} row(s)</div>
+          <div>{totalRows} row(s)</div>
         )}
       </div>
-      <div></div>
+      {isSelect &&
+        table.getFilteredSelectedRowModel().rows.length > 0 &&
+        buttonOnClick && (
+          <div>
+            <Button
+              onClick={() =>
+                buttonOnClick(table.getFilteredSelectedRowModel().rows)
+              }
+            >
+              {buttonName}
+            </Button>
+          </div>
+        )}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>

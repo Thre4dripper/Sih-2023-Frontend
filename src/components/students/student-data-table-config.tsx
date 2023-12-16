@@ -10,6 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Checkbox } from "../ui/checkbox";
+
 
 export enum StatusFilter {
   Pending = "pending",
@@ -24,6 +26,7 @@ export enum StateFilter {
 }
 
 export interface IStudent {
+  id: number;
   name: string;
   email: string;
   organizationId: string;
@@ -33,8 +36,34 @@ interface ITableConfig {
   addStudents?: ([]: String[]) => void;
 }
 
-const TableConfig = ({  }: ITableConfig) => {
+const TableConfig = ({}: ITableConfig) => {
   const columnsConfig: ColumnDef<IStudent>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <div className="flex justify-center">
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+          />
+        </div>
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      // enableSorting: true,
+      // enableHiding: true,
+    },
     {
       accessorKey: "name",
       header: "Name",

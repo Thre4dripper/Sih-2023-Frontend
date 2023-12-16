@@ -40,21 +40,11 @@ const AddStudentModal = ({ open, setOpen, examData, refetchData }: IProps) => {
   const { mutate: getFilteredStudentsFn } = useGetStudentsMutation();
   // const { mutate: addStudentsFn } = useDeleteQuestionMutation();
 
-  const addStudents = () => {
-    // addStudents(
-    //   { body },
-    //   {
-    //     onSuccess: (data: any) => {
-    //       refetchData();
-    //     },
-    //     onError: (err: any) => {
-    //       console.log(err);
-    //     },
-    //   }
-    // );
+  const sendEmail = (body: IStudent[]) => {
+    console.log(body);
   };
   const columnsConfig = TableConfig({
-    // addStudents,
+    // deleteQuestion,
   });
 
   interface IProps {
@@ -120,6 +110,8 @@ const AddStudentModal = ({ open, setOpen, examData, refetchData }: IProps) => {
               setPage={setPage}
               pageSize={pageSize}
               setPageSize={setPageSize}
+              buttonOnClick={sendEmail}
+              buttonName={"Send Email"}
             />
           </div>
         </DialogContent>
