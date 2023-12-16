@@ -3,7 +3,10 @@ import {
   LayoutDashboard,
   Settings2,
   FileSearch,
-  ArrowBigUp,
+  Ban,
+  UserCog2Icon,
+  ShieldCheck,
+  LucideMessagesSquare,
 } from "lucide-react";
 const features = [
   {
@@ -83,23 +86,29 @@ const features = [
   },
   {
     name: "Cheating Prevention",
-    description: "Yoo MAloo Has to add respective icons",
-    icon: ArrowBigUp,
+    description:
+    (
+      <>
+       This feature employs advanced technologies such as <strong>eye tracking, facial recognition, and behavior detection</strong> to effectively identify and flag instances of cheating. Facial recognition algorithms verify the identity of the test-taker and behavior detection analyzes actions and gestures, promptly <strong>flagging any irregularities</strong>.
+       <br></br>Additionally, the administrators can view and <strong>flag each candidate manually</strong> via live proctoring stream upholding the credibility and fairness of online proctored examinations.
+      </>
+    ),
+    icon: Ban,
   },
   {
     name: "Technical Support",
     description: "YooMAloo Has to add respective icons",
-    icon: ArrowBigUp,
+    icon: UserCog2Icon,
   },
   {
     name: "Secure Environment",
     description: "YooMAloo Has to add respective icons",
-    icon: ArrowBigUp,
+    icon: ShieldCheck,
   },
   {
     name: "Feedback Mechanism",
     description: "YooMAloo Has to add respective icons",
-    icon: ArrowBigUp,
+    icon: LucideMessagesSquare,
   },
 ];
 
@@ -108,9 +117,6 @@ export const FeatureSection = () => {
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mx-auto max-w-2xl lg:text-center">
-          {/* <h2 className="text-base font-semibold leading-7 text-primary">
-            Smart. Secure. Monitor. 
-          </h2> */}
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Ultimate guardianship of the MAI realm.
           </p>
