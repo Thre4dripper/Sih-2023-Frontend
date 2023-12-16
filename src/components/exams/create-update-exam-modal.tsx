@@ -79,7 +79,6 @@ const CreateExamModal = ({
 
   useEffect(() => {
     if (isCreateModal || !open) return;
-    console.log("HELLO");
 
     if (!searchParams.get("examId")) {
       setOpen(false);

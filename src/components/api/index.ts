@@ -11,6 +11,9 @@ export const QUERY_KEYS = {
   getAllExams: "getAllExams",
   updateExam: "updateExam",
   getExamById: "getExamById",
+  getAllExamQuestions: "getAllExamsQuestions",
+  createExamQuestion: "createExamQuestion",
+  deleteExamQuestion:"deleteExamQuestion",
   loginStudent: "loginStudent",
   loginProctor: "loginProctor",
   createStudent: "createStudent",
@@ -54,6 +57,24 @@ export const useUpdateExamMutation = () => {
 
 export const useGetExamByIdMutation = () => {
   return useMutation([QUERY_KEYS.getExamById], ENDPOINTS.getExamById);
+};
+
+export const useGetAllExamQuestionsMutation = () => {
+  return useMutation(
+    [QUERY_KEYS.getAllExamQuestions],
+    ENDPOINTS.getAllExamQuestions
+  );
+};
+
+export const useCreateExamQuestionMutation = () => {
+  return useMutation(
+    [QUERY_KEYS.createExamQuestion],
+    ENDPOINTS.createExamQuestion
+  );
+};
+
+export const useDeleteQuestionMutation=()=>{
+  return useMutation([QUERY_KEYS.deleteExamQuestion],ENDPOINTS.deleteExamQuestion)
 };
 
 export const useLoginStudentMutation = () => {

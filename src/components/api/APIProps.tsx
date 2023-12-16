@@ -63,3 +63,24 @@ export interface UpdateExamProps {
 export interface GetExamByIdProps {
   body: { examId: number };
 }
+
+export interface GetExamAllQuestionsProps {
+  body: { examId: number; limit: Number; offset: Number };
+}
+
+export interface CreateExamQuestionProps {
+  body: {
+    examId: number;
+    question: string;
+    description: string;
+    questionType: string;
+    marks: number;
+    negativeMarks: number;
+    options: { option: string; isCorrect: boolean }[];
+  };
+}
+
+export interface DeleteQuestionProps {
+  body: { questionId: number };
+}
+

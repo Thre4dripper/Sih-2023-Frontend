@@ -2,9 +2,12 @@ import { apiClient } from "@/lib/providers/api-provider";
 import {
   CreateAdminProps,
   CreateExamProps,
+  CreateExamQuestionProps,
   CreateProctorProps,
+  DeleteQuestionProps,
   CreateStudentProps,
   GetAllProctorsProps,
+  GetExamAllQuestionsProps,
   GetExamByIdProps,
   LoginStudentProps,
   LoginUserProps,
@@ -112,6 +115,42 @@ export const getExamById = ({ body }: GetExamByIdProps): Promise<any> =>
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
+  });
+
+export const getAllExamQuestions = ({
+  body,
+}: GetExamAllQuestionsProps): Promise<any> =>
+  apiClient(
+    `/api/v1/get-all-exam-questions?limit=${body?.limit}&offset=${body?.offset}&examId=${body?.examId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      },
+    }
+  );
+
+export const createExamQuestion = ({
+  body,
+}: CreateExamQuestionProps): Promise<any> =>
+  apiClient("/api/v1/create-exam-question/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });
+
+export const deleteExamQuestion = ({ body }: DeleteQuestionProps): Promise<any> =>
+  apiClient("/api/v1/delete-exam-question/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
   });
 
 export const StudentLogin = ({ body }: LoginStudentProps): Promise<any> =>

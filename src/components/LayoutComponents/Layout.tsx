@@ -1,8 +1,14 @@
+import {
+  BookOpenCheck,
+  BookPlus,
+  LayoutDashboard,
+  User2Icon,
+  Users,
+  Users2Icon,
+} from "lucide-react";
 import React from "react";
-import LeftSidebar from "./Sidebar";
-import { LayoutDashboard, BookOpenCheck, BookPlus, Users } from "lucide-react";
 import Navbar from "./Navbar";
-import { User2Icon } from "lucide-react";
+import LeftSidebar from "./Sidebar";
 
 const links = [
   {
@@ -19,6 +25,16 @@ const links = [
     title: "Exams",
     target: "/organization/exams?page=1",
     icon: <BookOpenCheck />,
+  },
+  {
+    title: "Questions",
+    target: "/organization/questions",
+    icon: <BookPlus />,
+  },
+  {
+    title: "Students",
+    target: "/organization/students",
+    icon: <Users2Icon />,
   },
 ];
 
