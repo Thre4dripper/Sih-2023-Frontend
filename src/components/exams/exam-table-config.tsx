@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EXAM_TYPE_MAPPING } from "@/constants/ExamType";
 import { SDFormat } from "@/helper/DateHelper";
 
-import { ChevronsUpDown, GripHorizontal } from "lucide-react";
+import { ChevronsUpDown, CopyIcon, GripHorizontal } from "lucide-react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../ui/button";
 import {
@@ -34,50 +34,46 @@ export interface IExam {
   startTime: string;
   totalQuestions: number;
   examType: string;
-  desription: string;
+  description: string;
   passingMarks: number;
 }
 
 interface ITableConfig {
-  setOpenAllQuestionsModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TableConfig = ({
-  setOpenAllQuestionsModal,
-  setOpenUpdateModal,
-}: ITableConfig) => {
-  const navigate = useNavigate();
+const TableConfig = ({ setOpenUpdateModal }: ITableConfig) => {
   const { search } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const params = new URLSearchParams(search);
+  const navigate = useNavigate();
   const columnsConfig: ColumnDef<IExam>[] = [
-    // {
-    //   id: "select",
-    //   header: ({ table }) => (
-    //     <div className="flex justify-center">
-    //       <Checkbox
-    //         checked={
-    //           table.getIsAllPageRowsSelected() ||
-    //           (table.getIsSomePageRowsSelected() && "indeterminate")
-    //         }
-    //         onCheckedChange={(value) =>
-    //           table.toggleAllPageRowsSelected(!!value)
-    //         }
-    //         aria-label="Select all"
-    //       />
-    //     </div>
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: true,
-    //   enableHiding: true,
-    // },
+    {
+      accessorKey: "id",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Id
+            <ChevronsUpDown className="w-4 h-4 ml-2" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="flex gap-2">
+          <div className="lowercase">{row.getValue("id")}</div>
+          <button
+            className={
+              "text-slate-400 hover:text-slate-800 active:text-slate-400"
+            }
+            onClick={() => navigator.clipboard.writeText(row.getValue("id"))}
+          >
+            <CopyIcon size={16} />
+          </button>
+        </div>
+      ),
+    },
     {
       accessorKey: "name",
       header: "Name",
@@ -162,12 +158,9 @@ const TableConfig = ({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {
-                  setSearchParams((prev) => {
-                    prev.set("examId", String(row?.original?.id));
-                    prev.set("qpage", "1");
-                    return prev;
-                  });
-                  setOpenAllQuestionsModal(true);
+                  navigate(
+                    `/organization/questions?examId=${row?.original?.id}`
+                  );
                 }}
               >
                 Add Questions

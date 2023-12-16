@@ -32,22 +32,25 @@ import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
-import { useCreateExamQuestionMutation } from "../../api";
+import { useCreateExamQuestionMutation } from "../api";
+import { IExam } from "../exams/exam-table-config";
+import Loader from "../ui/loader";
 
 interface IProps {
   open: boolean;
   setOpen: (x: boolean) => any;
   refetchData: () => any;
-  examType: keyof typeof EXAM_TYPE;
+  examData: IExam;
 }
 
 const CreateQuestionModal = ({
   open,
   setOpen,
   refetchData,
-  examType,
+  examData,
 }: IProps) => {
-  const { mutate: createQuestionFn } = useCreateExamQuestionMutation();
+  const { mutate: createQuestionFn, isLoading } =
+    useCreateExamQuestionMutation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [serverErrors, setServerErrors] = useState({
     email: false,
@@ -209,11 +212,12 @@ const CreateQuestionModal = ({
                               <SelectValue placeholder="Select question type" />
                             </SelectTrigger>
                             <SelectContent>
-                              {examType === EXAM_TYPE.coding ? (
+                              {examData.examType === EXAM_TYPE.coding ? (
                                 <SelectItem value={EXAM_TYPE.coding}>
                                   {EXAM_TYPE_MAPPING.coding}
                                 </SelectItem>
-                              ) : examType === EXAM_TYPE.multiple_choice ? (
+                              ) : examData.examType ===
+                                EXAM_TYPE.multiple_choice ? (
                                 <SelectGroup>
                                   <SelectItem value={EXAM_TYPE.multiple_choice}>
                                     {EXAM_TYPE_MAPPING.multiple_choice}
@@ -334,9 +338,13 @@ const CreateQuestionModal = ({
                   </div>
                 </div>
               )}
-              <Button variant={"default"} className="mt-[1rem]" type="submit">
-                Submit
-              </Button>
+              {isLoading ? (
+                <Loader size={8} />
+              ) : (
+                <Button variant={"default"} className="mt-[1rem]" type="submit">
+                  Submit
+                </Button>
+              )}
             </form>
           </Form>
         </div>

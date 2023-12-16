@@ -1,12 +1,11 @@
-import React from 'react'
-import { DataTableDemo } from './exam-data-table'
+import { ExamDataTable } from "./exam-data-table";
 
 const AllExams = () => {
   return (
     <div className="px-12 flex py-12 min-h-[90vh]">
-      <DataTableDemo />
+      <ExamDataTable />
     </div>
-  )
-}
+  );
+};
 
-export default AllExams
+export default AllExams;

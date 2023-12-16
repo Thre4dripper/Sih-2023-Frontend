@@ -5,7 +5,7 @@ import { LProps } from "./LayoutProps";
 const LeftSidebar = ({ links }: LProps) => {
   return (
     <div
-      className={`flex h-screen sticky top-0 max-lg:w-auto w-[20%] flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-primary-foreground pl-6`}
+      className={`flex h-screen sticky top-0 max-lg:w-auto min-w-[80px] w-[20%] flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-primary-foreground pl-6`}
     >
       <div className="flex items-center justify-between h-16 pr-4 shrink-0">
         <img
