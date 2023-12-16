@@ -19,6 +19,7 @@ export const QUERY_KEYS = {
   createStudent: "createStudent",
   getStudents: "getStudents",
   addStudents: "addStudents",
+  sendEmail: "sendEmail",
 };
 
 export const useCreateAdminMutation = () => {
@@ -92,6 +93,10 @@ export const useLoginProctorMutation = () => {
 
 export const useGetStudentsMutation = () => {
   return useMutation([QUERY_KEYS.getStudents], ENDPOINTS.getStudents);
+};
+
+export const useSendEmailMutation = () => {
+  return useMutation([QUERY_KEYS.sendEmail], ENDPOINTS.sendEmail);
 };
 
 // export const useAddStudentsMutation = () => {

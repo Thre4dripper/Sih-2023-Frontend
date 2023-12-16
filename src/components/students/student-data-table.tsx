@@ -1,7 +1,4 @@
-import {
-  useDeleteQuestionMutation,
-  useGetStudentsMutation,
-} from "@/components/api";
+import { useGetStudentsMutation, useSendEmailMutation } from "@/components/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/ui/table/data-table";
@@ -23,7 +20,7 @@ const StudentsTable = ({ examData }: IProps) => {
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
   const { mutate: getFilteredStudentsFn } = useGetStudentsMutation();
-  // const { mutate: deleteQuestionFn } = useDeleteQuestionMutation();
+  const { mutate: sendEmailFn } = useSendEmailMutation();
 
   // const deleteQuestion = (body) => {
   //   deleteQuestionFn(
@@ -38,6 +35,25 @@ const StudentsTable = ({ examData }: IProps) => {
   //     }
   //   );
   // };
+
+  const sendEmail = (students: IStudent[]) => {
+    const body = {
+      examId: examData.id,
+      studentIds: students.map((student) => +student.id),
+    };
+    sendEmailFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
   const columnsConfig = TableConfig({
     // deleteQuestion,
   });
@@ -120,6 +136,9 @@ const StudentsTable = ({ examData }: IProps) => {
           setPage={setPage}
           pageSize={pageSize}
           setPageSize={setPageSize}
+          isSelect={true}
+          buttonOnClick={sendEmail}
+          buttonName={"Send Email"}
         />
       </div>
     </div>

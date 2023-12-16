@@ -88,6 +88,10 @@ export interface GetStudentsProps {
   body: { limit: Number; offset: Number };
 }
 
+export interface SendEmailProps {
+  body: { examId: number; studentIds: number[] };
+}
+
 // export interface AddStudentsProps {
 //   body: { studentId: number; examId: number };
 // }
