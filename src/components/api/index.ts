@@ -13,10 +13,12 @@ export const QUERY_KEYS = {
   getExamById: "getExamById",
   getAllExamQuestions: "getAllExamsQuestions",
   createExamQuestion: "createExamQuestion",
-  deleteExamQuestion:"deleteExamQuestion",
+  deleteExamQuestion: "deleteExamQuestion",
   loginStudent: "loginStudent",
   loginProctor: "loginProctor",
   createStudent: "createStudent",
+  getStudents: "getStudents",
+  addStudents: "addStudents",
 };
 
 export const useCreateAdminMutation = () => {
@@ -73,8 +75,11 @@ export const useCreateExamQuestionMutation = () => {
   );
 };
 
-export const useDeleteQuestionMutation=()=>{
-  return useMutation([QUERY_KEYS.deleteExamQuestion],ENDPOINTS.deleteExamQuestion)
+export const useDeleteQuestionMutation = () => {
+  return useMutation(
+    [QUERY_KEYS.deleteExamQuestion],
+    ENDPOINTS.deleteExamQuestion
+  );
 };
 
 export const useLoginStudentMutation = () => {
@@ -84,3 +89,11 @@ export const useLoginStudentMutation = () => {
 export const useLoginProctorMutation = () => {
   return useMutation([QUERY_KEYS.loginProctor], ENDPOINTS.ProctorLogin);
 };
+
+export const useGetStudentsMutation = () => {
+  return useMutation([QUERY_KEYS.getStudents], ENDPOINTS.getStudents);
+};
+
+// export const useAddStudentsMutation = () => {
+//   return useMutation([QUERY_KEYS.addStudents], ENDPOINTS.addStudents);
+// };

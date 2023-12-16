@@ -11,6 +11,7 @@ const ws = import.meta.env.VITE_APP_API_HOST;
 
 import Exam from "./pages/Organization/Exam";
 import Questions from "./pages/Organization/questions";
+import Students from "./pages/Organization/students";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -58,7 +59,7 @@ function App() {
             path="/organization/students"
             element={
               <ProtectedRoute>
-                <Exam />
+                <Students />
               </ProtectedRoute>
             }
           />

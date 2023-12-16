@@ -84,3 +84,10 @@ export interface DeleteQuestionProps {
   body: { questionId: number };
 }
 
+export interface GetStudentsProps {
+  body: { limit: Number; offset: Number };
+}
+
+// export interface AddStudentsProps {
+//   body: { studentId: number; examId: number };
+// }
