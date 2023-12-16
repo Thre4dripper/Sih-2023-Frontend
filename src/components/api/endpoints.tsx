@@ -5,9 +5,11 @@ import {
   CreateExamQuestionProps,
   CreateProctorProps,
   DeleteQuestionProps,
+  CreateStudentProps,
   GetAllProctorsProps,
   GetExamAllQuestionsProps,
   GetExamByIdProps,
+  LoginStudentProps,
   LoginUserProps,
   RemoveProctorProps,
   UpdateExamProps,
@@ -31,12 +33,21 @@ export const UserLogin = ({ body }: LoginUserProps): Promise<any> =>
     body: JSON.stringify(body),
   });
 
+export const createStudent = ({ body }: CreateStudentProps): Promise<any> =>
+  apiClient("/api/v1/register-student/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
 export const createProctor = ({ body }: CreateProctorProps): Promise<any> =>
   apiClient("/api/v1/create-proctor/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -47,7 +58,7 @@ export const getAllProctors = ({ body }: GetAllProctorsProps): Promise<any> => {
     {
       method: "GET",
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     }
   );
@@ -58,7 +69,7 @@ export const removeProctor = ({ body }: RemoveProctorProps): Promise<any> =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -68,7 +79,7 @@ export const createExam = ({ body }: CreateExamProps): Promise<any> => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -81,7 +92,7 @@ export const getAllExams = ({ body }: GetAllProctorsProps): Promise<any> => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     }
   );
@@ -92,7 +103,7 @@ export const updateExam = ({ body }: UpdateExamProps): Promise<any> =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -102,7 +113,7 @@ export const getExamById = ({ body }: GetExamByIdProps): Promise<any> =>
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
   });
 
@@ -138,6 +149,24 @@ export const deleteExamQuestion = ({ body }: DeleteQuestionProps): Promise<any> 
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+    },
+    body: JSON.stringify(body),
+  });
+
+export const StudentLogin = ({ body }: LoginStudentProps): Promise<any> =>
+  apiClient("/api/v1/login-student/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+export const ProctorLogin = ({ body }: LoginStudentProps): Promise<any> =>
+  apiClient("/api/v1/login-proctor/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   });

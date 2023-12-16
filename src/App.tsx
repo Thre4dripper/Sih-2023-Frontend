@@ -10,7 +10,7 @@ import ViewProctors from "./pages/Organization/ViewProctors";
 const ws = import.meta.env.VITE_APP_API_HOST;
 
 import Exam from "./pages/Organization/Exam";
-import Questions from "./pages/Organization/Questions";
+import Questions from "./pages/Organization/questions";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
