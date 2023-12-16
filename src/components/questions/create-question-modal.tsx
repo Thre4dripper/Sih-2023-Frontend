@@ -30,7 +30,6 @@ import { QuestionValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { useCreateExamQuestionMutation } from "../api";
 import { IExam } from "../exams/exam-table-config";
@@ -51,7 +50,6 @@ const CreateQuestionModal = ({
 }: IProps) => {
   const { mutate: createQuestionFn, isLoading } =
     useCreateExamQuestionMutation();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [serverErrors, setServerErrors] = useState({
     email: false,
   });
@@ -106,7 +104,6 @@ const CreateQuestionModal = ({
   };
 
   const onSubmit = async (values: z.infer<typeof QuestionValidation>) => {
-    console.log(values);
     if (questionType === EXAM_TYPE.multiple_choice) {
       let correct_count = 0;
       for (let i = 0; i < values.options.length; i++) {
@@ -121,7 +118,7 @@ const CreateQuestionModal = ({
     }
 
     createQuestion({
-      examId: +searchParams.get("examId")!,
+      examId: examData.id,
       question: values.question,
       description: values.description,
       questionType: values.questionType,

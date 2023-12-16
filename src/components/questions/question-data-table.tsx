@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import DataTable from "@/components/ui/table/data-table";
 import { PlusCircleIcon, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { IExam } from "../exams/exam-table-config";
 import CreateQuestionModal from "./create-question-modal";
 import TableConfig, { IQuestion } from "./question-data-table-config";
@@ -21,19 +20,16 @@ const QuestionTable = ({ examData }: IProps) => {
   const [totalQuestions, setTotalQuestions] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
   const { mutate: getFilteredQuestionsFn } = useGetAllExamQuestionsMutation();
   const { mutate: deleteQuestionFn } = useDeleteQuestionMutation();
 
   const deleteQuestion = (body: { questionId: number }) => {
-    console.log(body);
     deleteQuestionFn(
       { body },
       {
         onSuccess: (data: any) => {
-          console.log(data);
           refetchData();
         },
         onError: (err: any) => {
@@ -49,16 +45,12 @@ const QuestionTable = ({ examData }: IProps) => {
   interface IProps {
     limit: number;
     offset: number;
+    examId: number;
   }
 
   const getFilteredQuestions = (body: IProps) => {
-    const data = {
-      limit: body.limit,
-      offset: body.offset,
-      examId: +searchParams.get("examId")!,
-    };
     getFilteredQuestionsFn(
-      { body: data },
+      { body },
       {
         onSuccess: (data: any) => {
           setQuestionList(data?.data?.rows);
@@ -74,6 +66,7 @@ const QuestionTable = ({ examData }: IProps) => {
     getFilteredQuestions({
       limit: 10,
       offset: Number(page) >= 1 ? (page - 1) * pageSize : 0,
+      examId: examData.id,
     });
   };
 
@@ -81,6 +74,7 @@ const QuestionTable = ({ examData }: IProps) => {
     getFilteredQuestions({
       limit: pageSize,
       offset: page >= 1 ? (page - 1) * pageSize : 0,
+      examId: examData.id,
     });
     // setSearchParams({ page: page.toString() });
   }, [page, pageSize]);
