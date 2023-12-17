@@ -43,7 +43,7 @@ const Mcq = () => {
   }, [examState.currentQuestion]);
 
   return (
-    <div className="p-4 mt-4 bg-white border rounded-lg border-1 border-primary">
+    <div className="p-4 mt-4 bg-white border rounded-lg shadow-md border-1 border-primary">
       <div className={`d-flex flex-column justify-content-center p-4 m-sm-2`}>
         <h4 className="text-xl">
           {examState.questions && examState.questions[curr].question}
@@ -92,7 +92,7 @@ const Mcq = () => {
               onClick={() => {
                 setExamState((prev) => ({
                   ...prev,
-                  currentQuestion: curr + 1,
+                  currentQuestion: curr + 2,
                 }));
               }}
               className={""}

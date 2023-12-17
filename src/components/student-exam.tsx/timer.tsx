@@ -51,7 +51,7 @@ const Timer = ({}) => {
 
   return (
     <>
-      <div className="flex items-center gap-4 p-4 bg-white border rounded-lg shadow-sm border-1 border-primary">
+      <div className="flex items-center gap-4 p-4 bg-white border rounded-lg shadow-md border-1 border-primary">
         <div className="flex items-center gap-1">
           <h4 className="text-lg">{examState.examInfo?.name}</h4>
           <span className="">•</span>

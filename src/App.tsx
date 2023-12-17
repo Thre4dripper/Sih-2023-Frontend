@@ -13,6 +13,7 @@ import Exam from "./pages/Organization/Exam";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
 import StudentExam from "./pages/Student/student-exam";
+import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -29,6 +30,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <LandingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/proctor/:id/stream"
+            element={
+              <ProtectedRoute>
+                <ProctorStreamPannel />
               </ProtectedRoute>
             }
           />
