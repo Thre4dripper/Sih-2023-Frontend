@@ -3,10 +3,15 @@ import { useEffect, useRef } from "react";
 //import count from './Login';
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs";
+import { twMerge } from "tailwind-merge";
 // import "./Detections.css";
 var count_facedetect = 0;
 
-export const ObjectDetection = () => {
+interface IProps {
+  className?: string;
+}
+
+export const ObjectDetection = ({ className }: IProps) => {
   const videoRef: any = useRef();
   const canvasRef: any = useRef();
 
@@ -127,23 +132,22 @@ export const ObjectDetection = () => {
   };
 
   return (
-    <div>
+    <div
+      className={twMerge([
+        "relative aspect-video rounded-lg overflow-hidden ",
+        className,
+      ])}
+    >
       <video
-        className="absolute top-0 left-0"
+        className={"absolute top-0 start-0w-full h-full object-cover"}
         autoPlay
         playsInline
         muted
         ref={videoRef}
-        width="500"
-        height="300"
       />
       <canvas
-        className="
-      absolute top-0 left-0
-      "
+        className="absolute top-0 object-cover w-full h-full start-0"
         ref={canvasRef}
-        width="500"
-        height="300"
       />
     </div>
   );

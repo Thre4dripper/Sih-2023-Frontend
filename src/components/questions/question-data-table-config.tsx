@@ -26,9 +26,9 @@ export enum StateFilter {
 export interface IQuestion {
   id: number;
   question: string;
-  question_type: string;
+  questionType: string;
   marks: number;
-  options: [{ option: string; is_correct: boolean }];
+  options: { option: string; is_correct: boolean }[];
   negativeMarks: number;
   description: string;
   examId: number;
