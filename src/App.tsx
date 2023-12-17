@@ -10,6 +10,8 @@ import ViewProctors from "./pages/Organization/ViewProctors";
 const ws = import.meta.env.VITE_APP_API_HOST;
 
 import Exam from "./pages/Organization/Exam";
+import Room from "./components/meet/room";
+import { Join } from "./components/meet/join";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
 import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
@@ -107,6 +109,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* created nested routes for meet and meet id */}
+          <Route path="/join" element={<Join />} />
+          <Route path="/room/:id" element={<Room />} />
         </Routes>
       </BrowserRouter>
     </Providers>
