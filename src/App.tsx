@@ -12,8 +12,9 @@ const ws = import.meta.env.VITE_APP_API_HOST;
 import Exam from "./pages/Organization/Exam";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
-import StudentExam from "./pages/Student/student-exam";
 import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
+import StudentExam from "./pages/Student/student-exam";
+import SystemPermissionCheck from "./pages/Student/system-permission-check";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -38,6 +39,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProctorStreamPannel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/exam/:id/system-check"
+            element={
+              <ProtectedRoute>
+                <SystemPermissionCheck />
               </ProtectedRoute>
             }
           />
