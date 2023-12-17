@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
-// import swal from "sweetalert";
-//import count from './Login';
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs";
 import { twMerge } from "tailwind-merge";
-// import "./Detections.css";
+import { useToast } from "../ui/use-toast";
+import { accuracyThreshold } from "@/constants/utils";
+import * as posenet from "@tensorflow-models/posenet";
+
 var count_facedetect = 0;
 
 interface IProps {
@@ -13,8 +14,7 @@ interface IProps {
 
 export const ObjectDetection = ({ className }: IProps) => {
   const videoRef: any = useRef();
-  const canvasRef: any = useRef();
-
+  const { toast } = useToast();
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       const webCamPromise = navigator.mediaDevices
@@ -39,10 +39,12 @@ export const ObjectDetection = ({ className }: IProps) => {
             };
           });
         });
-      const modelPromise = cocoSsd.load();
-      Promise.all([modelPromise, webCamPromise])
+      const objectModelPromise = cocoSsd.load();
+      const poseNetModelPromise = posenet.load();
+      Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
         .then((values) => {
           detectFrame(videoRef.current, values[0]);
+          detectPose(videoRef.current, values[1]);
         })
         .catch((error) => {
           //console.error(error);
@@ -52,84 +54,91 @@ export const ObjectDetection = ({ className }: IProps) => {
 
   const detectFrame = (video: any, model: any) => {
     model.detect(video).then((predictions: any) => {
-      if (canvasRef.current) {
-        renderPredictions(predictions);
-        requestAnimationFrame(() => {
-          detectFrame(video, model);
-        });
-      } else {
-        return false;
-      }
+      renderPredictions(predictions);
+      requestAnimationFrame(() => {
+        detectFrame(video, model);
+      });
+    });
+  };
+
+  const detectPose = (video: any, model: any) => {
+    model.estimateSinglePose(video).then((pose: any) => {
+      EarsDetect(pose["keypoints"], 0.8);
+      requestAnimationFrame(() => {
+        detectPose(video, model);
+      });
     });
   };
 
   const renderPredictions = (predictions: any) => {
-    //var count=100;
-    const ctx = canvasRef?.current?.getContext("2d");
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    // Font options.
-    const font = "16px sans-serif";
-    ctx.font = font;
-    ctx.textBaseline = "top";
     predictions.forEach((prediction: any) => {
-      const x = prediction.bbox[0];
-      const y = prediction.bbox[1];
-      const width = prediction.bbox[2];
-      const height = prediction.bbox[3];
-      // Draw the bounding box.
-      ctx.strokeStyle = "#00FFFF";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, width, height);
-      // Draw the label background.
-      ctx.fillStyle = "#00FFFF";
-      const textWidth = ctx.measureText(prediction.class).width;
-      const textHeight = parseInt(font, 10); // base 10
-      ctx.fillRect(x, y, textWidth + 8, textHeight + 8);
-
+      console.log(prediction);
       var multiple_face = 0;
-      for (let i = 0; i < predictions.length; i++) {
-        //Face,object detection
-        if (predictions[i].class === "cell phone") {
-          // window.alert("Cell Phone Detected");
-          // swal("Cell Phone Detected", "Action has been Recorded", "error");
+      if (prediction.score >= accuracyThreshold) {
+        if (prediction.class === "cell phone") {
+          console.log("cell phone detected");
+          toast({
+            key: "cellphone",
+            title: "Cell Phone Detected",
+            description: "Please remove your cell phone",
+            variant: "destructive",
+            duration: 1000,
+          });
+
           count_facedetect = count_facedetect + 1;
-        } else if (predictions[i].class === "book") {
-          // window.alert("Book Detected");
-          // swal("Object Detected", "Action has been Recorded", "error");
+        } else if (prediction.class === "book") {
+          toast({
+            key: "book",
+            title: "Book Detected",
+            description: "Please remove your book",
+            variant: "destructive",
+            duration: 1000,
+          });
           count_facedetect = count_facedetect + 1;
-        } else if (predictions[i].class === "laptop") {
-          // window.alert("Laptop Detected");
-          // swal("Object Detected", "Action has been Recorded", "error");
+        } else if (prediction.class === "laptop") {
+          toast({
+            title: "Cell Phone Detected",
+            description: "Please remove your laptop",
+            variant: "destructive",
+            duration: 1000,
+          });
           count_facedetect = count_facedetect + 1;
-        } else if (predictions[i].class !== "person") {
-          // window.alert("Object Detected");
-          // swal("Face Not Visible", "Action has been Recorded", "error");
+        } else if (prediction.class !== "person") {
+          toast({
+            title: `${prediction.class} Detected`,
+            description: "Please remove this object",
+            variant: "destructive",
+            duration: 1000,
+          });
           count_facedetect = count_facedetect + 1;
         }
       }
     });
 
-    predictions.forEach((prediction: any) => {
-      const x = prediction.bbox[0];
-      const y = prediction.bbox[1];
-      //console.log(predictions)
-      // Draw the text last to ensure it's on top.
-      ctx.fillStyle = "#000000";
-      //console.log(prediction.class);
-
-      if (
-        prediction.class === "person" ||
-        prediction.class === "cell phone" ||
-        prediction.class === "book" ||
-        prediction.class === "laptop"
-      ) {
-        ctx.fillText(prediction.class, x, y);
-      }
-    });
-    //console.log("final")
-    //console.log(count_facedetect)
     sessionStorage.setItem("count_facedetect", count_facedetect as any);
   };
+
+  const EarsDetect = (keypoints: any, minConfidence: any) => {
+    const keypointEarR = keypoints[3];
+    const keypointEarL = keypoints[4];
+
+    if (keypointEarL.score < minConfidence) {
+      toast({
+        title: "You looked away from the Screen (To the Right)",
+        variant: "destructive",
+        duration: 1000,
+      });
+    }
+    if (keypointEarR.score < minConfidence) {
+      toast({
+        title: "You looked away from the Screen (To the Left)",
+        variant: "destructive",
+        duration: 1000,
+      });
+    }
+  };
+
+  // runPosenet();
 
   return (
     <div
@@ -144,10 +153,6 @@ export const ObjectDetection = ({ className }: IProps) => {
         playsInline
         muted
         ref={videoRef}
-      />
-      <canvas
-        className="absolute top-0 object-cover w-full h-full start-0"
-        ref={canvasRef}
       />
     </div>
   );

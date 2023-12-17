@@ -17,12 +17,15 @@ import Students from "./pages/Organization/students";
 import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
 import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
+import { useToast } from "./components/ui/use-toast";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
+  const { toast } = useToast();
   useEffect(() => {
     const socket = socketIO(ws);
     console.log("socket connected", socket);
+   
   }, []);
   return (
     <Providers>
