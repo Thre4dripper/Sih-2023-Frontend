@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/lib/providers/theme-provider/theme-provider";
 import { RecoilRoot } from "recoil";
 import { ApiProvider } from "@/lib/providers/api-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { SocketProvider } from "./socket-provider/socket-context";
+import { PeerProvider } from "./peer-provider/peer-provider";
 
 type TProvidersProps = {
   children: React.ReactNode;
@@ -11,15 +11,15 @@ type TProvidersProps = {
 
 export const Providers = ({ children }: TProvidersProps) => {
   return (
-    <ApiProvider>
-      <SocketProvider>
-        <Toaster />
-        <RecoilRoot>
+    <RecoilRoot>
+      <PeerProvider>
+        <ApiProvider>
+          <Toaster />
           <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             {children}
           </ThemeProvider>
-        </RecoilRoot>
-      </SocketProvider>
-    </ApiProvider>
+        </ApiProvider>
+      </PeerProvider>
+    </RecoilRoot>
   );
 };

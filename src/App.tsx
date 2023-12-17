@@ -11,6 +11,9 @@ import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
 
 import Exam from "./pages/Organization/Exam";
+import { Meet } from "./pages/Meet";
+import Room from "./components/meet/room";
+import { Join } from "./components/meet/join";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -63,6 +66,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* created nested routes for meet and meet id */}
+          <Route path="/join" element={<Join />} />
+          <Route path="/room/:id" element={<Room />} />
         </Routes>
       </BrowserRouter>
     </Providers>
