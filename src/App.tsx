@@ -1,19 +1,22 @@
 import ProtectedRoute from "@/components/protected-routes/protected-route";
 import { Providers } from "@/lib/providers/providers";
 import Organization from "@/pages/Organization/OrganizationHome";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Detection } from "./pages/Detection";
-import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
-import socketIO from "socket.io-client";
 import { useEffect } from "react";
-const ws = import.meta.env.VITE_APP_API_HOST;
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import socketIO from "socket.io-client";
+import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
 import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
+const ws = import.meta.env.VITE_APP_API_HOST;
 
 import Exam from "./pages/Organization/Exam";
-import { Meet } from "./pages/Meet";
 import Room from "./components/meet/room";
 import { Join } from "./components/meet/join";
+import Questions from "./pages/Organization/questions";
+import Students from "./pages/Organization/students";
+import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
+import StudentExam from "./pages/Student/student-exam";
+import SystemPermissionCheck from "./pages/Student/system-permission-check";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -34,6 +37,30 @@ function App() {
             }
           />
           <Route
+            path="/proctor/:id/stream"
+            element={
+              <ProtectedRoute>
+                <ProctorStreamPannel />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/exam/:id/system-check"
+            element={
+              <ProtectedRoute>
+                <SystemPermissionCheck />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/exam/:id/start"
+            element={
+              <ProtectedRoute>
+                <StudentExam />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/organization/dashboard"
             element={
               <ProtectedRoute>
@@ -46,6 +73,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Exam />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organization/questions"
+            element={
+              <ProtectedRoute>
+                <Questions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organization/students"
+            element={
+              <ProtectedRoute>
+                <Students />
               </ProtectedRoute>
             }
           />

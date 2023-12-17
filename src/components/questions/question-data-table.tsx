@@ -1,31 +1,35 @@
-import React, { useEffect } from "react";
-
+import {
+  useDeleteQuestionMutation,
+  useGetAllExamQuestionsMutation,
+} from "@/components/api";
 import { Button } from "@/components/ui/button";
-
-import { useGetAllProctorsMutation, useRemoveProctorMutation } from "../api";
-import CreateProctorModal from "./CreateProctorModal";
-import TableConfig, { IProctor } from "./proctor-table-config";
+import { Input } from "@/components/ui/input";
+import DataTable from "@/components/ui/table/data-table";
 import { PlusCircleIcon, Search } from "lucide-react";
-import { Input } from "../ui/input";
-import DataTable from "../ui/table/data-table";
+import { useEffect, useState } from "react";
+import { IExam } from "../exams/exam-table-config";
+import CreateQuestionModal from "./create-question-modal";
+import TableConfig, { IQuestion } from "./question-data-table-config";
 
-export function DataTableDemo() {
-  const [open, setOpen] = React.useState<boolean>(false);
+interface IProps {
+  examData: IExam;
+}
 
-  const [proctorList, setProctorList] = React.useState<IProctor[]>([]);
-  const [totalProctors, setTotalProctors] = React.useState<number>(0);
-  const [page, setPage] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState<number>(10);
+const QuestionTable = ({ examData }: IProps) => {
+  const [questionList, setQuestionList] = useState<IQuestion[]>([]);
+  const [totalQuestions, setTotalQuestions] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
-  const { mutate: removeProctorFn } = useRemoveProctorMutation();
-  const { mutate: getFilteredProductsFn } = useGetAllProctorsMutation();
+  const { mutate: getFilteredQuestionsFn } = useGetAllExamQuestionsMutation();
+  const { mutate: deleteQuestionFn } = useDeleteQuestionMutation();
 
-  const removeProctor = (body: { proctorId: number }) => {
-    removeProctorFn(
+  const deleteQuestion = (body: { questionId: number }) => {
+    deleteQuestionFn(
       { body },
       {
         onSuccess: (data: any) => {
-          console.log(data);
           refetchData();
         },
         onError: (err: any) => {
@@ -34,24 +38,23 @@ export function DataTableDemo() {
       }
     );
   };
-
   const columnsConfig = TableConfig({
-    removeProctor,
+    deleteQuestion,
   });
 
   interface IProps {
     limit: number;
     offset: number;
+    examId: number;
   }
 
-  const getFilteredProctor = (body: IProps) => {
-    getFilteredProductsFn(
+  const getFilteredQuestions = (body: IProps) => {
+    getFilteredQuestionsFn(
       { body },
       {
         onSuccess: (data: any) => {
-          console.log(data);
-          setProctorList(data?.data?.proctors);
-          setTotalProctors(data?.data?.count);
+          setQuestionList(data?.data?.rows);
+          setTotalQuestions(data?.data?.count);
         },
         onError: (err: any) => {
           console.log(err);
@@ -59,31 +62,35 @@ export function DataTableDemo() {
       }
     );
   };
-
   const refetchData = () => {
-    getFilteredProctor({
+    getFilteredQuestions({
       limit: 10,
       offset: Number(page) >= 1 ? (page - 1) * pageSize : 0,
+      examId: examData.id,
     });
   };
 
   useEffect(() => {
-    getFilteredProctor({
+    getFilteredQuestions({
       limit: pageSize,
       offset: page >= 1 ? (page - 1) * pageSize : 0,
+      examId: examData.id,
     });
     // setSearchParams({ page: page.toString() });
   }, [page, pageSize]);
 
   return (
     <div className="w-full">
-      <CreateProctorModal
-        open={open}
-        setOpen={setOpen}
+      <CreateQuestionModal
+        open={openCreateModal}
+        setOpen={setOpenCreateModal}
         refetchData={refetchData}
+        examData={examData}
       />
       <div className={"flex gap-8 mb-4"}>
-        <span className={"font-semibold text-3xl text-slate-500"}>Proctor</span>
+        <span className={"font-semibold text-3xl text-slate-500"}>
+          Questions
+        </span>
         <div className={"flex-1"} />
         {/* <DataTableFilters
             filters={[
@@ -94,24 +101,24 @@ export function DataTableDemo() {
           /> */}
         <div className="flex items-center justify-center gap-4">
           <Search size={20} className={"text-slate-500"} />
-          <Input className={"w-72"} placeholder={"Search exams..."} />
+          <Input className={"w-72"} placeholder={"Search questions..."} />
         </div>
         <Button
           className={"flex flex-row gap-2"}
           variant={"default"}
           onClick={() => {
-            setOpen(true);
+            setOpenCreateModal(true);
           }}
         >
           <PlusCircleIcon className={"w-6 h-6"} />
-          <span>Add Proctor</span>
+          <span>Add Question</span>
         </Button>
       </div>
       <div className="overflow-auto border rounded-md ">
         <DataTable
           columns={columnsConfig}
-          data={proctorList}
-          totalRows={totalProctors}
+          data={questionList}
+          totalRows={totalQuestions}
           page={page}
           setPage={setPage}
           pageSize={pageSize}
@@ -120,4 +127,6 @@ export function DataTableDemo() {
       </div>
     </div>
   );
-}
+};
+
+export default QuestionTable;

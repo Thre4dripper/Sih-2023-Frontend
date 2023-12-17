@@ -1,22 +1,22 @@
 // import React from "react";
-import { LProps } from "./LayoutProps";
 import { NavLink } from "react-router-dom";
+import { LProps } from "./LayoutProps";
 
 const LeftSidebar = ({ links }: LProps) => {
   return (
     <div
-      className={`flex h-screen sticky top-0 max-lg:w-auto w-[20%] flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-primary-foreground pl-6`}
+      className={`flex h-screen sticky top-0 max-lg:w-auto min-w-[80px] w-[20%] flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-primary-foreground pl-6`}
     >
-      <div className="flex justify-between h-16 shrink-0 items-center pr-4">
+      <div className="flex items-center justify-between h-16 pr-4 shrink-0">
         <img
-          className="h-8 w-auto"
+          className="w-auto h-8"
           src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
           alt="Your Company"
         />
         {/* icon to collapse the sidebar */}
       </div>
-      <nav className="flex flex-1 flex-col pr-6">
-        <ul role="list" className="flex flex-1 flex-col gap-y-7">
+      <nav className="flex flex-col flex-1 pr-6">
+        <ul role="list" className="flex flex-col flex-1 gap-y-7">
           <li>
             <ul role="list" className="-mx-2 space-y-2">
               {links.map((item) => (
