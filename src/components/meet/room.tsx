@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { VideoPlayer } from "../video/video-player";
 import { peer } from "@/lib/socket/peer";
-import { set } from "react-hook-form";
 
 const Room = () => {
   const { id } = useParams();
@@ -13,7 +12,11 @@ const Room = () => {
 
   useEffect(() => {
     if (id !== undefined) {
-      ws.emit("join-exam-room", { roomId: id, peerId: peer.id });
+      ws.emit("join-exam-room", {
+        roomId: id,
+        peerId: peer.id,
+        type: "student",
+      });
     }
   }, [id, peer.id]);
 
