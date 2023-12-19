@@ -26,14 +26,14 @@ const HeroSection = () => {
                 controls at all levels.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
+                {/* <a
                   href="#"
                   className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-60"
                 >
                   Get started
-                </a>
+                </a> */}
                 <a
-                  href="#"
+                  href="#learn_more"
                   className="text-sm font-semibold leading-6 text-white"
                 >
                   Learn more <span aria-hidden="true">→</span>
@@ -41,7 +41,7 @@ const HeroSection = () => {
               </div>
             </div>
             <img
-              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              src='/landing_pic.jpg'
               alt="App screenshot"
               width={2432}
               height={1442}

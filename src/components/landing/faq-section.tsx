@@ -7,35 +7,35 @@ import {
 
 const faqs = [
   {
-    question: "What's the best thing about Switzerland?",
+    question: "How are users being proctored manually?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "The organization assigns some admins also known as proctors to view all the student users live who are giving the exams. Furthermore, they can take actions against the suspicious user.",
   },
   {
-    question: "What's the best thing about Switzerland?",
+    question: "How to create an exam?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "An organization can create an exam from the organization interface. The exam date, time limit, type of exam, creating/modifying questions and other configurations can be implemented.",
   },
   {
-    question: "What's the best thing about Switzerland?",
+    question: "How are students being verified?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "User verification is done by facial scanning at the time of registration and autherization.",
   },
   {
-    question: "What's the best thing about Switzerland?",
+    question: "What is Full Screen Mode in a quiz?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "Full Screen Mode in a quiz makes sure that the participants do not switch tabs. They will be thrown out of the quiz and would not be able to attempt it further if they violate the Full Screen Mode.",
   },
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
+  // {
+  //   question: "What's the best thing about Switzerland?",
+  //   answer:
+  //     "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+  // },
+  // {
+  //   question: "What's the best thing about Switzerland?",
+  //   answer:
+  //     "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+  // },
   // More questions...
 ];
 
@@ -47,7 +47,7 @@ export const FAQSection = () => {
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
             Frequently asked questions
           </h2>
-          <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
+          <dl className="mt-0 space-y-6 divide-y divide-gray-900/10">
             <Accordion type="single" collapsible>
               {faqs.map((faq, index: number) => (
                 <AccordionItem value={`item-${index + 1}`} key={faq.question}>
