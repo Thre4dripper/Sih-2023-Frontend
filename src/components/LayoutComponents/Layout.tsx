@@ -1,6 +1,8 @@
 import {
   BookOpenCheck,
   BookPlus,
+  CircleEllipsis,
+  Layers,
   LayoutDashboard,
   User2Icon,
   Users,
@@ -11,7 +13,7 @@ import Navbar from "./Navbar";
 import LeftSidebar from "./Sidebar";
 import { useLocation } from "react-router-dom";
 
-const links = [
+let links = [
   {
     title: "Dashboard",
     target: "/organization/dashboard",
@@ -39,6 +41,19 @@ const links = [
   },
 ];
 
+const proctorLinks = [
+  {
+    title: "Active Exams",
+    target: "/proctor/activeExams",
+    icon: <Layers />,
+  },
+  {
+    title: "Pending Approvals",
+    target: "/proctor/studentapprovals",
+    icon: <CircleEllipsis />,
+  },
+];
+
 // create sets of links for orgs, proctors and superadmin. Check the url for organization etc and if the role matches, the user can access the page.
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -55,6 +70,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       },
     ],
   };
+
+  if (location?.pathname?.split("/")[1] === "proctor") {
+    links = proctorLinks;
+  }
 
   return (
     <div className="flex min-h-[100vh]">
