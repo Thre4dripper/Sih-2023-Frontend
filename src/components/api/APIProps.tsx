@@ -8,8 +8,11 @@ export interface CreateStudentProps {
     name: string;
     password: string;
     email: string;
-    organizationId: number;
+    organizationId: string;
     aadharNumber: string;
+    panNumber: string;
+    aadharPic: string;
+    panPic: string;
   };
 }
 export interface LoginUserProps {

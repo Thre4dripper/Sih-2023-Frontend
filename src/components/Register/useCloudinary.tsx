@@ -8,6 +8,7 @@ interface RProps {
 
 const useCloudinary = () => {
   const [isLoading, setIsloading] = useState(false);
+  const [url, setUrl] = useState<string>("");
 
   const sendRequest = useCallback(
     async (
@@ -29,6 +30,7 @@ const useCloudinary = () => {
         const data = await response.json();
         console.log(data);
         dataHandler(data?.secure_url);
+        setUrl(data?.secure_url);
       } catch (error) {
         console.log(error);
         errorHandler(error);
@@ -41,6 +43,7 @@ const useCloudinary = () => {
   return {
     isLoading,
     sendRequest,
+    url,
   };
 };
 

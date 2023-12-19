@@ -50,6 +50,11 @@ export const EditProfileValidation = z.object({
 
 export const StudentRegisterValidation = z.object({
   profilePic: z.string().url().min(1),
+  aadharPic: z.string().url().min(1),
+  panPic: z.string().url().min(1),
+  panNumber: z
+    .string()
+    .length(10, { message: "Pan number should be 10 characters." }),
   name: z
     .string()
     .min(3, { message: "Minimum 3 characters." })
@@ -64,7 +69,8 @@ export const StudentRegisterValidation = z.object({
     .max(15, { message: "username cannot be longer than 15 characters." }),
   organizationId: z.string().min(1, { message: "This field cannot be empty." }),
   aadharNumber: z
-    .string().length(12, { message: "Aadhar number should be 12 digits." })
+    .string()
+    .length(12, { message: "Aadhar number should be 12 digits." }),
 });
 
 export const LoginValidation = z.object({
