@@ -34,7 +34,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      profilePic: "",
+      profilePic: "", 
       name: "",
       email: "",
       password: "",
@@ -138,7 +138,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
           control={form.control}
           name="profilePic"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center gap-4">
+            <FormItem className="grid items-center grid-cols-4 gap-4">
               <FormLabel className="">
                 {field?.value ? (
                   <img
@@ -147,7 +147,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
                     width={96}
                     height={96}
                     style={{ width: 64, height: 64, borderRadius: "100%" }}
-                    className="rounded-full object-contain"
+                    className="object-contain rounded-full"
                   />
                 ) : (
                   <img
@@ -161,7 +161,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
                 )}
               </FormLabel>
               <div className="col-span-3">
-                <FormControl className="flex-1  col-span-3 text-base-semibold text-gray-400">
+                <FormControl className="flex-1 col-span-3 text-gray-400 text-base-semibold">
                   <Input
                     type="file"
                     accept="image/*"
@@ -183,8 +183,8 @@ const OrganizationSignup = ({ setOpen }: Props) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
-              <FormLabel className="text-base-semibold text-gray-500 text-light-2">
+            <FormItem className="grid items-center w-full grid-cols-4">
+              <FormLabel className="text-gray-500 text-base-semibold text-light-2">
                 Name
               </FormLabel>
               <div className="col-span-3">
@@ -209,7 +209,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Email
               </FormLabel>
@@ -243,7 +243,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Password
               </FormLabel>

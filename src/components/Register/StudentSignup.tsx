@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,23 +8,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCreateStudentMutation } from "../api";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { isBase64Image } from "@/lib/utils";
 import { StudentRegisterValidation } from "@/lib/validations/user";
-import { useSearchParams } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
+import { useCreateStudentMutation } from "../api";
+import useCloudinary from "./useCloudinary";
 
 interface Props {
   setOpen: (x: boolean) => any;
 }
 
 const StudentSignup = ({ setOpen }: Props) => {
+  const navigate = useNavigate();
+  const [files, setFiles] = useState<File[]>([]);
   const { mutate: registerStudentFn } = useCreateStudentMutation();
+  const { sendRequest: imageUpload } = useCloudinary();
   let [searchParams, setSearchParams] = useSearchParams();
   const [serverErrors, setServerErrors] = useState({
     email: false,
     organizationId: false,
+    aadharNumber: false,
   });
 
   const form = useForm({
@@ -35,10 +41,13 @@ const StudentSignup = ({ setOpen }: Props) => {
       email: "",
       password: "",
       organizationId: "",
+      profilePic: "",
+      aadharNumber: "",
     },
   });
   interface BProps {
     profilePic: string;
+    aadharNumber: string;
     name: string;
     email: string;
     password: string;
@@ -51,9 +60,9 @@ const StudentSignup = ({ setOpen }: Props) => {
       {
         onSuccess: (data: any) => {
           console.log(data);
-
           setSearchParams({});
           setOpen(false);
+          navigate("/student/facial-register");
         },
         onError: (err: any) => {
           console.log(err);
@@ -71,23 +80,83 @@ const StudentSignup = ({ setOpen }: Props) => {
                 email: true,
               };
             });
+          } else if (err?.error === "Invalid Aadhar number") {
+            setServerErrors((prev) => {
+              return {
+                ...prev,
+                aadharNumber: true,
+              };
+            });
           }
         },
       }
     );
   };
+
   const onSubmit = async (
     values: z.infer<typeof StudentRegisterValidation>
   ) => {
     console.log(values);
 
-    createUser({
-      name: values?.name,
-      email: values?.email,
-      password: values?.password,
-      profilePic: "kjghdj",
-      organizationId: Number(values?.organizationId),
-    });
+    const blob = values?.profilePic;
+
+    console.log(blob);
+
+    const hasImageChanged = isBase64Image(blob);
+
+    if (hasImageChanged) {
+      const data = new FormData();
+      data.append("file", blob);
+      data.append("upload_preset", "blogapppreset");
+
+      imageUpload(
+        {
+          url: "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
+          method: "POST",
+          body: data,
+        },
+        (res) => {
+          console.log(res);
+          try {
+            createUser({
+              name: values?.name,
+              email: values?.email,
+              password: values?.password,
+              profilePic: res,
+              organizationId: Number(values?.organizationId),
+              aadharNumber: values?.aadharNumber,
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+  };
+
+  const handleImage = (
+    e: ChangeEvent<HTMLInputElement>,
+    fieldChange: (value: string) => void
+  ) => {
+    e.preventDefault();
+    const fileReader = new FileReader();
+    if (e?.target?.files && e?.target?.files?.length > 0) {
+      const file = e?.target?.files[0];
+
+      setFiles(Array.from(e?.target?.files));
+
+      if (!file?.type?.includes("image")) return;
+
+      fileReader.onload = async (event) => {
+        const imageDataUrl = event?.target?.result?.toString() || "";
+        fieldChange(imageDataUrl);
+      };
+
+      fileReader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -98,10 +167,55 @@ const StudentSignup = ({ setOpen }: Props) => {
       >
         <FormField
           control={form.control}
+          name="profilePic"
+          render={({ field }) => (
+            <FormItem className="grid items-center grid-cols-4 gap-4">
+              <FormLabel className="">
+                {field?.value ? (
+                  <img
+                    src={field?.value}
+                    alt="profile_image"
+                    width={96}
+                    height={96}
+                    style={{ width: 64, height: 64, borderRadius: "100%" }}
+                    className="object-contain rounded-full"
+                  />
+                ) : (
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbHvZ2JK-oa1Hcq0hCVxF-PDwfMQY09ocJ3A&usqp=CAU"
+                    alt="profile_image"
+                    width={96}
+                    height={96}
+                    style={{ width: 64, height: 64, borderRadius: "100%" }}
+                    className="object-contain"
+                  />
+                )}
+              </FormLabel>
+              <div className="col-span-3">
+                <FormControl className="flex-1 col-span-3 text-gray-400 text-base-semibold">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    placeholder="Upload a photo"
+                    className=""
+                    onChange={(e) => handleImage(e, field?.onChange)}
+                  />
+                </FormControl>
+                {form?.formState?.errors?.profilePic && (
+                  <FormMessage>
+                    {form?.formState?.errors?.profilePic?.message}
+                  </FormMessage>
+                )}
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
-              <FormLabel className="text-base-semibold text-gray-500 text-light-2">
+            <FormItem className="grid items-center w-full grid-cols-4">
+              <FormLabel className="text-gray-500 text-base-semibold text-light-2">
                 Name
               </FormLabel>
               <div className="col-span-3">
@@ -124,9 +238,34 @@ const StudentSignup = ({ setOpen }: Props) => {
         />
         <FormField
           control={form.control}
+          name="aadharNumber"
+          render={({ field }) => (
+            <FormItem className="grid items-center w-full grid-cols-4">
+              <FormLabel className="text-gray-500 text-base-semibold text-light-2">
+                Adhaar
+              </FormLabel>
+              <div className="col-span-3">
+                <FormControl className="col-span-3">
+                  <Input
+                    placeholder="Enter your adhaar"
+                    type="text"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+                {serverErrors.aadharNumber && (
+                  <p className="text-destructive">Invalid Adhaar Number!</p>
+                )}
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Email
               </FormLabel>
@@ -155,7 +294,7 @@ const StudentSignup = ({ setOpen }: Props) => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Password
               </FormLabel>
@@ -181,7 +320,7 @@ const StudentSignup = ({ setOpen }: Props) => {
           control={form.control}
           name="organizationId"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Organization Id
               </FormLabel>

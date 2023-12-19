@@ -1,15 +1,17 @@
 import { Input } from "@/components/ui/input";
-import MainVideoStream from "@/components/video-stream/main-video-stream";
+import { VideoPlayer } from "@/components/video/video-player";
+import { peer } from "@/lib/socket/peer";
+import { ws } from "@/lib/socket/ws";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ws } from "@/lib/socket/ws";
-import { peer } from "@/lib/socket/peer";
-import { VideoPlayer } from "@/components/video/video-player";
+import { twMerge } from "tailwind-merge";
 
 const ProctorStreamPanel = () => {
   const [searchInput, setSearchInput] = useState<string>("");
-  const [currentSelectedStream, setCurrentSelectedStream] = useState<number>(1);
+  const [currentSelectedStream, setCurrentSelectedStream] = useState<
+    number | null
+  >(1);
   //   Priority based search
   const { id } = useParams();
   const [streams, setStreams] = useState<any>([]);
@@ -116,15 +118,20 @@ const ProctorStreamPanel = () => {
   console.log(
     "peerids",
     // show all unique ids
-    filterUniqueStreamsById(streams)
+    filterUniqueStreamsById(streams),
+    currentSelectedStream
   );
-
   return (
     <div className="flex flex-col p-4">
       <h1 className="text-2xl text-center ">Proctor Stream Pannel</h1>
-      <div>
-        <MainVideoStream {...DATA[currentSelectedStream - 1]} />
-      </div>
+      {currentSelectedStream !== null ? (
+        <VideoPlayer
+          key={streams[currentSelectedStream! - 1].id}
+          stream={streams[currentSelectedStream! - 1].stream}
+          className="rounded-lg h-[32rem]"
+        />
+      ) : null}
+      <div></div>
       <div className="flex items-center gap-4 mx-5">
         <Search className="w-6 h-6 mt-8 text-primary" />
         <Input
@@ -138,7 +145,21 @@ const ProctorStreamPanel = () => {
       <div className="grid grid-cols-1 gap-6 mx-5 mt-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {streams?.map((stream: any, index: number) => {
           return (
-            <VideoPlayer key={stream.id} classNames="" stream={stream.stream} />
+            <div
+              className={twMerge([
+                " flex transition-all duration-300 ease-in-out cursor-pointer hover:shadow-md rounded-lg ",
+                currentSelectedStream === index + 1
+                  ? "border p-1.5 border-primary"
+                  : null,
+              ])}
+              onClick={() => setCurrentSelectedStream(index + 1)}
+            >
+              <VideoPlayer
+                key={stream.id}
+                stream={stream.stream}
+                className="rounded-lg"
+              />
+            </div>
             // <VideoStream
             //   index={index}
             //   key={stream.stream.id}

@@ -132,6 +132,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
     });
     // }
   };
+  
   return (
     <Form {...form}>
       <form
@@ -142,7 +143,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
           control={form.control}
           name="userType"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Type
               </FormLabel>
@@ -174,7 +175,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Email
               </FormLabel>
@@ -208,7 +209,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Password
               </FormLabel>
@@ -234,7 +235,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
           control={form.control}
           name="organizationId"
           render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center w-full">
+            <FormItem className="grid items-center w-full grid-cols-4">
               <FormLabel className="text-base-semibold text-light-2">
                 Organization Id
               </FormLabel>
