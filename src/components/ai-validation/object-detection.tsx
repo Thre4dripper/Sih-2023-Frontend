@@ -3,8 +3,9 @@ import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs";
 import { twMerge } from "tailwind-merge";
 import { useToast } from "../ui/use-toast";
-import { accuracyThreshold } from "@/constants/utils";
+import { accuracyThreshold, poseAccuracyThreshold } from "@/constants/utils";
 import * as posenet from "@tensorflow-models/posenet";
+import throttle from "lodash.throttle";
 
 var count_facedetect = 0;
 
@@ -15,6 +16,29 @@ interface IProps {
 export const ObjectDetection = ({ className }: IProps) => {
   const videoRef: any = useRef();
   const { toast } = useToast();
+
+  const detectFrame = (video: any, model: any) => {
+    console.log("detectFrame");
+    model.detect(video).then((predictions: any) => {
+      renderPredictions(predictions);
+      // requestAnimationFrame(() => {
+      //   detectFrameThrottle.current(video, model);
+      // });
+    });
+  };
+
+  const detectPose = (video: any, model: any) => {
+    console.log("detectPose");
+    model.estimateSinglePose(video).then((pose: any) => {
+      EarsDetect(pose["keypoints"], poseAccuracyThreshold);
+      // requestAnimationFrame(() => {
+      //   detectPoseThrottle.current(video, model);
+      // });
+    });
+  };
+
+  const detectFrameThrottle = useRef(throttle(detectFrame, 1500));
+  const detectPoseThrottle = useRef(throttle(detectPose,1500));
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       const webCamPromise = navigator.mediaDevices
@@ -22,8 +46,6 @@ export const ObjectDetection = ({ className }: IProps) => {
           audio: false,
           video: {
             facingMode: "user",
-            width: 500,
-            height: 300,
           },
         })
         .then((stream) => {
@@ -43,8 +65,10 @@ export const ObjectDetection = ({ className }: IProps) => {
       const poseNetModelPromise = posenet.load();
       Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
         .then((values) => {
-          detectFrame(videoRef.current, values[0]);
-          detectPose(videoRef.current, values[1]);
+          setInterval(() => {
+            detectFrameThrottle.current(videoRef.current, values[0]);
+            detectPoseThrottle.current(videoRef.current, values[1]);
+          }, 200);
         })
         .catch((error) => {
           //console.error(error);
@@ -52,31 +76,11 @@ export const ObjectDetection = ({ className }: IProps) => {
     }
   }, []);
 
-  const detectFrame = (video: any, model: any) => {
-    model.detect(video).then((predictions: any) => {
-      renderPredictions(predictions);
-      requestAnimationFrame(() => {
-        detectFrame(video, model);
-      });
-    });
-  };
-
-  const detectPose = (video: any, model: any) => {
-    model.estimateSinglePose(video).then((pose: any) => {
-      EarsDetect(pose["keypoints"], 0.8);
-      requestAnimationFrame(() => {
-        detectPose(video, model);
-      });
-    });
-  };
-
   const renderPredictions = (predictions: any) => {
     predictions.forEach((prediction: any) => {
-      console.log(prediction);
       var multiple_face = 0;
       if (prediction.score >= accuracyThreshold) {
         if (prediction.class === "cell phone") {
-          console.log("cell phone detected");
           toast({
             key: "cellphone",
             title: "Cell Phone Detected",
@@ -104,12 +108,12 @@ export const ObjectDetection = ({ className }: IProps) => {
           });
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class !== "person") {
-          toast({
-            title: `${prediction.class} Detected`,
-            description: "Please remove this object",
-            variant: "destructive",
-            duration: 1000,
-          });
+          // toast({
+          //   title: `${prediction.class} Detected`,
+          //   description: "Please remove this object",
+          //   variant: "destructive",
+          //   duration: 1000,
+          // });
           count_facedetect = count_facedetect + 1;
         }
       }
@@ -137,8 +141,6 @@ export const ObjectDetection = ({ className }: IProps) => {
       });
     }
   };
-
-  // runPosenet();
 
   return (
     <div
