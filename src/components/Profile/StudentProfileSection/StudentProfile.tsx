@@ -16,7 +16,7 @@ import { EditProfileValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 
 const StudentProfile = () => {
   const [isEdit, setIsEdit] = React.useState<boolean>(false);
@@ -44,12 +44,12 @@ const StudentProfile = () => {
     // });
   };
   return (
-    <div className="p-8">
+    <div className="">
       <div className="flex justify-between w-full mb-8">
-        <h1 className="text-3xl font-semibold">My Profile</h1>
+        <h1 className="text-3xl text-slate-500 font-semibold">My Profile</h1>
         <Edit2Icon
           onClick={() => setIsEdit((prev) => !prev)}
-          className="mt-1 cursor-pointer hover:text-primary"
+          className="mt-1 text-slate-500 cursor-pointer hover:text-primary"
         />
       </div>
       <div>

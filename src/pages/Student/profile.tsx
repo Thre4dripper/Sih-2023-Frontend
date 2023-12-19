@@ -1,5 +1,5 @@
 import ProfileLayout from "@/components/LayoutComponents/profileLayout";
-import StudentProfile from "@/components/Profile/StudentProfile";
+import StudentProfile from "@/components/Profile/StudentProfileSection/StudentProfile";
 
 const StdProfile = () => {
   return (

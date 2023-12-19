@@ -1,4 +1,4 @@
-import { BookOpenCheck, BookPlus, CircleUserRound, Users } from "lucide-react";
+import { BookOpenCheck, CircleUserRound, Newspaper } from "lucide-react";
 import ProfileSidebar from "./profileSidebar";
 
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
@@ -9,19 +9,14 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
       icon: <CircleUserRound />,
     },
     {
-      title: "All Proctors",
-      target: "/organization/allProctors?page=1",
-      icon: <Users />,
-    },
-    {
-      title: "Exams",
-      target: "/organization/exams?page=1",
+      title: "All Exams",
+      target: "/student/account/allexams",
       icon: <BookOpenCheck />,
     },
     {
-      title: "Questions",
-      target: "/organization/questions",
-      icon: <BookPlus />,
+      title: "Results",
+      target: "/student/account/results",
+      icon: <Newspaper />,
     },
   ];
   return (
