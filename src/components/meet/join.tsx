@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 export const Join = () => {
   const navigate = useNavigate();
   const createRoom = () => {
-    navigate(`/room/abcd`);
+    navigate(`/exam/1/start`);
   };
- 
 
   return (
     <div>

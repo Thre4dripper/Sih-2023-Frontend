@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import "@tensorflow/tfjs";
 import { twMerge } from "tailwind-merge";
@@ -6,19 +6,20 @@ import { useToast } from "../ui/use-toast";
 import { accuracyThreshold, poseAccuracyThreshold } from "@/constants/utils";
 import * as posenet from "@tensorflow-models/posenet";
 import throttle from "lodash.throttle";
-
+import { useParams } from "react-router-dom";
+import { ws } from "@/lib/socket/ws";
+import { peer } from "@/lib/socket/peer";
 var count_facedetect = 0;
-
 interface IProps {
   className?: string;
 }
 
 export const ObjectDetection = ({ className }: IProps) => {
   const videoRef: any = useRef();
+  const { id } = useParams();
   const { toast } = useToast();
 
   const detectFrame = (video: any, model: any) => {
-    console.log("detectFrame");
     model.detect(video).then((predictions: any) => {
       renderPredictions(predictions);
       // requestAnimationFrame(() => {
@@ -28,7 +29,6 @@ export const ObjectDetection = ({ className }: IProps) => {
   };
 
   const detectPose = (video: any, model: any) => {
-    console.log("detectPose");
     model.estimateSinglePose(video).then((pose: any) => {
       EarsDetect(pose["keypoints"], poseAccuracyThreshold);
       // requestAnimationFrame(() => {
@@ -38,18 +38,37 @@ export const ObjectDetection = ({ className }: IProps) => {
   };
 
   const detectFrameThrottle = useRef(throttle(detectFrame, 1500));
-  const detectPoseThrottle = useRef(throttle(detectPose,1500));
+  const detectPoseThrottle = useRef(throttle(detectPose, 1500));
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       const webCamPromise = navigator.mediaDevices
         .getUserMedia({
-          audio: false,
+          audio: true,
           video: {
             facingMode: "user",
           },
         })
         .then((stream) => {
+          peer.on("call", (call) => {
+            call.answer(stream);
+            call.on("stream", () => {});
+          });
           // window.stream = stream;
+          ws.on("new_student_joined", ({ room }: any) => {
+            room
+              .filter((user: any) => user.type === "proctor")
+              .map((peers: any) => {
+                peer.call(peers.peerId, stream);
+              });
+          });
+          if (id !== undefined && peer.id) {
+            ws.emit("join_exam_room", {
+              roomId: id,
+              peerId: peer.id,
+              type: "student",
+            });
+          }
+
           videoRef.current.srcObject = stream;
           return new Promise((resolve, reject) => {
             videoRef.current.onloadedmetadata = () => {
@@ -73,8 +92,11 @@ export const ObjectDetection = ({ className }: IProps) => {
         .catch((error) => {
           //console.error(error);
         });
+      return () => {
+        ws.off("new_student_joined");
+      };
     }
-  }, []);
+  }, [peer.id, id]);
 
   const renderPredictions = (predictions: any) => {
     predictions.forEach((prediction: any) => {

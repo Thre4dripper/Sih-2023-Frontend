@@ -11,7 +11,6 @@ const ProtectedRoute = ({ children }: TProtectedProps) => {
   const user = useRecoilValue(userState);
   const location = useLocation();
 
-  console.log(location?.pathname?.split("/"));
 
   if (
     location?.pathname?.split("/")[1] !== "" &&
