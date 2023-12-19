@@ -9,6 +9,7 @@ import { useToast } from "../ui/use-toast";
 import { useParams } from "react-router-dom";
 import { ws } from "@/lib/socket/ws";
 import { peer } from "@/lib/socket/peer";
+import { v4 as uuidv4 } from "uuid";
 var count_facedetect = 0;
 interface IProps {
   className?: string;
@@ -159,7 +160,7 @@ export const ObjectDetection = ({ className }: IProps) => {
   const handleObjectDetectedEvent = (activity: string) => {
     ws.emit("object_detected", {
       examId: id,
-      studentId:10,
+      studentId: 10,
       activity: activity,
     });
   };
@@ -194,7 +195,9 @@ export const ObjectDetection = ({ className }: IProps) => {
       ])}
     >
       <video
-        className={"absolute top-0 start-0w-full h-full object-cover"}
+        className={
+          "absolute top-0 start-0w-full h-full object-cover -scale-x-100"
+        }
         autoPlay
         playsInline
         muted
