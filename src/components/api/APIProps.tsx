@@ -9,6 +9,7 @@ export interface CreateStudentProps {
     password: string;
     email: string;
     organizationId: number;
+    aadharNumber: string;
   };
 }
 export interface LoginUserProps {

@@ -9,15 +9,16 @@ import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
 const ws = import.meta.env.VITE_APP_API_HOST;
 
-import Exam from "./pages/Organization/Exam";
-import Room from "./components/meet/room";
+import FacialRegister from "./components/ai-validation/facial-register";
 import { Join } from "./components/meet/join";
+import Room from "./components/meet/room";
+import { useToast } from "./components/ui/use-toast";
+import Exam from "./pages/Organization/Exam";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
 import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
 import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
-import { useToast } from "./components/ui/use-toast";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -25,7 +26,6 @@ function App() {
   useEffect(() => {
     const socket = socketIO(ws);
     console.log("socket connected", socket);
-   
   }, []);
   return (
     <Providers>
@@ -47,6 +47,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/student/facial-register" element={<FacialRegister />} />
           <Route
             path="/exam/:id/system-check"
             element={
