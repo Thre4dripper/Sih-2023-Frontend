@@ -12,12 +12,12 @@ const ProtectedRoute = ({ children }: TProtectedProps) => {
   const location = useLocation();
 
 
-  if (
-    location?.pathname?.split("/")[1] !== "" &&
-    user?.role !== "" &&
-    user?.role !== location?.pathname?.split("/")[1]
-  )
-    return;
+  // if (
+  //   location?.pathname?.split("/")[1] !== "" &&
+  //   user?.role !== "" &&
+  //   user?.role !== location?.pathname?.split("/")[1]
+  // )
+  //   return;
 
   return children;
 };
