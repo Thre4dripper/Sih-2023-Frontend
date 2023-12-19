@@ -17,6 +17,7 @@ import { UserValidation } from "@/lib/validations/user";
 import { isBase64Image } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
+import { useToast } from "../ui/use-toast";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -34,7 +35,7 @@ const OrganizationSignup = ({ setOpen }: Props) => {
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      profilePic: "", 
+      profilePic: "",
       name: "",
       email: "",
       password: "",
@@ -48,12 +49,16 @@ const OrganizationSignup = ({ setOpen }: Props) => {
   }
 
   const createUser = (body: BProps) => {
+    const { toast } = useToast();
     registerAdminFn(
       { body },
       {
         onSuccess: (data: any) => {
           console.log(data);
-
+          toast({
+            title: "Account Created",
+            description: "Your account has been created successfully.",
+          });
           setSearchParams({});
           setOpen(false);
         },

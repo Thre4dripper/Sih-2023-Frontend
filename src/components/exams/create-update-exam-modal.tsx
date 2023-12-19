@@ -288,7 +288,7 @@ const CreateExamModal = ({
                       <FormControl className="">
                         <Input
                           type="number"
-                          placeholder="Duration"
+                          placeholder="Duration in minutes"
                           inputMode="numeric"
                           className=""
                           {...field}
