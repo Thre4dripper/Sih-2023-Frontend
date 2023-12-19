@@ -18,12 +18,14 @@ import {
 //   SelectValue,
 // } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLoginProctorMutation } from "../api";
 import { useForm } from "react-hook-form";
 import { StudentProctorValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/atoms/userState";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -36,6 +38,8 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
     email: false,
     organizationId: false,
   });
+  const setUser = useSetRecoilState(userState);
+  const navigate = useNavigate();
 
   const { mutate: loginProctorFn } = useLoginProctorMutation();
 
@@ -88,8 +92,18 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
             "accessToken",
             data?.data?.accessTokens?.accessToken
           );
+          localStorage.setItem("role", data?.data?.role);
           setSearchParams({});
           setOpen(false);
+          setUser((prev) => {
+            return {
+              accessToken: data?.data?.accessTokens?.accessToken,
+              role: data?.data?.role,
+            };
+          });
+          if (data?.data?.role === "proctor") {
+            navigate("/proctor/1/stream");
+          }
         },
         onError: (err: any) => {
           console.log(err);

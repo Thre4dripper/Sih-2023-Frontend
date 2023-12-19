@@ -52,6 +52,7 @@ const OrganizationLogin = ({ setOpen }: Props) => {
             "accessToken",
             data?.data?.accessTokens?.accessToken
           );
+          localStorage.setItem("role", data?.data?.role);
           setSearchParams({});
           setOpen(false);
           setUser((prev) => {
