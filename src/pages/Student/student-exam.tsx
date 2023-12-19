@@ -13,10 +13,10 @@ import { useEffect } from "react";
 
 const StudentExam = () => {
   // Wiered behaviour on full screen
-  // useStudentExamMonitor();
-  // useDisableRightClick();
-  // useDetectTabChange();
-  // useKeyboardDisable();
+  useStudentExamMonitor();
+  useDisableRightClick();
+  useDetectTabChange();
+  useKeyboardDisable();
 
   return (
     <div

@@ -9,6 +9,7 @@ import { useToast } from "../ui/use-toast";
 import { useParams } from "react-router-dom";
 import { ws } from "@/lib/socket/ws";
 import { peer } from "@/lib/socket/peer";
+import { v4 as uuidv4 } from "uuid";
 var count_facedetect = 0;
 interface IProps {
   className?: string;
@@ -103,6 +104,7 @@ export const ObjectDetection = ({ className }: IProps) => {
       var multiple_face = 0;
       if (prediction.score >= accuracyThreshold) {
         if (prediction.class === "cell phone") {
+          handleObjectDetectedEvent("Cell Phone Detected");
           toast({
             key: "cellphone",
             title: "Cell Phone Detected",
@@ -113,6 +115,7 @@ export const ObjectDetection = ({ className }: IProps) => {
 
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class === "book") {
+          handleObjectDetectedEvent("Book Detected");
           toast({
             key: "book",
             title: "Book Detected",
@@ -122,6 +125,7 @@ export const ObjectDetection = ({ className }: IProps) => {
           });
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class === "laptop") {
+          handleObjectDetectedEvent("Laptop Detected");
           toast({
             title: "Cell Phone Detected",
             description: "Please remove your laptop",
@@ -130,6 +134,7 @@ export const ObjectDetection = ({ className }: IProps) => {
           });
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class !== "person") {
+          handleObjectDetectedEvent(`${prediction.class} Detected`);
           // toast({
           //   title: `${prediction.class} Detected`,
           //   description: "Please remove this object",
@@ -144,11 +149,28 @@ export const ObjectDetection = ({ className }: IProps) => {
     sessionStorage.setItem("count_facedetect", count_facedetect as any);
   };
 
+  const handleLookedAwaySocketEvent = () => {
+    ws.emit("looked_away", {
+      examId: id,
+      studentId: 10,
+      activity: "User Looked Away",
+    });
+  };
+
+  const handleObjectDetectedEvent = (activity: string) => {
+    ws.emit("object_detected", {
+      examId: id,
+      studentId: 10,
+      activity: activity,
+    });
+  };
+
   const EarsDetect = (keypoints: any, minConfidence: any) => {
     const keypointEarR = keypoints[3];
     const keypointEarL = keypoints[4];
 
     if (keypointEarL.score < minConfidence) {
+      handleLookedAwaySocketEvent();
       toast({
         title: "Please look at the Screen",
         variant: "destructive",
@@ -156,6 +178,7 @@ export const ObjectDetection = ({ className }: IProps) => {
       });
     }
     if (keypointEarR.score < minConfidence) {
+      handleLookedAwaySocketEvent();
       toast({
         title: "Please look at the Screen",
         variant: "destructive",
@@ -172,7 +195,9 @@ export const ObjectDetection = ({ className }: IProps) => {
       ])}
     >
       <video
-        className={"absolute top-0 start-0w-full h-full object-cover"}
+        className={
+          "absolute top-0 start-0w-full h-full object-cover -scale-x-100"
+        }
         autoPlay
         playsInline
         muted
