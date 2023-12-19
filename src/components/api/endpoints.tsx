@@ -77,7 +77,7 @@ export const removeProctor = ({ body }: RemoveProctorProps): Promise<any> =>
   });
 
 export const createExam = ({ body }: CreateExamProps): Promise<any> => {
-  return apiClient("/api/v1/create-exam/", {
+  return apiClient("/api/v1/exam/create-exam/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export const createExam = ({ body }: CreateExamProps): Promise<any> => {
 
 export const getAllExams = ({ body }: GetAllProctorsProps): Promise<any> => {
   return apiClient(
-    `/api/v1/get-all-exams?limit=${body?.limit}&offset=${body?.offset}`,
+    `/api/v1/exam/get-all-exams?limit=${body?.limit}&offset=${body?.offset}`,
     {
       method: "GET",
       headers: {
@@ -101,7 +101,7 @@ export const getAllExams = ({ body }: GetAllProctorsProps): Promise<any> => {
 };
 
 export const updateExam = ({ body }: UpdateExamProps): Promise<any> =>
-  apiClient("/api/v1/update-exam/", {
+  apiClient("/api/v1/exam/update-exam/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export const updateExam = ({ body }: UpdateExamProps): Promise<any> =>
   });
 
 export const getExamById = ({ body }: GetExamByIdProps): Promise<any> =>
-  apiClient(`/api/v1/get-exam-by-id?examId=${body?.examId}`, {
+  apiClient(`/api/v1/exam/get-exam-by-id?examId=${body?.examId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -123,12 +123,12 @@ export const getAllExamQuestions = ({
   body,
 }: GetExamAllQuestionsProps): Promise<any> =>
   apiClient(
-    `/api/v1/get-all-exam-questions?limit=${body?.limit}&offset=${body?.offset}&examId=${body?.examId}`,
+    `/api/v1/exam/get-all-exam-questions?limit=${body?.limit}&offset=${body?.offset}&examId=${body?.examId}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     }
   );
@@ -136,11 +136,11 @@ export const getAllExamQuestions = ({
 export const createExamQuestion = ({
   body,
 }: CreateExamQuestionProps): Promise<any> =>
-  apiClient("/api/v1/create-exam-question/", {
+  apiClient("/api/v1/exam/create-exam-question/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -148,11 +148,11 @@ export const createExamQuestion = ({
 export const deleteExamQuestion = ({
   body,
 }: DeleteQuestionProps): Promise<any> =>
-  apiClient("/api/v1/delete-exam-question/", {
+  apiClient("/api/v1/exam/delete-exam-question/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -175,14 +175,26 @@ export const ProctorLogin = ({ body }: LoginStudentProps): Promise<any> =>
     body: JSON.stringify(body),
   });
 
-export const getStudents = ({ body }: GetStudentsProps): Promise<any> =>
+export const getStudents = ({ body }: any): Promise<any> =>
   apiClient(
     `/api/v1/get-all-students?limit=${body?.limit}&offset=${body?.offset}`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    }
+  );
+
+export const getStudentsByExamId = ({ body }: any): Promise<any> =>
+  apiClient(
+    `/api/v1/exam/get-all-students?examId=${body.examId}&limit=${body?.limit}&offset=${body?.offset}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
     }
   );
@@ -192,7 +204,7 @@ export const sendEmail = ({ body }: SendEmailProps): Promise<any> =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
     body: JSON.stringify(body),
   });
@@ -202,7 +214,7 @@ export const sendEmail = ({ body }: SendEmailProps): Promise<any> =>
 //     method: "POST",
 //     headers: {
 //       "Content-Type": "application/json",
-//       Authorization: "Bearer " + localStorage.getItem("OrgToken"),
+//       Authorization: "Bearer " + localStorage.getItem("accessToken"),
 //     },
 //     body: JSON.stringify(body),
 //   });

@@ -1,4 +1,8 @@
-import { useGetStudentsMutation, useSendEmailMutation } from "@/components/api";
+import {
+  useGetAllStudentsByExamIdMutation,
+  useGetStudentsMutation,
+  useSendEmailMutation,
+} from "@/components/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/ui/table/data-table";
@@ -19,8 +23,9 @@ const StudentsTable = ({ examData }: IProps) => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
-  const { mutate: getFilteredStudentsFn } = useGetStudentsMutation();
   const { mutate: sendEmailFn } = useSendEmailMutation();
+  const { mutate: getAllStudentByExamIdFn } =
+    useGetAllStudentsByExamIdMutation();
 
   // const deleteQuestion = (body) => {
   //   deleteQuestionFn(
@@ -56,6 +61,7 @@ const StudentsTable = ({ examData }: IProps) => {
 
   const columnsConfig = TableConfig({
     // deleteQuestion,
+    sendEmail,
   });
 
   interface IProps {
@@ -63,9 +69,14 @@ const StudentsTable = ({ examData }: IProps) => {
     offset: number;
   }
 
-  const getFilteredStudents = (body: IProps) => {
-    getFilteredStudentsFn(
-      { body },
+  const getFilteredStudents = (body: any) => {
+    getAllStudentByExamIdFn(
+      {
+        body: {
+          ...body,
+          examId: examData.id,
+        },
+      },
       {
         onSuccess: (data: any) => {
           setStudentsList(data.data.rows);

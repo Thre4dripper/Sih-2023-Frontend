@@ -12,7 +12,7 @@ export const VideoPlayer: React.FC<{
   return (
     <video
       data-testid="peer-video"
-      className={`${className}`}
+      className={`${className} -scale-x-100`}
       ref={videoRef}
       autoPlay
     />
