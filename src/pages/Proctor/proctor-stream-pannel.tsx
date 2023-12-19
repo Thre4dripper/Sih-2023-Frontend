@@ -11,7 +11,7 @@ const ProctorStreamPanel = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [currentSelectedStream, setCurrentSelectedStream] = useState<
     number | null
-  >(1);
+  >(null);
   //   Priority based search
   const { id } = useParams();
   const [streams, setStreams] = useState<any>([]);
@@ -128,7 +128,7 @@ const ProctorStreamPanel = () => {
         <VideoPlayer
           key={streams[currentSelectedStream! - 1].id}
           stream={streams[currentSelectedStream! - 1].stream}
-          className="rounded-lg h-[32rem]"
+          className="rounded-lg h-[32rem] object-contain aspect-[16/9]"
         />
       ) : null}
       <div></div>
