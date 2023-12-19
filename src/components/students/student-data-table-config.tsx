@@ -12,7 +12,6 @@ import {
 } from "../ui/dropdown-menu";
 import { Checkbox } from "../ui/checkbox";
 
-
 export enum StatusFilter {
   Pending = "pending",
   Approved = "approved",
@@ -34,9 +33,10 @@ export interface IStudent {
 
 interface ITableConfig {
   addStudents?: ([]: String[]) => void;
+  sendEmail?: (students: IStudent[]) => void;
 }
 
-const TableConfig = ({}: ITableConfig) => {
+const TableConfig = ({ sendEmail }: ITableConfig) => {
   const columnsConfig: ColumnDef<IStudent>[] = [
     {
       id: "select",
@@ -100,7 +100,15 @@ const TableConfig = ({}: ITableConfig) => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Send Email</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  console.log(row?.original?.id);
+                  console.log(sendEmail);
+                  row && sendEmail && sendEmail([row.original] as IStudent[]);
+                }}
+              >
+                Send Email
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );

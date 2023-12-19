@@ -71,13 +71,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     ],
   };
 
-  if (location?.pathname?.split("/")[1] === "proctor") {
-    links = proctorLinks;
-  }
-
   return (
     <div className="flex min-h-[100vh]">
-      <LeftSidebar links={links} />
+      <LeftSidebar
+        links={
+          location?.pathname?.split("/")[1] === "proctor" ? proctorLinks : links
+        }
+      />
       <div className="grow">
         <Navbar email={User.email} name={User.name} links={User.links} />
         {children}

@@ -1,4 +1,4 @@
-import { useGetStudentsMutation } from "@/components/api";
+import { useGetStudentsMutation, useSendEmailMutation } from "@/components/api";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +11,7 @@ import { IExam } from "../exams/exam-table-config";
 import { Input } from "../ui/input";
 import DataTable from "../ui/table/data-table";
 import TableConfig, { IStudent } from "./student-data-table-config";
+import { useToast } from "../ui/use-toast";
 
 interface IProps {
   open: boolean;
@@ -36,15 +37,34 @@ const AddStudentModal = ({ open, setOpen, examData, refetchData }: IProps) => {
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
-
+  const { mutate: sendEmailFn } = useSendEmailMutation();
+  const { toast } = useToast();
   const { mutate: getFilteredStudentsFn } = useGetStudentsMutation();
   // const { mutate: addStudentsFn } = useDeleteQuestionMutation();
 
-  const sendEmail = (body: IStudent[]) => {
-    console.log(body);
+  const sendEmail = (students: IStudent[]) => {
+    const body = {
+      examId: examData.id,
+      studentIds: students.map((student) => +student.id),
+    };
+    sendEmailFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+          toast({
+            title: "Email sent successfully",
+          });
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
   };
   const columnsConfig = TableConfig({
     // deleteQuestion,
+    sendEmail,
   });
 
   interface IProps {
@@ -52,9 +72,11 @@ const AddStudentModal = ({ open, setOpen, examData, refetchData }: IProps) => {
     offset: number;
   }
 
-  const getFilteredStudents = (body: IProps) => {
+  const getFilteredStudents = (body: any) => {
     getFilteredStudentsFn(
-      { body },
+      {
+        body,
+      },
       {
         onSuccess: (data: any) => {
           setStudentsList(data.data.rows);
