@@ -18,6 +18,7 @@ import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
 import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
 import { useToast } from "./components/ui/use-toast";
+import OrgProfile from "./pages/Organization/profile";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -25,7 +26,6 @@ function App() {
   useEffect(() => {
     const socket = socketIO(ws);
     console.log("socket connected", socket);
-   
   }, []);
   return (
     <Providers>
@@ -109,6 +109,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ViewProctors />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organization/account/profile"
+            element={
+              <ProtectedRoute>
+                <OrgProfile />
               </ProtectedRoute>
             }
           />
