@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 
 export const VideoPlayer: React.FC<{
   stream?: MediaStream;
-  classNames: string;
-}> = ({ stream, classNames }) => {
+  className: string;
+}> = ({ stream, className }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -12,10 +12,9 @@ export const VideoPlayer: React.FC<{
   return (
     <video
       data-testid="peer-video"
-      className={`${classNames}`}
+      className={`${className}`}
       ref={videoRef}
       autoPlay
-      muted={true}
     />
   );
 };

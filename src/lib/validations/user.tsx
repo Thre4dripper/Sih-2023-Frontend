@@ -16,6 +16,38 @@ export const UserValidation = z.object({
     .max(15, { message: "username cannot be longer than 15 characters." }),
 });
 
+export const EditProfileValidation = z.object({
+  // profilePic: z.string().url().min(1),
+  name: z
+    .string()
+    .min(3, { message: "Minimum 3 characters." })
+    .max(30, { message: "Name cannot be longer than 30 characters." }),
+  email: z
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .email("This is not a valid email."),
+  address: z
+    .string()
+    .min(3, { message: "Minimum 5 characters." })
+    .max(30, { message: "Address cannot be longer than 100 characters." }),
+  zipcode: z
+    .string()
+    .min(3, { message: "Minimum 5 characters." })
+    .max(30, { message: "Name cannot be longer than 10 characters." }),
+  city: z
+    .string()
+    .min(3, { message: "Minimum 5 characters." })
+    .max(30, { message: "Name cannot be longer than 30 characters." }),
+  state: z
+    .string()
+    .min(3, { message: "Minimum 5 characters." })
+    .max(30, { message: "Name cannot be longer than 30 characters." }),
+  country: z
+    .string()
+    .min(3, { message: "Minimum 5 characters." })
+    .max(30, { message: "Name cannot be longer than 30 characters." }),
+});
+
 export const StudentRegisterValidation = z.object({
   profilePic: z.string().url().min(1),
   name: z
