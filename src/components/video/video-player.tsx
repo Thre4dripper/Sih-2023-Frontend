@@ -15,7 +15,6 @@ export const VideoPlayer: React.FC<{
       className={`${classNames}`}
       ref={videoRef}
       autoPlay
-      muted={true}
     />
   );
 };

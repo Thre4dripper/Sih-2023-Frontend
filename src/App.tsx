@@ -7,14 +7,13 @@ import socketIO from "socket.io-client";
 import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
 import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
-const ws = import.meta.env.VITE_APP_API_HOST;
-
+import { ws } from "./lib/socket/ws";
 import Exam from "./pages/Organization/Exam";
 import Room from "./components/meet/room";
 import { Join } from "./components/meet/join";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
-import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
+import ProctorStreamPanel from "./pages/Proctor/proctor-stream-pannel";
 import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
 import { useToast } from "./components/ui/use-toast";
@@ -25,10 +24,10 @@ import Results from "./pages/Student/results";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
-  const { toast } = useToast();
   useEffect(() => {
-    const socket = socketIO(ws);
-    console.log("socket connected", socket);
+    ws.on("connect", () => {
+      console.log("connected");
+    });
   }, []);
   return (
     <Providers>
@@ -46,7 +45,7 @@ function App() {
             path="/proctor/:id/stream"
             element={
               <ProtectedRoute>
-                <ProctorStreamPannel />
+                <ProctorStreamPanel />
               </ProtectedRoute>
             }
           />
