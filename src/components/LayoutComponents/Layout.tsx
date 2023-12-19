@@ -49,7 +49,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     links: [
       {
         title: "Account",
-        target: `/${location?.pathname?.split("/")[1]}/account/profile`,
+        // target: `/${location?.pathname?.split("/")[1]}/account/profile`,
+        target: "/student/account/profile",
         icon: <User2Icon />,
       },
     ],

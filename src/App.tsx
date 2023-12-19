@@ -18,7 +18,8 @@ import ProctorStreamPannel from "./pages/Proctor/proctor-stream-pannel";
 import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
 import { useToast } from "./components/ui/use-toast";
-import OrgProfile from "./pages/Organization/profile";
+// import OrgProfile from "./pages/Organization/profile";
+import StdProfile from "./pages/Student/profile";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -113,10 +114,10 @@ function App() {
             }
           />
           <Route
-            path="/organization/account/profile"
+            path="/student/account/profile"
             element={
               <ProtectedRoute>
-                <OrgProfile />
+                <StdProfile />
               </ProtectedRoute>
             }
           />
