@@ -22,6 +22,7 @@ import StdProfile from "./pages/Student/profile";
 import AllStudentExams from "./pages/Student/allexams";
 import Results from "./pages/Student/results";
 import FacialRegister from "./components/ai-validation/facial-register";
+import ProctorAllExams from "./pages/Proctor/viewExams";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -137,6 +138,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Results />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/proctor/activeExams"
+            element={
+              <ProtectedRoute>
+                <ProctorAllExams />
               </ProtectedRoute>
             }
           />

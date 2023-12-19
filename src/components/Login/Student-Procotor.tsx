@@ -102,7 +102,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
             };
           });
           if (data?.data?.role === "proctor") {
-            navigate("/proctor/1/stream");
+            navigate("/proctor/activeExams");
           }
         },
         onError: (err: any) => {
@@ -146,7 +146,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
     });
     // }
   };
-  
+
   return (
     <Form {...form}>
       <form
