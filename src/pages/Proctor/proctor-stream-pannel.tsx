@@ -138,7 +138,7 @@ const ProctorStreamPanel = () => {
       <div className="grid grid-cols-1 gap-6 mx-5 mt-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {streams?.map((stream: any, index: number) => {
           return (
-            // <VideoPlayer key={stream.id} classNames="" stream={stream.stream} />
+            <VideoPlayer key={stream.id} classNames="" stream={stream.stream} />
             // <VideoStream
             //   index={index}
             //   key={stream.stream.id}
