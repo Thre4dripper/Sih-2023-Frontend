@@ -21,6 +21,7 @@ import { useToast } from "./components/ui/use-toast";
 // import OrgProfile from "./pages/Organization/profile";
 import StdProfile from "./pages/Student/profile";
 import AllStudentExams from "./pages/Student/allexams";
+import Results from "./pages/Student/results";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -127,6 +128,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AllStudentExams />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/student/account/results"
+            element={
+              <ProtectedRoute>
+                <Results />
               </ProtectedRoute>
             }
           />
