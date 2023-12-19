@@ -86,30 +86,63 @@ const features = [
   },
   {
     name: "Cheating Prevention",
-    description:
-    (
+    description: (
       <>
-       This feature employs advanced technologies such as <strong>eye tracking, facial recognition, and behavior detection</strong> to effectively identify and flag instances of cheating. Facial recognition algorithms verify the identity of the test-taker and behavior detection analyzes actions and gestures, promptly <strong>flagging any irregularities</strong>.
-       <br></br>Additionally, the administrators can view and <strong>flag each candidate manually</strong> via live proctoring stream upholding the credibility and fairness of online proctored examinations.
+        This feature employs advanced technologies such as{" "}
+        <strong>
+          eye tracking, facial recognition, and behavior detection
+        </strong>{" "}
+        to effectively identify and flag instances of cheating. Facial
+        recognition algorithms verify the identity of the test-taker and
+        behavior detection analyzes actions and gestures, promptly{" "}
+        <strong>flagging any irregularities</strong>.<br></br>Additionally, the
+        administrators can view and{" "}
+        <strong>flag each candidate manually</strong> via live proctoring stream
+        upholding the credibility and fairness of online proctored examinations.
       </>
     ),
     icon: Ban,
   },
-  {
-    name: "Technical Support",
-    description: "YooMAloo Has to add respective icons",
-    icon: UserCog2Icon,
-  },
+  // {
+  //   name: "Technical Support",
+  //   description: (
+  //     <>
+  //       The Technical Support feature addresses the critical need for{" "}
+  //       <strong>immediate assistance</strong> in handling both{" "}
+  //       <strong>technical and implementation issues</strong> ensuring the
+  //       absence of any disruptions caused by technical glitches or
+  //       implementation challenges. It provides{" "}
+  //       <strong>virtual assistance</strong> in real-time, offering prompt
+  //       solutions to both candidates and administrators facing any technical
+  //       impediments during the examination process.
+  //     </>
+  //   ),
+  //   icon: UserCog2Icon,
+  // },
   {
     name: "Secure Environment",
-    description: "YooMAloo Has to add respective icons",
+    description: (
+      <>
+        Establishing a secure environment and disabling access to unauthorized
+        resources throughout the examination duration is there to{" "}
+        <strong>maintain the security</strong> and{" "}
+        <strong>avoid data breaching</strong> by external affairs. The secure
+        environment possess the capability to{" "}
+        <strong>
+          restrict the use of other applications, block access to external
+          websites, and prevent the utilization of external devices
+        </strong>
+        , ensuring that candidates cannot seek unfair advantages or engage in
+        dishonest practices.
+      </>
+    ),
     icon: ShieldCheck,
   },
-  {
-    name: "Feedback Mechanism",
-    description: "YooMAloo Has to add respective icons",
-    icon: LucideMessagesSquare,
-  },
+  // {
+  //   name: "Feedback Mechanism",
+  //   description: "YooMAloo Has to add respective icons",
+  //   icon: LucideMessagesSquare,
+  // },
 ];
 
 export const FeatureSection = () => {
@@ -120,7 +153,7 @@ export const FeatureSection = () => {
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Ultimate guardianship of the MAI realm.
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg leading-8 text-gray-600" id = "learn_more">
             MedusaAI(MAI) provides seamless proctored examination experience for
             organizers and candidates altogether. With vast features in the hand
             of organization we maintain high standards of integrity fortified by
@@ -132,7 +165,7 @@ export const FeatureSection = () => {
             </i>
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl" >
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
             {features.map((feature) => (
               <div key={feature.name} className="relative pl-16 ">
