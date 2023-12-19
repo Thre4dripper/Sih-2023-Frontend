@@ -1,6 +1,8 @@
 import {
   BookOpenCheck,
   BookPlus,
+  CircleEllipsis,
+  Layers,
   LayoutDashboard,
   User2Icon,
   Users,
@@ -43,7 +45,12 @@ const proctorLinks = [
   {
     title: "Active Exams",
     target: "/proctor/activeExams",
-    icon: <LayoutDashboard />,
+    icon: <Layers />,
+  },
+  {
+    title: "Pending Approvals",
+    target: "/proctor/studentapprovals",
+    icon: <CircleEllipsis />,
   },
 ];
 
