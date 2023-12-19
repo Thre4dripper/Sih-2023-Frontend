@@ -1,11 +1,11 @@
+import { accuracyThreshold, poseAccuracyThreshold } from "@/constants/utils";
 import { useEffect, useRef, useState } from "react";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs";
+import throttle from "lodash.throttle";
 import { twMerge } from "tailwind-merge";
 import { useToast } from "../ui/use-toast";
-import { accuracyThreshold, poseAccuracyThreshold } from "@/constants/utils";
-import * as posenet from "@tensorflow-models/posenet";
-import throttle from "lodash.throttle";
 import { useParams } from "react-router-dom";
 import { ws } from "@/lib/socket/ws";
 import { peer } from "@/lib/socket/peer";
@@ -37,7 +37,7 @@ export const ObjectDetection = ({ className }: IProps) => {
     });
   };
 
-  const detectFrameThrottle = useRef(throttle(detectFrame, 1500));
+  const detectFrameThrottle = useRef(throttle(detectFrame, 500));
   const detectPoseThrottle = useRef(throttle(detectPose, 1500));
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -150,14 +150,14 @@ export const ObjectDetection = ({ className }: IProps) => {
 
     if (keypointEarL.score < minConfidence) {
       toast({
-        title: "You looked away from the Screen (To the Right)",
+        title: "Please look at the Screen",
         variant: "destructive",
         duration: 1000,
       });
     }
     if (keypointEarR.score < minConfidence) {
       toast({
-        title: "You looked away from the Screen (To the Left)",
+        title: "Please look at the Screen",
         variant: "destructive",
         duration: 1000,
       });

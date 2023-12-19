@@ -8,9 +8,9 @@ import { FacialAuthRegister } from "./components/ai-validation/facial-auth-regis
 import { LandingPage } from "./pages/Landing";
 import ViewProctors from "./pages/Organization/ViewProctors";
 import { ws } from "./lib/socket/ws";
-import Exam from "./pages/Organization/Exam";
-import Room from "./components/meet/room";
 import { Join } from "./components/meet/join";
+import Room from "./components/meet/room";
+import Exam from "./pages/Organization/Exam";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
 import ProctorStreamPanel from "./pages/Proctor/proctor-stream-pannel";
@@ -21,6 +21,7 @@ import { useToast } from "./components/ui/use-toast";
 import StdProfile from "./pages/Student/profile";
 import AllStudentExams from "./pages/Student/allexams";
 import Results from "./pages/Student/results";
+import FacialRegister from "./components/ai-validation/facial-register";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -49,6 +50,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/student/facial-register" element={<FacialRegister />} />
           <Route
             path="/exam/:id/system-check"
             element={
