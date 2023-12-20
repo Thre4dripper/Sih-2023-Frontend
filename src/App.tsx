@@ -3,27 +3,26 @@ import { Providers } from "@/lib/providers/providers";
 import Organization from "@/pages/Organization/OrganizationHome";
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import socketIO from "socket.io-client";
 import { FacialAuthRegister } from "./components/ai-validation/facial-auth-register";
-import { LandingPage } from "./pages/Landing";
-import ViewProctors from "./pages/Organization/ViewProctors";
-import { ws } from "./lib/socket/ws";
 import { Join } from "./components/meet/join";
 import Room from "./components/meet/room";
+import { ws } from "./lib/socket/ws";
+import { LandingPage } from "./pages/Landing";
 import Exam from "./pages/Organization/Exam";
+import ViewProctors from "./pages/Organization/ViewProctors";
 import Questions from "./pages/Organization/questions";
 import Students from "./pages/Organization/students";
 import ProctorStreamPanel from "./pages/Proctor/proctor-stream-pannel";
 import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
-import { useToast } from "./components/ui/use-toast";
 // import OrgProfile from "./pages/Organization/profile";
-import StdProfile from "./pages/Student/profile";
-import AllStudentExams from "./pages/Student/allexams";
-import Results from "./pages/Student/results";
 import FacialRegister from "./components/ai-validation/facial-register";
-import ProctorAllExams from "./pages/Proctor/viewExams";
 import PendingApprovals from "./pages/Proctor/pendingApprovals";
+import ProctorAllExams from "./pages/Proctor/viewExams";
+import AllStudentExams from "./pages/Student/allexams";
+import StdProfile from "./pages/Student/profile";
+import Results from "./pages/Student/results";
+import StudentVerify from "./pages/Student/student-verify";
 
 // TODO: Routes Seperated into different files according to the access level
 function App() {
@@ -54,7 +53,15 @@ function App() {
           />
           <Route path="/student/facial-register" element={<FacialRegister />} />
           <Route
-            path="/exam/:id/system-check"
+            path="/student/exam/:id/verify"
+            element={
+              <ProtectedRoute>
+                <StudentVerify />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/student/exam/:id/system-check"
             element={
               <ProtectedRoute>
                 <SystemPermissionCheck />
@@ -62,7 +69,7 @@ function App() {
             }
           />
           <Route
-            path="/exam/:id/start"
+            path="/student/exam/:id/start"
             element={
               <ProtectedRoute>
                 <StudentExam />

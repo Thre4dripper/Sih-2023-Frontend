@@ -36,7 +36,7 @@ const UserLogin = () => {
     >
       <DialogContent className="min-h-[60vh]">
         <DialogHeader>
-          <DialogTitle className="text-center font-semibold text-2xl">
+          <DialogTitle className="text-2xl font-semibold text-center">
             Login
           </DialogTitle>
           {/* <DialogDescription>Enter Account Credentials.</DialogDescription> */}
@@ -44,7 +44,8 @@ const UserLogin = () => {
         <Tabs defaultValue="organization" className="">
           <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="organization">Organization</TabsTrigger>
-            <TabsTrigger value="proctor">Proctor</TabsTrigger>
+            <TabsTrigger value="proctor">Proctor / Student</TabsTrigger>
+            {/* <TabsTrigger value="proctor">Student</TabsTrigger> */}
           </TabsList>
           <TabsContent value="organization">
             <OrganizationLogin setOpen={setOpen} />

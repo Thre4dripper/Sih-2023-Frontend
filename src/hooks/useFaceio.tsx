@@ -38,6 +38,7 @@ export const useFaceio = () => {
       );
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 

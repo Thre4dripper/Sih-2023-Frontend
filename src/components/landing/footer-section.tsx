@@ -1,11 +1,13 @@
 const navigation = {
   main: [
     { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
+    { name: "Contact", href: "#" },
     { name: "Accessibility", href: "#" },
-    { name: "Partners", href: "#" },
+    // { name: "Blog", href: "#" },
+    // { name: "Jobs", href: "#" },
+    // { name: "Press", href: "#" },
+    // { name: "Accessibility", href: "#" },
+    // { name: "Partners", href: "#" },
   ],
   social: [
     {
@@ -110,7 +112,7 @@ export const FooterSection = () => {
           ))}
         </div>
         <p className="mt-10 text-center text-xs leading-5 text-gray-500">
-          &copy; 2020 Your Company, Inc. All rights reserved.
+          &copy; 2023 Medusa AI, Inc. All rights reserved.
         </p>
       </div>
     </footer>

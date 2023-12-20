@@ -8,8 +8,11 @@ export interface CreateStudentProps {
     name: string;
     password: string;
     email: string;
-    organizationId: number;
+    organizationId: string;
     aadharNumber: string;
+    panNumber: string;
+    aadharPic: string;
+    panPic: string;
   };
 }
 export interface LoginUserProps {
@@ -17,7 +20,7 @@ export interface LoginUserProps {
 }
 
 export interface LoginStudentProps {
-  body: { email: string; password: string; organizationId: number };
+  body: { email: string; password: string; organizationId: string };
 }
 
 export interface CreateProctorProps {

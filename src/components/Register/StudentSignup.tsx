@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { useCreateStudentMutation } from "../api";
+import { useToast } from "../ui/use-toast";
 import useCloudinary from "./useCloudinary";
 
 interface Props {
@@ -24,7 +25,7 @@ interface Props {
 
 const StudentSignup = ({ setOpen }: Props) => {
   const navigate = useNavigate();
-  const [files, setFiles] = useState<File[]>([]);
+  const { toast } = useToast();
   const { mutate: registerStudentFn } = useCreateStudentMutation();
   const { sendRequest: imageUpload } = useCloudinary();
   let [searchParams, setSearchParams] = useSearchParams();
@@ -43,15 +44,21 @@ const StudentSignup = ({ setOpen }: Props) => {
       organizationId: "",
       profilePic: "",
       aadharNumber: "",
+      aadharPic: "",
+      panNumber: "",
+      panPic: "",
     },
   });
   interface BProps {
     profilePic: string;
     aadharNumber: string;
+    aadharPic: string;
+    panNumber: string;
+    panPic: string;
     name: string;
     email: string;
     password: string;
-    organizationId: number;
+    organizationId: string;
   }
 
   const createUser = (body: BProps) => {
@@ -80,14 +87,14 @@ const StudentSignup = ({ setOpen }: Props) => {
                 email: true,
               };
             });
-          } else if (err?.error === "Invalid Aadhar number") {
-            setServerErrors((prev) => {
-              return {
-                ...prev,
-                aadharNumber: true,
-              };
-            });
           }
+          toast({
+            key: "book",
+            title: err.error,
+            description: "Please enter valid credentials!",
+            variant: "destructive",
+            duration: 1500,
+          });
         },
       }
     );
@@ -98,34 +105,77 @@ const StudentSignup = ({ setOpen }: Props) => {
   ) => {
     console.log(values);
 
-    const blob = values?.profilePic;
+    const profilePicBlob = values?.profilePic;
+    const aadharPicBlob = values?.aadharPic;
+    const panPicBlob = values?.panPic;
 
-    console.log(blob);
+    const hasProfilePicChanged = isBase64Image(profilePicBlob);
+    const hasAadharPicChanged = isBase64Image(aadharPicBlob);
+    const hasPanPicChanged = isBase64Image(panPicBlob);
 
-    const hasImageChanged = isBase64Image(blob);
+    if (hasAadharPicChanged && hasPanPicChanged && hasProfilePicChanged) {
+      const profilePicData = new FormData();
+      profilePicData.append("file", profilePicBlob);
+      profilePicData.append("upload_preset", "blogapppreset");
 
-    if (hasImageChanged) {
-      const data = new FormData();
-      data.append("file", blob);
-      data.append("upload_preset", "blogapppreset");
+      const aadharPicData = new FormData();
+      aadharPicData.append("file", aadharPicBlob);
+      aadharPicData.append("upload_preset", "blogapppreset");
 
+      const panPicData = new FormData();
+      panPicData.append("file", panPicBlob);
+      panPicData.append("upload_preset", "blogapppreset");
+      
       imageUpload(
         {
           url: "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
           method: "POST",
-          body: data,
+          body: profilePicData,
         },
         (res) => {
-          console.log(res);
+          const profilePic = res;
           try {
-            createUser({
-              name: values?.name,
-              email: values?.email,
-              password: values?.password,
-              profilePic: res,
-              organizationId: Number(values?.organizationId),
-              aadharNumber: values?.aadharNumber,
-            });
+            imageUpload(
+              {
+                url: "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
+                method: "POST",
+                body: aadharPicData,
+              },
+              (res) => {
+                const aadharPic = res;
+                try {
+                  imageUpload(
+                    {
+                      url: "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
+                      method: "POST",
+                      body: panPicData,
+                    },
+                    (res) => {
+                      const panPic = res;
+                      createUser({
+                        name: values?.name,
+                        email: values?.email,
+                        password: values?.password,
+                        profilePic,
+                        organizationId: values?.organizationId,
+                        aadharNumber: values?.aadharNumber,
+                        panNumber: values?.panNumber,
+                        aadharPic,
+                        panPic,
+                      });
+                    },
+                    (err) => {
+                      console.log(err);
+                    }
+                  );
+                } catch (err) {
+                  console.log(err);
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
           } catch (err) {
             console.log(err);
           }
@@ -139,14 +189,15 @@ const StudentSignup = ({ setOpen }: Props) => {
 
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: string) => void
+    fieldChange: (value: string) => void,
+    picType: "aadharPic" | "panPic" | "profilePic"
   ) => {
     e.preventDefault();
     const fileReader = new FileReader();
     if (e?.target?.files && e?.target?.files?.length > 0) {
       const file = e?.target?.files[0];
 
-      setFiles(Array.from(e?.target?.files));
+      // setFiles(Array.from(e?.target?.files));
 
       if (!file?.type?.includes("image")) return;
 
@@ -198,7 +249,9 @@ const StudentSignup = ({ setOpen }: Props) => {
                     accept="image/*"
                     placeholder="Upload a photo"
                     className=""
-                    onChange={(e) => handleImage(e, field?.onChange)}
+                    onChange={(e) =>
+                      handleImage(e, field?.onChange, "profilePic")
+                    }
                   />
                 </FormControl>
                 {form?.formState?.errors?.profilePic && (
@@ -238,6 +291,49 @@ const StudentSignup = ({ setOpen }: Props) => {
         />
         <FormField
           control={form.control}
+          name="aadharPic"
+          render={({ field }) => (
+            <FormItem className="grid items-center grid-cols-4 gap-4">
+              <FormLabel className="">
+                {field?.value ? (
+                  <img
+                    src={field?.value}
+                    alt="profile_image"
+                    width={96}
+                    height={96}
+                    style={{ width: 64, height: 64, borderRadius: "100%" }}
+                    className="object-contain rounded-full"
+                  />
+                ) : (
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbHvZ2JK-oa1Hcq0hCVxF-PDwfMQY09ocJ3A&usqp=CAU"
+                    alt="profile_image"
+                    width={96}
+                    height={96}
+                    style={{ width: 64, height: 64, borderRadius: "100%" }}
+                    className="object-contain"
+                  />
+                )}
+              </FormLabel>
+              <div className="col-span-3">
+                <FormControl className="flex-1 col-span-3 text-gray-400 text-base-semibold">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    placeholder="Upload a photo"
+                    className=""
+                    onChange={(e) =>
+                      handleImage(e, field?.onChange, "aadharPic")
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="aadharNumber"
           render={({ field }) => (
             <FormItem className="grid items-center w-full grid-cols-4">
@@ -257,6 +353,71 @@ const StudentSignup = ({ setOpen }: Props) => {
                 {serverErrors.aadharNumber && (
                   <p className="text-destructive">Invalid Adhaar Number!</p>
                 )}
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="panPic"
+          render={({ field }) => (
+            <FormItem className="grid items-center grid-cols-4 gap-4">
+              <FormLabel className="">
+                {field?.value ? (
+                  <img
+                    src={field?.value}
+                    alt="pan_image"
+                    width={96}
+                    height={96}
+                    style={{ width: 64, height: 64, borderRadius: "100%" }}
+                    className="object-contain rounded-full"
+                  />
+                ) : (
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbHvZ2JK-oa1Hcq0hCVxF-PDwfMQY09ocJ3A&usqp=CAU"
+                    alt="pan_image"
+                    width={96}
+                    height={96}
+                    style={{ width: 64, height: 64, borderRadius: "100%" }}
+                    className="object-contain"
+                  />
+                )}
+              </FormLabel>
+              <div className="col-span-3">
+                <FormControl className="flex-1 col-span-3 text-gray-400 text-base-semibold">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    placeholder="Upload a photo"
+                    className=""
+                    onChange={(e) =>
+                      handleImage(e, field?.onChange, "panPic")
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </div>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="panNumber"
+          render={({ field }) => (
+            <FormItem className="grid items-center w-full grid-cols-4">
+              <FormLabel className="text-gray-500 text-base-semibold text-light-2">
+                Pan Number
+              </FormLabel>
+              <div className="col-span-3">
+                <FormControl className="col-span-3">
+                  <Input
+                    placeholder="Enter your pan"
+                    type="text"
+                    className=""
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
               </div>
             </FormItem>
           )}

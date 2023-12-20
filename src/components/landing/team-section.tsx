@@ -1,6 +1,6 @@
 const people = [
   {
-    name: "Noob",
+    name: "Aiman",
     role: "Developer",
     imageUrl:
       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
@@ -8,7 +8,7 @@ const people = [
     linkedinUrl: "#",
   },
   {
-    name: "Lucifer",
+    name: "Anzal",
     role: "Developer",
     imageUrl:
       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
@@ -16,15 +16,7 @@ const people = [
     linkedinUrl: "#",
   },
   {
-    name: "Threadripper",
-    role: "Developer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-    twitterUrl: "#",
-    linkedinUrl: "#",
-  },
-  {
-    name: "Four",
+    name: "Bilal",
     role: "Developer",
     imageUrl:
       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
@@ -40,7 +32,15 @@ const people = [
     linkedinUrl: "#",
   },
   {
-    name: "Bilal",
+    name: "Ijlal",
+    role: "Developer",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
+    twitterUrl: "#",
+    linkedinUrl: "#",
+  },
+  {
+    name: "Vicky",
     role: "Developer",
     imageUrl:
       "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",

@@ -2,7 +2,11 @@ import { CheckCircle2, LucideAudioLines } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 
-const AudioCheck: React.FC = () => {
+interface IProps {
+  setPermissionCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const AudioCheck = ({ setPermissionCount }: IProps) => {
   const [audioPermission, setAudioPermission] = React.useState<boolean | null>(
     false
   );
@@ -10,6 +14,7 @@ const AudioCheck: React.FC = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setAudioPermission(true);
+      setPermissionCount((prevState) => prevState + 1);
       stream.getTracks().forEach((track) => track.stop()); // Stop the stream after you're done with it
     } catch (err) {
       setAudioPermission(false);

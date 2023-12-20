@@ -2,7 +2,11 @@ import { CheckCircle2, MapPin } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 
-const LocationPermission: React.FC = () => {
+interface IProps {
+  setPermissionCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const LocationPermission = ({ setPermissionCount }: IProps) => {
   const [locationPermission, setLocationPermission] = React.useState<
     boolean | null
   >(null);
@@ -17,6 +21,7 @@ const LocationPermission: React.FC = () => {
         console.error("Location permission denied");
       }
     );
+    setPermissionCount((prevState) => prevState + 1);
     setLocationPermission(true);
   };
   //   useEffect(() => {
@@ -26,7 +31,7 @@ const LocationPermission: React.FC = () => {
   return (
     <div className="flex items-center justify-between gap-8 p-4 border rounded-lg border-primary">
       <div className="flex items-center gap-2">
-        <MapPin  className="text-primary" />
+        <MapPin className="text-primary" />
         <h3 className="text-lg ">Location Permission</h3>
       </div>
       {locationPermission === true ? (
