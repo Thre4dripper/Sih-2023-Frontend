@@ -111,14 +111,8 @@ export const ObjectDetection = ({ className }: IProps) => {
         });
       const objectModelPromise = cocoSsd.load();
       const poseNetModelPromise = posenet.load();
-      const handPoseModelPromise = handpose.load();
-
-      Promise.all([
-        objectModelPromise,
-        poseNetModelPromise,
-        handPoseModelPromise,
-        webCamPromise,
-      ])
+      
+      Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
         .then((values) => {
           setInterval(() => {
             detectFrameThrottle.current(videoRef.current, values[0]);
