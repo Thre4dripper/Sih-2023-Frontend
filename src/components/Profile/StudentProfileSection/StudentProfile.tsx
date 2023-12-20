@@ -67,37 +67,39 @@ const StudentProfile = () => {
       <div className="flex justify-between w-full mb-8">
         <h1 className="text-3xl font-semibold text-slate-500">My Profile</h1>
       </div>
-      <div className="">
-        <div className="flex items-center justify-center gap-6">
-          <h1>
-            Name: <span>{profileData?.name}</span>
-          </h1>
-          <img src={profileData?.profilePic} className="h-32" />
-        </div>
+      {profileData && (
+        <div className="">
+          <div className="flex items-center justify-center gap-6">
+            <h1>
+              Name: <span>{profileData?.name}</span>
+            </h1>
+            <img src={profileData?.profilePic} className="h-32" />
+          </div>
 
-        <div className="flex items-center justify-center gap-6 mt-8">
-          <h1 className="mt-8">
-            Adhaar Number : <span>{profileData?.aadharNumber}</span>
-          </h1>
-          <img src={profileData?.aadharPic} className="h-32" />
-        </div>
+          <div className="flex items-center justify-center gap-6 mt-8">
+            <h1 className="mt-8">
+              Adhaar Number : <span>{profileData?.aadharNumber}</span>
+            </h1>
+            <img src={profileData?.aadharPic} className="h-32" />
+          </div>
 
-        <div className="flex items-center justify-center gap-6 mt-8">
-          <h1 className="mt-8">
-            Pan Number : <span>{profileData?.panNumber}</span>
-          </h1>
-          <img src={profileData?.panPic} className="h-32" />
-        </div>
+          <div className="flex items-center justify-center gap-6 mt-8">
+            <h1 className="mt-8">
+              Pan Number : <span>{profileData?.panNumber}</span>
+            </h1>
+            <img src={profileData?.panPic} className="h-32" />
+          </div>
 
-        <div className="flex flex-col items-center justify-center gap-6 mt-8">
-          <h1 className="mt-8">
-            Email: <span>{profileData?.email}</span>
-          </h1>
-          <h1>
-            Organization: <span>{profileData?.organizationId}</span>
-          </h1>
+          <div className="flex flex-col items-center justify-center gap-6 mt-8">
+            <h1 className="mt-8">
+              Email: <span>{profileData?.email}</span>
+            </h1>
+            <h1>
+              Organization: <span>{profileData?.organizationId}</span>
+            </h1>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
