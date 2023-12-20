@@ -79,8 +79,17 @@ const StudentsTable = ({ examData }: IProps) => {
       },
       {
         onSuccess: (data: any) => {
-          setStudentsList(data.data.rows);
-          setTotalStudents(data?.data?.count);
+          console.log(data);
+          setStudentsList(
+            // spread the internal student object
+            data.data.map((student: any) => {
+              return {
+                ...student,
+                ...student.student,
+              };
+            })
+          );
+          setTotalStudents(data?.data?.length);
         },
         onError: (err: any) => {
           console.log(err);
