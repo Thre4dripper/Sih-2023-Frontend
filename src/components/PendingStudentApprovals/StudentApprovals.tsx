@@ -5,13 +5,13 @@ import {
 } from "@/components/api";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/ui/table/data-table";
+import { showToast } from "@/lib/showToast";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IExam } from "../exams/exam-table-config";
 import { IStudent } from "../students/student-data-table-config";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import TableConfig from "./approvalsTableConfig";
-import { toast } from "react-hot-toast";
 
 interface IProps {
   examData: IExam;
@@ -37,7 +37,7 @@ const StudentApprovals = () => {
       { body: { studentId } },
       {
         onSuccess: (data: any) => {
-          toast("Student has been verified successfully","success");
+          showToast("Student has been verified successfully", "success");
 
           refetchData();
         },
@@ -55,11 +55,7 @@ const StudentApprovals = () => {
         onSuccess: (data: any) => {
           setLogData(data?.data?.[0].activity);
           setOpen(true);
-          toast({
-            title: "Logs Fetched",
-            description: "Logs have been fetched successfully",
-            duration: 5000,
-          });
+          showToast("Logs have been fetched successfully", "success");
         },
         onError: (err: any) => {
           console.log(err);
