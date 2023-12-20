@@ -1,22 +1,17 @@
 import {
-  useGetAllStudentsByExamIdMutation,
   useGetStudentsMutation,
-  useSendEmailMutation,
   useStudentLogsMutation,
   useVerifyStudentMutation,
 } from "@/components/api";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/ui/table/data-table";
-import { PlusCircleIcon, Search } from "lucide-react";
+import { showToast } from "@/lib/showToast";
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IExam } from "../exams/exam-table-config";
 import { IStudent } from "../students/student-data-table-config";
-import TableConfig from "./approvalsTableConfig";
-import { useToast } from "../ui/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import { set } from "react-hook-form";
-import { DialogDescription } from "@radix-ui/react-dialog";
+import TableConfig from "./approvalsTableConfig";
 
 interface IProps {
   examData: IExam;
@@ -30,7 +25,6 @@ const StudentApprovals = () => {
   const { mutate: verifyStudentFn } = useVerifyStudentMutation();
   const { mutate: getAllStudents } = useGetStudentsMutation();
   const { mutate: viewLogsFn } = useStudentLogsMutation();
-  const { toast } = useToast();
   const [open, setOpen] = useState<boolean>(false);
   const [logData, setLogData] = useState<any>();
 
@@ -43,11 +37,7 @@ const StudentApprovals = () => {
       { body: { studentId } },
       {
         onSuccess: (data: any) => {
-          toast({
-            title: "Student Verified",
-            description: "Student has been verified successfully",
-            duration: 5000,
-          });
+          showToast("Student has been verified successfully", "success");
 
           refetchData();
         },
@@ -65,11 +55,7 @@ const StudentApprovals = () => {
         onSuccess: (data: any) => {
           setLogData(data?.data?.[0].activity);
           setOpen(true);
-          toast({
-            title: "Logs Fetched",
-            description: "Logs have been fetched successfully",
-            duration: 5000,
-          });
+          showToast("Logs have been fetched successfully", "success");
         },
         onError: (err: any) => {
           console.log(err);

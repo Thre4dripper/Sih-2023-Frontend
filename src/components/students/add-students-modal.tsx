@@ -5,13 +5,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { showToast } from "@/lib/showToast";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IExam } from "../exams/exam-table-config";
 import { Input } from "../ui/input";
 import DataTable from "../ui/table/data-table";
 import TableConfig, { IStudent } from "./student-data-table-config";
-import { useToast } from "../ui/use-toast";
 
 interface IProps {
   open: boolean;
@@ -38,7 +38,6 @@ const AddStudentModal = ({ open, setOpen, examData, refetchData }: IProps) => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const { mutate: sendEmailFn } = useSendEmailMutation();
-  const { toast } = useToast();
   const { mutate: getFilteredStudentsFn } = useGetStudentsMutation();
   // const { mutate: addStudentsFn } = useDeleteQuestionMutation();
 
@@ -52,9 +51,7 @@ const AddStudentModal = ({ open, setOpen, examData, refetchData }: IProps) => {
       {
         onSuccess: (data: any) => {
           console.log(data);
-          toast({
-            title: "Email sent successfully",
-          });
+          showToast("Email sent successfully", "success");
         },
         onError: (err: any) => {
           console.log(err);

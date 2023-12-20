@@ -10,18 +10,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
-      },
+      }, 
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -36,18 +40,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -62,18 +70,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -88,18 +100,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -114,18 +130,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -140,18 +160,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -166,18 +190,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -192,18 +220,22 @@ const DATA_QUESTION = [
     negatveMarks: 0,
     options: [
       {
+        id: 1,
         option: "Wow what a question",
         isCorrect: false,
       },
       {
+        id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
       },
       {
+        id: 3,
         option: "What an amazing question no one has ever asked this question",
         isCorrect: true,
       },
       {
+        id: 4,
         option: "Wow what a question",
         isCorrect: false,
       },
@@ -241,9 +273,8 @@ interface IStudentExam {
 export const studentExamState = atom({
   key: "studentExamState",
   default: {
-    examInfo: null,
-    questions: null,
+    examInfo: DATA_EXAM_INFO,
+    questions: DATA_QUESTION,
     currentQuestion: 1,
-    answers: null,
   } as IStudentExam,
 });
