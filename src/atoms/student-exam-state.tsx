@@ -229,7 +229,7 @@ export interface IQuestion {
   description: string;
   marks: number;
   negatveMarks: number;
-  options: { option: string; isCorrect: boolean }[];
+  options: { option: string; isCorrect: boolean; id: number }[];
 }
 
 interface IStudentExam {
@@ -241,8 +241,9 @@ interface IStudentExam {
 export const studentExamState = atom({
   key: "studentExamState",
   default: {
-    examInfo: DATA_EXAM_INFO,
-    questions: DATA_QUESTION,
+    examInfo: null,
+    questions: null,
     currentQuestion: 1,
+    answers: null,
   } as IStudentExam,
 });

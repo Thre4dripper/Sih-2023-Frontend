@@ -1,7 +1,9 @@
 import { studentExamState } from "@/atoms/student-exam-state";
 import { Pause, TimerIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { useFinishExamMutation } from "../api";
 import { Button } from "../ui/button";
 
 const findTimeString = (timer: number) => {
@@ -22,14 +24,34 @@ const findTimeString = (timer: number) => {
 const Timer = ({}) => {
   const [timer, setTimer] = useState<number>(0);
   const timerRef = useRef<{ id: NodeJS.Timeout | null }>({ id: null });
+  const { mutate: finishExamFn } = useFinishExamMutation();
+  const navigate = useNavigate();
   const examState = useRecoilValue(studentExamState);
-  const endExamAttempt = () => {};
+  const endExamAttempt = () => {
+    finishExamFn(
+      {
+        body: { examId: examState.examInfo?.id },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          navigate("/student/account/profile");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
+  };
 
   useEffect(() => {
-    const end_date = Date.now() + 1000 * 30 * 60;
-    // new Date(DATA.startTime).getTime() + DATA.duration * 60 * 1000;
+    if (!examState.examInfo) return;
+    const end_date =
+      new Date(examState.examInfo?.startTime).getTime() +
+      examState.examInfo?.duration * 60 * 1000;
+
     if (end_date <= Date.now()) {
-      //   endExamAttempt();
+      endExamAttempt();
       return;
     }
     setTimer(Math.floor((end_date - Date.now()) / 1000));
@@ -39,11 +61,11 @@ const Timer = ({}) => {
     return () => {
       if (timerRef.current.id) clearInterval(timerRef.current.id);
     };
-  }, []);
+  }, [examState.examInfo]);
 
   useEffect(() => {
     if (timer == 0) {
-      endExamAttempt();
+      // endExamAttempt();
     }
   }, [timer]);
 
@@ -70,7 +92,7 @@ const Timer = ({}) => {
             }}
           ></div>
         </div>
-        <Button className={`ms-3`}>
+        <Button className={`ms-3`} onClick={endExamAttempt}>
           <Pause className="" />
           End Test
         </Button>

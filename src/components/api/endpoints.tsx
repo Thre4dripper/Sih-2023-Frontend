@@ -6,14 +6,15 @@ import {
   CreateProctorProps,
   CreateStudentProps,
   DeleteQuestionProps,
+  GetAllLiveExamQuestionsProps,
   GetAllProctorsProps,
   GetExamAllQuestionsProps,
   GetExamByIdProps,
-  GetStudentsProps,
   LoginStudentProps,
   LoginUserProps,
   RemoveProctorProps,
   SendEmailProps,
+  SubmitQuestionProps,
   UpdateExamProps,
 } from "./APIProps";
 
@@ -228,6 +229,50 @@ export const verifyStudent = ({ body }: any): Promise<any> =>
     },
     body: JSON.stringify(body),
   });
+
+export const getAllLiveExamQuestions = ({
+  body,
+}: GetAllLiveExamQuestionsProps) =>
+  apiClient(`/api/v1/live-exam/get-questions?examId=${body.examId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+  });
+
+export const startExam = ({ body }: any) => {
+  return apiClient(`/api/v1/live-exam/start-exam`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+export const finishExam = ({ body }: any) => {
+  return apiClient(`/api/v1/live-exam/finish-exam`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(body),
+  });
+};
+
+export const submitQuestion = ({ body }: SubmitQuestionProps) => {
+  return apiClient(`/api/v1/live-exam/submit-question`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(body),
+  });
+};
 
 export const getLLMLogs = ({ body }: any): Promise<any> =>
   apiClient(

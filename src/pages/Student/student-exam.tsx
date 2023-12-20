@@ -1,3 +1,9 @@
+import { studentExamState } from "@/atoms/student-exam-state";
+import {
+  useGetAllLiveExamQuestionsMutation,
+  useGetExamByIdMutation,
+  useStartExamMutation,
+} from "@/components/api";
 import Mcq from "@/components/student-exam.tsx/mcq";
 import QuestionVideoContainer from "@/components/student-exam.tsx/question-video-container";
 import Timer from "@/components/student-exam.tsx/timer";
@@ -10,13 +16,116 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 const StudentExam = () => {
+  const { id } = useParams();
+
+  const setExamState = useSetRecoilState(studentExamState);
+  const { mutate: getAllQuestionFn } = useGetAllLiveExamQuestionsMutation();
+  const { mutate: getExamByIdFn } = useGetExamByIdMutation();
+  const { mutate: startExamFn } = useStartExamMutation();
+
   // Wiered behaviour on full screen
-  useStudentExamMonitor();
-  useDisableRightClick();
-  useDetectTabChange();
-  useKeyboardDisable();
+  // useStudentExamMonitor();
+  // useDisableRightClick();
+  // useDetectTabChange();
+  // useKeyboardDisable();
+
+  useEffect(() => {
+    if (!id) return;
+    console.log("StudentExam");
+    startExamFn(
+      {
+        body: { examId: +id },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          getExamByIdFn(
+            {
+              body: { examId: +id },
+            },
+            {
+              onSuccess: (data) => {
+                setExamState((prev) => ({
+                  ...prev,
+                  examInfo: data.data,
+                  currentQuestion: 1,
+                })),
+                  console.log(data);
+              },
+              onError: (error) => {
+                console.log(error);
+              },
+            }
+          );
+          getAllQuestionFn(
+            {
+              body: { examId: +id },
+            },
+            {
+              onSuccess: (data) => {
+                if (data.data.length === 0) {
+                  return;
+                }
+                setExamState((prev) => ({
+                  ...prev,
+                  questions: data.data,
+                }));
+                console.log(data);
+              },
+              onError: (error) => {
+                console.log(error);
+              },
+            }
+          );
+        },
+        onError: (error) => {
+          console.log(error);
+          getExamByIdFn(
+            {
+              body: { examId: +id },
+            },
+            {
+              onSuccess: (data) => {
+                setExamState((prev) => ({
+                  ...prev,
+                  examInfo: data.data,
+                  currentQuestion: 1,
+                })),
+                  console.log(data);
+              },
+              onError: (error) => {
+                console.log(error);
+              },
+            }
+          );
+          getAllQuestionFn(
+            {
+              body: { examId: +id },
+            },
+            {
+              onSuccess: (data) => {
+                if (data.data.length === 0) {
+                  return;
+                }
+                setExamState((prev) => ({
+                  ...prev,
+                  questions: data.data,
+                }));
+                console.log(data);
+              },
+              onError: (error) => {
+                console.log(error);
+              },
+            }
+          );
+        },
+      }
+    );
+  }, [id]);
 
   return (
     <div
