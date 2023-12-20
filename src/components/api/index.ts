@@ -26,6 +26,7 @@ export const QUERY_KEYS = {
   startExam: "startExam",
   finishExam: "finishExam",
   submitQuestion: "submitQuestion",
+  getStudentLogs: "getStudentLogs",
 };
 
 export const useCreateAdminMutation = () => {
@@ -137,4 +138,8 @@ export const useFinishExamMutation = () => {
 
 export const useSubmitQuestionMutation = () => {
   return useMutation([QUERY_KEYS.submitQuestion], ENDPOINTS.submitQuestion);
+};
+
+export const useStudentLogsMutation = () => {
+  return useMutation([QUERY_KEYS.getStudentLogs], ENDPOINTS.getLLMLogs);
 };

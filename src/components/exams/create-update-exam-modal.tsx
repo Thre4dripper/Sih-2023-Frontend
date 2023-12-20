@@ -238,7 +238,7 @@ const CreateExamModal = ({
                     <div className="relative col-span-3">
                       <FormControl className="">
                         <Input
-                          placeholder="Enter your name"
+                          placeholder="Enter name"
                           type="text"
                           className=""
                           {...field}

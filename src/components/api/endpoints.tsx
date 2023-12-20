@@ -273,3 +273,15 @@ export const submitQuestion = ({ body }: SubmitQuestionProps) => {
     body: JSON.stringify(body),
   });
 };
+
+export const getLLMLogs = ({ body }: any): Promise<any> =>
+  apiClient(
+    `/api/v1/exam/get-student-logs?examId=${body.examId}&studentId=${body.studentId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    }
+  );

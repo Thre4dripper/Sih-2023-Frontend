@@ -47,13 +47,13 @@ const ProctorStreamPanel = () => {
             call.answer(stream);
             call.on("stream", (remoteStream) => {
               setStreams((prevState: any) => [
-                ...filterStreams(prevState),
+                ...prevState,
                 {
                   stream: remoteStream,
                   id: stream.id,
                 },
               ]);
-              setCurrentSelectedStream(1);
+              // setCurrentSelectedStream(1);
             });
           });
 
@@ -73,14 +73,13 @@ const ProctorStreamPanel = () => {
                 const call = peer.call(user.peerId, stream);
                 call.on("stream", (remoteStream) => {
                   setStreams((prevState: any) => [
-                    ...filterStreams(prevState),
+                    ...prevState,
                     {
                       stream: remoteStream,
-                      name: "a new student",
                       id: stream.id,
                     },
                   ]);
-                  setCurrentSelectedStream(1);
+                  // setCurrentSelectedStream(1);
                 });
               });
           });
