@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Check, GripHorizontal, StopCircle, X } from "lucide-react";
+import { Check, Eye, GripHorizontal, StopCircle, X } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -33,9 +33,10 @@ export interface IStudent {
 
 interface ITableConfig {
   verifyStudent?: (studentId: number) => void;
+  viewLogs?: (studentId: number, examId: number) => void;
 }
 
-const TableConfig = ({ verifyStudent }: ITableConfig) => {
+const TableConfig = ({ verifyStudent, viewLogs }: ITableConfig) => {
   const columnsConfig: ColumnDef<IStudent>[] = [
     {
       id: "select",
@@ -166,6 +167,14 @@ const TableConfig = ({ verifyStudent }: ITableConfig) => {
                 <X className="w-4 h-4 ml-2 text-destructive" />
                 &nbsp; Reject
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  viewLogs && viewLogs(10, 1);
+                }}
+              >
+                <Eye className="w-4 h-4 ml-2 text-destructive" />
+                &nbsp; View Logs
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -177,28 +186,3 @@ const TableConfig = ({ verifyStudent }: ITableConfig) => {
 };
 
 export default TableConfig;
-
-/*
-{
-    "id": 4,
-    "organizationId": 2,
-    "name": "Vicky Gupta",
-    "email": "vickyguptaa7@gmail.com",
-    "password": "$2b$10$Hxdmk6JMfIc4DC/QVXw8H./n220tkd3ROgamRJcJKd47OTgSGKbcK",
-    "phone": null,
-    "role": "student",
-    "profilePic": "https://res.cloudinary.com/dntn0wocu/image/upload/v1703024055/Blog-app/odwwmjjz4htnrcicv1yu.png",
-    "aadharNumber": "909094608474",
-    "aadharPic": "https://res.cloudinary.com/dntn0wocu/image/upload/v1703024056/Blog-app/i0i6ekhldoq39tsfpyp3.png",
-    "panNumber": "DOZPG8441D",
-    "panPic": "https://res.cloudinary.com/dntn0wocu/image/upload/v1703024057/Blog-app/g5hra09xwmvmzdrgpgp5.png",
-    "address": null,
-    "isVerified": 1,
-    "city": null,
-    "state": null,
-    "country": null,
-    "zipCode": null,
-    "createdAt": "2023-12-19T22:14:21.915Z",
-    "updatedAt": "2023-12-19T22:44:29.688Z"
-}
-*/
