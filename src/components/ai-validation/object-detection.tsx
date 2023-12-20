@@ -3,8 +3,10 @@ import { peer } from "@/lib/socket/peer";
 import { ws } from "@/lib/socket/ws";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import * as posenet from "@tensorflow-models/posenet";
+import * as handpose from "@tensorflow-models/handpose";
 import "@tensorflow/tfjs";
 import throttle from "lodash.throttle";
+import { CheckCircle, MessageSquareWarning } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
@@ -18,6 +20,22 @@ interface IProps {
 export const ObjectDetection = ({ className }: IProps) => {
   const videoRef: any = useRef();
   const { id } = useParams();
+
+  const showToast = (message: string, icon: string) => {
+    toast(
+      <p className="flex items-center">
+        {icon === "success" ? (
+          <CheckCircle className="w-6 h-6 text-green-500" />
+        ) : (
+          <MessageSquareWarning className="w-6 h-6 text-red-500" />
+        )}
+        &nbsp; {message}
+      </p>,
+      {
+        duration: 5000,
+      }
+    );
+  };
 
   const detectFrame = (video: any, model: any) => {
     model.detect(video).then((predictions: any) => {
@@ -37,8 +55,18 @@ export const ObjectDetection = ({ className }: IProps) => {
     });
   };
 
+  const detectHandPose = (video: any, net: any) => {
+    net.estimateHands(video).then((predictions: any) => {
+      if (predictions.length > 0) {
+        handleObjectDetectedEvent("Hand Movement Detected");
+        showToast("Hand Movement Detected", "error");
+      }
+    });
+  };
+
   const detectFrameThrottle = useRef(throttle(detectFrame, 500));
   const detectPoseThrottle = useRef(throttle(detectPose, 1500));
+  const detectHandPoseThrottle = useRef(throttle(detectHandPose, 1500));
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -83,12 +111,19 @@ export const ObjectDetection = ({ className }: IProps) => {
         });
       const objectModelPromise = cocoSsd.load();
       const poseNetModelPromise = posenet.load();
+      const handPoseModelPromise = handpose.load();
 
-      Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
+      Promise.all([
+        objectModelPromise,
+        poseNetModelPromise,
+        handPoseModelPromise,
+        webCamPromise,
+      ])
         .then((values) => {
           setInterval(() => {
             detectFrameThrottle.current(videoRef.current, values[0]);
             detectPoseThrottle.current(videoRef.current, values[1]);
+            detectHandPoseThrottle.current(videoRef.current, values[2]);
           }, 200);
         })
         .catch((error) => {
@@ -108,29 +143,29 @@ export const ObjectDetection = ({ className }: IProps) => {
         if (prediction.class == "person") {
           multiple_face = multiple_face + 1;
           if (multiple_face >= 2) {
+            renderToastThrottle.current();
             handleObjectDetectedEvent("Multiple face detected");
-            toast.success("Multiple face detected");
           }
         }
       }
       if (prediction.score >= accuracyThreshold) {
         if (prediction.class === "cell phone") {
           handleObjectDetectedEvent("Cell Phone Detected");
-          toast.success("Cell phone detected");
+          showToast("Cell Phone Detected", "error");
 
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class === "book") {
           handleObjectDetectedEvent("Book Detected");
-          toast.success("Book Detected");
+          showToast("Book Detected", "error");
 
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class === "laptop") {
           handleObjectDetectedEvent("Laptop Detected");
-          toast.success("Cell Phone Detected");
+          showToast("Laptop Detected", "error");
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class !== "person") {
           handleObjectDetectedEvent(`${prediction.class} Detected`);
-          toast.success(`${prediction.class} Detected`);
+          showToast(`${prediction.class} Detected`, "error");
 
           count_facedetect = count_facedetect + 1;
         }
@@ -139,6 +174,10 @@ export const ObjectDetection = ({ className }: IProps) => {
 
     sessionStorage.setItem("count_facedetect", count_facedetect as any);
   };
+
+  const renderToastThrottle = useRef(
+    throttle(() => showToast("Multiple Faces Detected", "error"), 1000)
+  );
 
   const handleLookedAwaySocketEvent = () => {
     ws.emit("looked_away", {
@@ -162,11 +201,11 @@ export const ObjectDetection = ({ className }: IProps) => {
 
     if (keypointEarL.score < minConfidence) {
       handleLookedAwaySocketEvent();
-      toast("Please look at the Screen");
+      showToast("User Looked Away", "error");
     }
     if (keypointEarR.score < minConfidence) {
       handleLookedAwaySocketEvent();
-      toast("Please look at the Screen");
+      showToast("User Looked Away", "error");
     }
   };
 

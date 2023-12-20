@@ -78,6 +78,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
             data?.data?.accessTokens?.accessToken
           );
           localStorage.setItem("role", data?.data?.role);
+          localStorage.setItem("userId", data?.data?.id);
           setOpen(false);
           console.log(searchParams.get("examId"));
           if (searchParams.get("examId") !== null) {
