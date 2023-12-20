@@ -1,15 +1,16 @@
 import { accuracyThreshold, poseAccuracyThreshold } from "@/constants/utils";
-import { useEffect, useRef, useState } from "react";
+import { peer } from "@/lib/socket/peer";
+import { ws } from "@/lib/socket/ws";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as blazePose from "@tensorflow-models/pose-detection";x
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs";
 import throttle from "lodash.throttle";
-import { twMerge } from "tailwind-merge";
-import { useToast } from "../ui/use-toast";
+import { useEffect, useRef } from "react";
+import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { ws } from "@/lib/socket/ws";
-import { peer } from "@/lib/socket/peer";
-import { v4 as uuidv4 } from "uuid";
+import { twMerge } from "tailwind-merge";
+
 var count_facedetect = 0;
 interface IProps {
   className?: string;
@@ -18,7 +19,6 @@ interface IProps {
 export const ObjectDetection = ({ className }: IProps) => {
   const videoRef: any = useRef();
   const { id } = useParams();
-  const { toast } = useToast();
 
   const detectFrame = (video: any, model: any) => {
     model.detect(video).then((predictions: any) => {
@@ -40,6 +40,7 @@ export const ObjectDetection = ({ className }: IProps) => {
 
   const detectFrameThrottle = useRef(throttle(detectFrame, 500));
   const detectPoseThrottle = useRef(throttle(detectPose, 1500));
+
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       const webCamPromise = navigator.mediaDevices
@@ -83,6 +84,7 @@ export const ObjectDetection = ({ className }: IProps) => {
         });
       const objectModelPromise = cocoSsd.load();
       const poseNetModelPromise = posenet.load();
+      
       Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
         .then((values) => {
           setInterval(() => {
@@ -119,42 +121,28 @@ export const ObjectDetection = ({ className }: IProps) => {
       if (prediction.score >= accuracyThreshold) {
         if (prediction.class === "cell phone") {
           handleObjectDetectedEvent("Cell Phone Detected");
-          toast({
-            key: "cellphone",
-            title: "Cell Phone Detected",
-            description: "Please remove your cell phone",
-            variant: "destructive",
-            duration: 1000,
-          });
+          toast.success("Cell phone detected");
 
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class === "book") {
           handleObjectDetectedEvent("Book Detected");
-          toast({
-            key: "book",
-            title: "Book Detected",
-            description: "Please remove your book",
-            variant: "destructive",
-            duration: 1000,
-          });
+          toast.success("Book Detected");
+
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class === "laptop") {
           handleObjectDetectedEvent("Laptop Detected");
-          toast({
-            title: "Cell Phone Detected",
-            description: "Please remove your laptop",
-            variant: "destructive",
-            duration: 1000,
-          });
+          toast.success("Cell Phone Detected");
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class !== "person") {
           handleObjectDetectedEvent(`${prediction.class} Detected`);
-          toast({
-            title: `${prediction.class} Detected`,
-            description: "Please remove this object",
-            variant: "destructive",
-            duration: 1000,
-          });
+          // toast({
+          //   title: `${prediction.class} Detected`,
+          //   description: "Please remove this object",
+          //   variant: "destructive",
+          //   duration: 1000,
+          // });
+          toast.success(`${prediction.class} Detected`);
+
           count_facedetect = count_facedetect + 1;
         }
       }
@@ -185,19 +173,11 @@ export const ObjectDetection = ({ className }: IProps) => {
 
     if (keypointEarL.score < minConfidence) {
       handleLookedAwaySocketEvent();
-      toast({
-        title: "Please look at the Screen",
-        variant: "destructive",
-        duration: 1000,
-      });
+      toast("Please look at the Screen");
     }
     if (keypointEarR.score < minConfidence) {
       handleLookedAwaySocketEvent();
-      toast({
-        title: "Please look at the Screen",
-        variant: "destructive",
-        duration: 1000,
-      });
+      toast("Please look at the Screen");
     }
   };
 
