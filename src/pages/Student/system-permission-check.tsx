@@ -19,6 +19,7 @@ const SystemPermissionCheck = () => {
       )}/verify?examId=${searchParams.get("examId")}`
     );
   };
+  console.log(permissionCount);
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
@@ -30,7 +31,7 @@ const SystemPermissionCheck = () => {
         <LocationPermission setPermissionCount={setPermissionCount} />
         <InternetCheck setPermissionCount={setPermissionCount} />
       </div>
-      {permissionCount === 5 ? (
+      {permissionCount >= 5 ? (
         <Button className="mt-8" onClick={handlerSystemInfoCheck}>
           Start Exam
         </Button>

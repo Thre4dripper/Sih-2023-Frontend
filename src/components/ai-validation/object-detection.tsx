@@ -111,8 +111,14 @@ export const ObjectDetection = ({ className }: IProps) => {
         });
       const objectModelPromise = cocoSsd.load();
       const poseNetModelPromise = posenet.load();
-      
-      Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
+      const handPoseModelPromise = handpose.load();
+
+      Promise.all([
+        objectModelPromise,
+        poseNetModelPromise,
+        handPoseModelPromise,
+        webCamPromise,
+      ])
         .then((values) => {
           setInterval(() => {
             detectFrameThrottle.current(videoRef.current, values[0]);
@@ -176,7 +182,7 @@ export const ObjectDetection = ({ className }: IProps) => {
   const handleLookedAwaySocketEvent = () => {
     ws.emit("looked_away", {
       examId: id,
-      studentId: 8,
+      studentId: localStorage.getItem("userId"),
       activity: "User Looked Away",
     });
   };
@@ -184,7 +190,7 @@ export const ObjectDetection = ({ className }: IProps) => {
   const handleObjectDetectedEvent = (activity: string) => {
     ws.emit("object_detected", {
       examId: id,
-      studentId: 8,
+      studentId: localStorage.getItem("userId"),
       activity: activity,
     });
   };
