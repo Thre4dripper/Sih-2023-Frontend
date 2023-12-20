@@ -47,7 +47,7 @@ const ProctorStreamPanel = () => {
             call.answer(stream);
             call.on("stream", (remoteStream) => {
               setStreams((prevState: any) => [
-                ...prevState,
+                ...filterStreams(prevState),
                 {
                   stream: remoteStream,
                   id: stream.id,
@@ -73,9 +73,10 @@ const ProctorStreamPanel = () => {
                 const call = peer.call(user.peerId, stream);
                 call.on("stream", (remoteStream) => {
                   setStreams((prevState: any) => [
-                    ...prevState,
+                    ...filterStreams(prevState),
                     {
                       stream: remoteStream,
+                      name: "a new student",
                       id: stream.id,
                     },
                   ]);
@@ -109,6 +110,7 @@ const ProctorStreamPanel = () => {
       };
     }
   }, [id, peer.id]);
+
 
   return (
     <div className="flex flex-col p-4">

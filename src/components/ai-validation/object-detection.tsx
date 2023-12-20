@@ -2,7 +2,6 @@ import { accuracyThreshold, poseAccuracyThreshold } from "@/constants/utils";
 import { peer } from "@/lib/socket/peer";
 import { ws } from "@/lib/socket/ws";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import * as blazePose from "@tensorflow-models/pose-detection";x
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs";
 import throttle from "lodash.throttle";
@@ -84,7 +83,7 @@ export const ObjectDetection = ({ className }: IProps) => {
         });
       const objectModelPromise = cocoSsd.load();
       const poseNetModelPromise = posenet.load();
-      
+
       Promise.all([objectModelPromise, poseNetModelPromise, webCamPromise])
         .then((values) => {
           setInterval(() => {
@@ -104,6 +103,16 @@ export const ObjectDetection = ({ className }: IProps) => {
   const renderPredictions = (predictions: any) => {
     predictions.forEach((prediction: any) => {
       var multiple_face = 0;
+
+      for (let i = 0; i < predictions.length; i++) {
+        if (prediction.class == "person") {
+          multiple_face = multiple_face + 1;
+          if (multiple_face >= 2) {
+            handleObjectDetectedEvent("Multiple face detected");
+            toast.success("Multiple face detected");
+          }
+        }
+      }
       if (prediction.score >= accuracyThreshold) {
         if (prediction.class === "cell phone") {
           handleObjectDetectedEvent("Cell Phone Detected");
@@ -121,12 +130,6 @@ export const ObjectDetection = ({ className }: IProps) => {
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class !== "person") {
           handleObjectDetectedEvent(`${prediction.class} Detected`);
-          // toast({
-          //   title: `${prediction.class} Detected`,
-          //   description: "Please remove this object",
-          //   variant: "destructive",
-          //   duration: 1000,
-          // });
           toast.success(`${prediction.class} Detected`);
 
           count_facedetect = count_facedetect + 1;
@@ -140,7 +143,7 @@ export const ObjectDetection = ({ className }: IProps) => {
   const handleLookedAwaySocketEvent = () => {
     ws.emit("looked_away", {
       examId: id,
-      studentId: 10,
+      studentId: 8,
       activity: "User Looked Away",
     });
   };
@@ -148,7 +151,7 @@ export const ObjectDetection = ({ className }: IProps) => {
   const handleObjectDetectedEvent = (activity: string) => {
     ws.emit("object_detected", {
       examId: id,
-      studentId: 10,
+      studentId: 8,
       activity: activity,
     });
   };
