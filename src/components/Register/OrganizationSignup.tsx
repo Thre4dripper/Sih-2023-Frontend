@@ -1,4 +1,3 @@
-import { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,15 +8,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useCloudinary from "./useCloudinary";
-import { useCreateAdminMutation } from "../api";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UserValidation } from "@/lib/validations/user";
 import { isBase64Image } from "@/lib/utils";
+import { UserValidation } from "@/lib/validations/user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
-import { useToast } from "../ui/use-toast";
+import { useCreateAdminMutation } from "../api";
+import useCloudinary from "./useCloudinary";
+import { showToast } from "@/lib/showToast";
 
 interface Props {
   setOpen: (x: boolean) => any;
@@ -49,16 +49,12 @@ const OrganizationSignup = ({ setOpen }: Props) => {
   }
 
   const createUser = (body: BProps) => {
-    const { toast } = useToast();
     registerAdminFn(
       { body },
       {
         onSuccess: (data: any) => {
           console.log(data);
-          toast({
-            title: "Account Created",
-            description: "Your account has been created successfully.",
-          });
+          showToast("Your account has been created successfully.", "success");
           setSearchParams({});
           setOpen(false);
         },

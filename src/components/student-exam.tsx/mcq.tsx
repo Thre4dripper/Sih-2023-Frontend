@@ -88,11 +88,74 @@ const Mcq = () => {
         },
       }
     );
+    const updatedQuestions = examState.questions.map((question) => {
+      if (examState.questions && question.id === examState.questions[curr].id) {
+        return {
+          ...question,
+          options: question.options?.map((option) => {
+            if (selectedOption.includes(option.id)) {
+              return {
+                ...option,
+                isCorrect: true,
+              };
+            }
+            return {
+              ...option,
+              isCorrect: false,
+            };
+          }),
+        };
+      }
+      return question;
+    });
 
     setExamState((prev) => ({
       ...prev,
+      questions: updatedQuestions,
       currentQuestion: curr + 2,
     }));
+  };
+
+  const submitButtonHandler = () => {
+    if (!examState.examInfo?.id || !examState.questions) return;
+    submitQuestionFn(
+      {
+        body: {
+          examId: +examState.examInfo?.id,
+          questionId: examState.questions[curr].id,
+          options: selectedOption,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
+    const updatedQuestions = examState.questions.map((question) => {
+      if (examState.questions && question.id === examState.questions[curr].id) {
+        return {
+          ...question,
+          options: question.options?.map((option) => {
+            if (selectedOption.includes(option.id)) {
+              return {
+                ...option,
+                isCorrect: true,
+              };
+            }
+            return {
+              ...option,
+              isCorrect: false,
+            };
+          }),
+        };
+      }
+      return question;
+    });
+    endExamAttempt();
   };
 
   return (

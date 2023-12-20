@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { showToast } from "@/lib/showToast";
 import { isBase64Image } from "@/lib/utils";
 import { StudentRegisterValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +17,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import { useCreateStudentMutation } from "../api";
-import { useToast } from "../ui/use-toast";
 import useCloudinary from "./useCloudinary";
 
 interface Props {
@@ -25,7 +25,6 @@ interface Props {
 
 const StudentSignup = ({ setOpen }: Props) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { mutate: registerStudentFn } = useCreateStudentMutation();
   const { sendRequest: imageUpload } = useCloudinary();
   let [searchParams, setSearchParams] = useSearchParams();
@@ -88,13 +87,7 @@ const StudentSignup = ({ setOpen }: Props) => {
               };
             });
           }
-          toast({
-            key: "book",
-            title: err.error,
-            description: "Please enter valid credentials!",
-            variant: "destructive",
-            duration: 1500,
-          });
+          showToast("Please enter valid credentials!", "error");
         },
       }
     );
@@ -125,7 +118,7 @@ const StudentSignup = ({ setOpen }: Props) => {
       const panPicData = new FormData();
       panPicData.append("file", panPicBlob);
       panPicData.append("upload_preset", "blogapppreset");
-      
+
       imageUpload(
         {
           url: "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
@@ -390,9 +383,7 @@ const StudentSignup = ({ setOpen }: Props) => {
                     accept="image/*"
                     placeholder="Upload a photo"
                     className=""
-                    onChange={(e) =>
-                      handleImage(e, field?.onChange, "panPic")
-                    }
+                    onChange={(e) => handleImage(e, field?.onChange, "panPic")}
                   />
                 </FormControl>
                 <FormMessage />
