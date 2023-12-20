@@ -99,3 +99,11 @@ export interface SendEmailProps {
 // export interface AddStudentsProps {
 //   body: { studentId: number; examId: number };
 // }
+
+export interface GetAllLiveExamQuestionsProps {
+  body: { examId: number };
+}
+
+export interface SubmitQuestionProps {
+  body: { examId: number; questionId: number; options: number[] };
+}

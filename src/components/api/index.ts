@@ -22,6 +22,10 @@ export const QUERY_KEYS = {
   sendEmail: "sendEmail",
   getStudentsByExamId: "getStudentsByExamId",
   verifyStudent: "verifyStudent",
+  getAllLiveExamQuestions: "getAllLiveExamQuestions",
+  startExam: "startExam",
+  finishExam: "finishExam",
+  submitQuestion: "submitQuestion",
 };
 
 export const useCreateAdminMutation = () => {
@@ -115,3 +119,22 @@ export const useVerifyStudentMutation = () => {
 // export const useAddStudentsMutation = () => {
 //   return useMutation([QUERY_KEYS.addStudents], ENDPOINTS.addStudents);
 // };
+
+export const useGetAllLiveExamQuestionsMutation = () => {
+  return useMutation(
+    [QUERY_KEYS.getAllLiveExamQuestions],
+    ENDPOINTS.getAllLiveExamQuestions
+  );
+};
+
+export const useStartExamMutation = () => {
+  return useMutation([QUERY_KEYS.startExam], ENDPOINTS.startExam);
+};
+
+export const useFinishExamMutation = () => {
+  return useMutation([QUERY_KEYS.finishExam], ENDPOINTS.finishExam);
+};
+
+export const useSubmitQuestionMutation = () => {
+  return useMutation([QUERY_KEYS.submitQuestion], ENDPOINTS.submitQuestion);
+};

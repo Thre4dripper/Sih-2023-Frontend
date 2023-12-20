@@ -79,6 +79,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
           );
           localStorage.setItem("role", data?.data?.role);
           setOpen(false);
+          console.log(searchParams.get("examId"));
           if (searchParams.get("examId") !== null) {
             navigate(
               `/student/exam/${searchParams.get(
