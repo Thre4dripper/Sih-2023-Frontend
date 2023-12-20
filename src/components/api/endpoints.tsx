@@ -200,7 +200,7 @@ export const getStudentsByExamId = ({ body }: any): Promise<any> =>
   );
 
 export const sendEmail = ({ body }: SendEmailProps): Promise<any> =>
-  apiClient("/api/v1/send-exam-mail/", {
+  apiClient("/api/v1/exam/send-exam-mail/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -218,3 +218,13 @@ export const sendEmail = ({ body }: SendEmailProps): Promise<any> =>
 //     },
 //     body: JSON.stringify(body),
 //   });
+
+export const verifyStudent = ({ body }: any): Promise<any> =>
+  apiClient("/api/v1/verify-student", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify(body),
+  });
