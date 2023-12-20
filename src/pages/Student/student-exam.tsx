@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 const StudentExam = () => {
@@ -26,6 +26,7 @@ const StudentExam = () => {
   const { mutate: getAllQuestionFn } = useGetAllLiveExamQuestionsMutation();
   const { mutate: getExamByIdFn } = useGetExamByIdMutation();
   const { mutate: startExamFn } = useStartExamMutation();
+  const navigate = useNavigate();
 
   // Wiered behaviour on full screen
   // useStudentExamMonitor();
@@ -84,6 +85,7 @@ const StudentExam = () => {
         },
         onError: (error) => {
           console.log(error);
+          // if(error.error==="Exam already started")
           getExamByIdFn(
             {
               body: { examId: +id },
@@ -118,6 +120,10 @@ const StudentExam = () => {
                 console.log(data);
               },
               onError: (error) => {
+                // if (error.error === "Exam already finished!") {
+                //   navigate("/student/exam/finished");
+                //   return;
+                // }
                 console.log(error);
               },
             }

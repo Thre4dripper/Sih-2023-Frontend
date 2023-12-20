@@ -1,6 +1,6 @@
 import { studentExamState } from "@/atoms/student-exam-state";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useFinishExamMutation, useSubmitQuestionMutation } from "../api";
 import { Button } from "../ui/button";
@@ -18,6 +18,7 @@ const Mcq = () => {
   const { mutate: finishExamFn } = useFinishExamMutation();
   const { mutate: submitQuestionFn } = useSubmitQuestionMutation();
   const navigate = useNavigate();
+  const { id } = useParams();
   // Other Functions
   const [selectedOption, setSelectedOption] = useState<number[]>([]);
   const curr = examState.currentQuestion ? examState.currentQuestion - 1 : 0;
@@ -149,13 +150,13 @@ const Mcq = () => {
             return {
               ...option,
               isCorrect: false,
-            };
+            };  
           }),
         };
       }
       return question;
     });
-    endExamAttempt();
+    navigate(`/student/exam/${id}/finished`);
   };
 
   return (
@@ -201,8 +202,8 @@ const Mcq = () => {
           <Button className={``} onClick={resetHandler}>
             Clear Selection
           </Button>
-          {examState.examInfo?.totalQuestions === curr + 1 ? (
-            <Button onClick={endExamAttempt}>Submit</Button>
+          {examState.questions?.length === examState.currentQuestion ? (
+            <Button onClick={submitButtonHandler}>Submit</Button>
           ) : (
             <Button onClick={handleNext} className={""}>
               Save & Next

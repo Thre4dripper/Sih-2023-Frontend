@@ -18,7 +18,7 @@ const DATA_QUESTION = [
         id: 2,
         option: "Amazing question what a question",
         isCorrect: false,
-      }, 
+      },
       {
         id: 3,
         option: "What an amazing question no one has ever asked this question",
@@ -273,8 +273,8 @@ interface IStudentExam {
 export const studentExamState = atom({
   key: "studentExamState",
   default: {
-    examInfo: DATA_EXAM_INFO,
-    questions: DATA_QUESTION,
+    examInfo: null,
+    questions: null,
     currentQuestion: 1,
   } as IStudentExam,
 });

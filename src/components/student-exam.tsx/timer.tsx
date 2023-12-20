@@ -22,7 +22,7 @@ const findTimeString = (timer: number) => {
 };
 
 const Timer = ({}) => {
-  const [timer, setTimer] = useState<number>(0);
+  const [timer, setTimer] = useState<number | null>(null);
   const timerRef = useRef<{ id: NodeJS.Timeout | null }>({ id: null });
   const { mutate: finishExamFn } = useFinishExamMutation();
   const navigate = useNavigate();
@@ -46,17 +46,20 @@ const Timer = ({}) => {
 
   useEffect(() => {
     if (!examState.examInfo) return;
-    const end_date =
-      new Date(examState.examInfo?.startTime).getTime() +
-      examState.examInfo?.duration * 60 * 1000;
+    let end_date = new Date(examState.examInfo?.startTime).getTime();
+    end_date += examState.examInfo?.duration * 60 * 1000;
+    console.log(end_date, Date.now());
 
     if (end_date <= Date.now()) {
-      endExamAttempt();
+      // endExamAttempt();
       return;
     }
     setTimer(Math.floor((end_date - Date.now()) / 1000));
     timerRef.current.id = setInterval(() => {
-      setTimer((prev) => prev - 1);
+      setTimer((prev) => {
+        if (prev === null) return null;
+        return prev - 1;
+      });
     }, 1000);
     return () => {
       if (timerRef.current.id) clearInterval(timerRef.current.id);
@@ -65,7 +68,7 @@ const Timer = ({}) => {
 
   useEffect(() => {
     if (timer == 0) {
-      // endExamAttempt();
+      endExamAttempt();
     }
   }, [timer]);
 
@@ -77,20 +80,26 @@ const Timer = ({}) => {
         <div className="flex items-center gap-1">
           <h4 className="text-lg">{examState.examInfo?.name}</h4>
           <span className="">•</span>
-          <TimerIcon className="" />
-          <p className="w-[8rem]">
-            Ends in <span>{findTimeString(timer)}</span>
-          </p>
+          {timer !== null && (
+            <>
+              <TimerIcon className="" />
+              <p className="w-[8rem]">
+                Ends in <span>{findTimeString(timer)}</span>
+              </p>
+            </>
+          )}
         </div>
         <div className="items-center flex-1 h-2 bg-gray-200 rounded-full ">
-          <div
-            className="h-2 rounded-md bg-primary"
-            style={{
-              width: `${
-                100 - (timer / (60 * examState.examInfo?.duration!)) * 100
-              }%`,
-            }}
-          ></div>
+          {timer !== null && (
+            <div
+              className="h-2 rounded-md bg-primary"
+              style={{
+                width: `${
+                  100 - (timer / (60 * examState.examInfo?.duration!)) * 100
+                }%`,
+              }}
+            ></div>
+          )}
         </div>
         <Button className={`ms-3`} onClick={endExamAttempt}>
           <Pause className="" />

@@ -285,3 +285,12 @@ export const getLLMLogs = ({ body }: any): Promise<any> =>
       },
     }
   );
+
+  export const getProfileData=({body}:any):Promise<any>=>
+  apiClient(`/api/v1/get-student-profile`,{
+    method:"GET",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:"Bearer "+localStorage.getItem("accessToken")
+    }
+  })

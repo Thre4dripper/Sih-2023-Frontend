@@ -17,6 +17,7 @@ import StudentExam from "./pages/Student/student-exam";
 import SystemPermissionCheck from "./pages/Student/system-permission-check";
 // import OrgProfile from "./pages/Organization/profile";
 import FacialRegister from "./components/ai-validation/facial-register";
+import ExamFinished from "./components/exam-finished/exam-finished";
 import PendingApprovals from "./pages/Proctor/pendingApprovals";
 import ProctorAllExams from "./pages/Proctor/viewExams";
 import AllStudentExams from "./pages/Student/allexams";
@@ -57,6 +58,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <StudentVerify />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/student/exam/:id/finished"
+            element={
+              <ProtectedRoute>
+                <ExamFinished />
               </ProtectedRoute>
             }
           />
