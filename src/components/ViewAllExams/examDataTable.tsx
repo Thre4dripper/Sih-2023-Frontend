@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+import { PlusCircleIcon, Search } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import { useGetAllExamsMutation } from "../api";
 import { Input } from "../ui/input";
 import DataTable from "../ui/table/data-table";
-import TableConfig, { IExam } from "./examTableConfig";
-
-// from this page you can redirect to individual exam stream
+import { IExam } from "../exams/exam-table-config";
+import TableConfig from "./examTableConfig";
 
 export function ExamDataTable() {
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
 
   const [examList, setExamList] = useState<IExam[]>([]);
@@ -62,9 +67,7 @@ export function ExamDataTable() {
   return (
     <div className="w-full">
       <div className={"flex gap-8 mb-4"}>
-        <span className={"font-semibold text-3xl text-slate-500"}>
-          Active Exams
-        </span>
+        <span className={"font-semibold text-3xl text-slate-500"}>Exams</span>
         <div className={"flex-1"} />
         {/* <DataTableFilters
           filters={[
@@ -77,6 +80,16 @@ export function ExamDataTable() {
           <Search size={20} className={"text-slate-500"} />
           <Input className={"w-72"} placeholder={"Search exams..."} />
         </div>
+        {/* <Button
+          className={"flex flex-row gap-2"}
+          variant={"default"}
+          onClick={() => {
+            setOpenCreateModal(true);
+          }}
+        >
+          <PlusCircleIcon className={"w-6 h-6"} />
+          <span>Add Exam</span>
+        </Button> */}
       </div>
       <div className="overflow-auto border rounded-md ">
         <DataTable
