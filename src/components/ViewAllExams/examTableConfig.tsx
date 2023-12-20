@@ -3,7 +3,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EXAM_TYPE_MAPPING } from "@/constants/ExamType";
 import { SDFormat } from "@/helper/DateHelper";
 
-import { ChevronsUpDown, CopyIcon, GripHorizontal } from "lucide-react";
+import {
+  ChevronsUpDown,
+  CopyIcon,
+  GripHorizontal,
+  Tv,
+  VideoIcon,
+} from "lucide-react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../ui/button";
 import {
@@ -14,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Tooltip } from "../ui/tooltip";
 
 export enum StatusFilter {
   Pending = "pending",
@@ -146,47 +153,14 @@ const TableConfig = ({ setOpenUpdateModal }: ITableConfig) => {
       cell: ({ row }) => {
         //   console.log(row?.original?.id);
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-8 h-8 p-0 ">
-                <span className="sr-only">Open menu</span>
-                <GripHorizontal className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
+          <Button variant="ghost" className="w-8 h-8 p-0 ">
+              <Tv
+                className="w-4 h-4 ml-2"
                 onClick={() => {
-                  navigate(
-                    `/organization/questions?examId=${row?.original?.id}`
-                  );
+                  navigate(`/proctor/${row?.original?.id}/stream`);
                 }}
-              >
-                Add Questions
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  navigate(
-                    `/organization/students?examId=${row?.original?.id}`
-                  );
-                }}
-              >
-                Add Students
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  setSearchParams((prev) => {
-                    prev.set("examId", String(row?.original?.id));
-                    return prev;
-                  });
-                  setOpenUpdateModal(true);
-                }}
-              >
-                Update Exam
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              />
+          </Button>
         );
       },
     },

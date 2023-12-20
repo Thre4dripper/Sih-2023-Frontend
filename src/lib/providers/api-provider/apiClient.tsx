@@ -42,7 +42,7 @@ const getApiClient =
       .catch(errorHandler);
 
 export const apiClient = getApiClient({
-  baseURL: "https://sih-2023-backend-blah-blah.onrender.com",
+  baseURL: import.meta.env.VITE_APP_API_HOST || "",
   sucessHandler: defaultSuccessHandler,
   errorHandler: defaultErrorHandler,
 });
