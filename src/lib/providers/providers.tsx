@@ -1,8 +1,9 @@
-import React from "react";
-import { ThemeProvider } from "@/lib/providers/theme-provider/theme-provider";
-import { RecoilRoot } from "recoil";
 import { ApiProvider } from "@/lib/providers/api-provider";
-import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/lib/providers/theme-provider/theme-provider";
+import React from "react";
+import { RecoilRoot } from "recoil";
+// import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "react-hot-toast";
 import { PeerProvider } from "./peer-provider/peer-provider";
 
 type TProvidersProps = {
@@ -14,7 +15,7 @@ export const Providers = ({ children }: TProvidersProps) => {
     <RecoilRoot>
       <PeerProvider>
         <ApiProvider>
-          <Toaster />
+          <Toaster position="bottom-right" reverseOrder={false} />
           <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             {children}
           </ThemeProvider>
