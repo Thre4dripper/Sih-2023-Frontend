@@ -5,12 +5,19 @@ import {
 } from "@/components/api";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/ui/table/data-table";
+import { PlusCircleIcon, X } from "lucide-react";
 import { showToast } from "@/lib/showToast";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { IExam } from "../exams/exam-table-config";
 import { IStudent } from "../students/student-data-table-config";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import TableConfig from "./approvalsTableConfig";
 
 interface IProps {
@@ -27,7 +34,7 @@ const StudentApprovals = () => {
   const { mutate: viewLogsFn } = useStudentLogsMutation();
   const [open, setOpen] = useState<boolean>(false);
   const [logData, setLogData] = useState<any>();
-
+  const [showImage, setShowImage] = useState<string>("");
   interface IProps {
     limit: number;
     offset: number;
@@ -53,7 +60,7 @@ const StudentApprovals = () => {
       { body: { studentId, examId } },
       {
         onSuccess: (data: any) => {
-          setLogData(data?.data?.[0].activity);
+          setLogData(data?.data?.[0]?.activities?.activities);
           setOpen(true);
           showToast("Logs have been fetched successfully", "success");
         },
@@ -67,6 +74,8 @@ const StudentApprovals = () => {
   const columnsConfig = TableConfig({
     verifyStudent,
     viewLogs,
+    showImage,
+    setShowImage,
   });
 
   const getFilteredStudents = (body: any) => {
@@ -100,6 +109,21 @@ const StudentApprovals = () => {
 
   return (
     <div className="px-12 flex py-12 min-h-[90vh] flex-col  gap-8">
+      <Dialog open={showImage !== ""} onOpenChange={() => setShowImage("")}>
+        <DialogContent className="max-w-[800px]">
+          <DialogHeader className="flex flex-row items-center justify-center mt-4">
+            <DialogTitle>Document</DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="flex flex-row items-center justify-center">
+            <img
+              className=" max-w-[600px] max-h-[600px]
+
+            "
+              src={showImage}
+            />
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
       <div className="w-full">
         <div className={"flex gap-8 mb-4"}>
           <span className={"font-semibold text-3xl text-slate-500"}>
@@ -139,11 +163,25 @@ const StudentApprovals = () => {
           setOpen(false);
         }}
       >
-        <DialogContent className="w-full h-full">
-          <DialogHeader className="flex flex-row items-center justify-between mt-4">
+        <DialogContent className="max-w-[600px]">
+          <DialogHeader className="">
             <DialogTitle>Student Logs</DialogTitle>
-            {JSON.stringify(logData)}
           </DialogHeader>
+          {//write in bullet points
+          // iterate over the array
+          // and display the logs
+
+          logData?.map((log: any, index: number) => {
+            return (
+              <div className="flex flex-col gap-2">
+                <span className="font-light text-lg">
+                  <span className="font-semibold">{index + 1}.&nbsp;</span>
+                  {log?.activity}
+                </span>
+                <span className="text-sm">{log?.timestamp}</span>
+              </div>
+            );
+          })}
         </DialogContent>
       </Dialog>
     </div>

@@ -34,9 +34,16 @@ export interface IStudent {
 interface ITableConfig {
   verifyStudent?: (studentId: number) => void;
   viewLogs?: (studentId: number, examId: number) => void;
+  showImage?: string;
+  setShowImage?: (image: string) => void;
 }
 
-const TableConfig = ({ verifyStudent, viewLogs }: ITableConfig) => {
+const TableConfig = ({
+  verifyStudent,
+  viewLogs,
+  showImage,
+  setShowImage,
+}: ITableConfig) => {
   const columnsConfig: ColumnDef<IStudent>[] = [
     {
       id: "select",
@@ -87,7 +94,11 @@ const TableConfig = ({ verifyStudent, viewLogs }: ITableConfig) => {
       accessorKey: "aadharPic",
       header: "Aadhar Pic",
       cell: ({ row }) => (
-        <div>
+        <div
+          onClick={() => {
+            setShowImage && setShowImage(row.getValue("aadharPic"));
+          }}
+        >
           <img
             className="w-20 h-20
             cursor-pointer
@@ -103,7 +114,11 @@ const TableConfig = ({ verifyStudent, viewLogs }: ITableConfig) => {
       accessorKey: "panPic",
       header: "Pan Pic",
       cell: ({ row }) => (
-        <div>
+        <div
+          onClick={() => {
+            setShowImage && setShowImage(row.getValue("panPic"));
+          }}
+        >
           <img
             className="
           hover:scale-110 transition-all duration-300
@@ -169,7 +184,7 @@ const TableConfig = ({ verifyStudent, viewLogs }: ITableConfig) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  viewLogs && viewLogs(8, 1);
+                  viewLogs && viewLogs(4,6);
                 }}
               >
                 <Eye className="w-4 h-4 ml-2 text-destructive" />
