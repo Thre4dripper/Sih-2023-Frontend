@@ -63,7 +63,7 @@ const StudentApprovals = () => {
       { body: { studentId, examId } },
       {
         onSuccess: (data: any) => {
-          setLogData(data?.data?.[0]);
+          setLogData(data?.data?.[0].activity);
           setOpen(true);
           toast({
             title: "Logs Fetched",

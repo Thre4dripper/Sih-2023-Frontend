@@ -169,7 +169,7 @@ const TableConfig = ({ verifyStudent, viewLogs }: ITableConfig) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  viewLogs && viewLogs(10, 1);
+                  viewLogs && viewLogs(8, 1);
                 }}
               >
                 <Eye className="w-4 h-4 ml-2 text-destructive" />
