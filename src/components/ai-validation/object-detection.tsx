@@ -64,9 +64,9 @@ export const ObjectDetection = ({ className }: IProps) => {
     });
   };
 
-  const detectFrameThrottle = useRef(throttle(detectFrame, 500));
-  const detectPoseThrottle = useRef(throttle(detectPose, 1500));
-  const detectHandPoseThrottle = useRef(throttle(detectHandPose, 1500));
+  const detectFrameThrottle = useRef(throttle(detectFrame, 2500));
+  const detectPoseThrottle = useRef(throttle(detectPose, 2500));
+  const detectHandPoseThrottle = useRef(throttle(detectHandPose, 2500));
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

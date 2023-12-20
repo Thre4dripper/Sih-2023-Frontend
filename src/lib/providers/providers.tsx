@@ -15,7 +15,7 @@ export const Providers = ({ children }: TProvidersProps) => {
     <RecoilRoot>
       <PeerProvider>
         <ApiProvider>
-          <Toaster position="bottom-left" reverseOrder={false} />
+          <Toaster position="bottom-center" reverseOrder={false} />
           <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             {children}
           </ThemeProvider>
