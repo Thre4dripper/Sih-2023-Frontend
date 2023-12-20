@@ -2,7 +2,11 @@ import { CheckCircle2, Tv2 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { Button } from "../ui/button";
 
-const ScreenRecordingCheck: React.FC = () => {
+interface IProps {
+  setPermissionCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const ScreenRecordingCheck = ({ setPermissionCount }: IProps) => {
   const [screenPermission, setScreenPermission] = useState<boolean | null>(
     null
   );
@@ -12,6 +16,7 @@ const ScreenRecordingCheck: React.FC = () => {
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
       });
+      setPermissionCount((prevState) => prevState + 1);
       setScreenPermission(true);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;

@@ -16,7 +16,7 @@ const FacialRegister = () => {
         console.log(error);
         setIsEnrolled(false);
       }
-    }, 500);
+    }, 1000);
   }, []);
 
   if (isEnrolled === null) return <div>Loading...</div>;
