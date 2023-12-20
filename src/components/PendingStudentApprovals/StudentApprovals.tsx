@@ -2,6 +2,7 @@ import {
   useGetAllStudentsByExamIdMutation,
   useGetStudentsMutation,
   useSendEmailMutation,
+  useStudentLogsMutation,
   useVerifyStudentMutation,
 } from "@/components/api";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,9 @@ import { IExam } from "../exams/exam-table-config";
 import { IStudent } from "../students/student-data-table-config";
 import TableConfig from "./approvalsTableConfig";
 import { useToast } from "../ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { set } from "react-hook-form";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface IProps {
   examData: IExam;
@@ -25,7 +29,10 @@ const StudentApprovals = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const { mutate: verifyStudentFn } = useVerifyStudentMutation();
   const { mutate: getAllStudents } = useGetStudentsMutation();
+  const { mutate: viewLogsFn } = useStudentLogsMutation();
   const { toast } = useToast();
+  const [open, setOpen] = useState<boolean>(false);
+  const [logData, setLogData] = useState<any>();
 
   interface IProps {
     limit: number;
@@ -50,8 +57,30 @@ const StudentApprovals = () => {
       }
     );
   };
+
+  const viewLogs = (studentId: number, examId: number) => {
+    viewLogsFn(
+      { body: { studentId, examId } },
+      {
+        onSuccess: (data: any) => {
+          setLogData(data?.data?.[0].activities);
+          setOpen(true);
+          toast({
+            title: "Logs Fetched",
+            description: "Logs have been fetched successfully",
+            duration: 5000,
+          });
+        },
+        onError: (err: any) => {
+          console.log(err);
+        },
+      }
+    );
+  };
+
   const columnsConfig = TableConfig({
     verifyStudent,
+    viewLogs,
   });
 
   const getFilteredStudents = (body: any) => {
@@ -88,7 +117,7 @@ const StudentApprovals = () => {
       <div className="w-full">
         <div className={"flex gap-8 mb-4"}>
           <span className={"font-semibold text-3xl text-slate-500"}>
-            Students Approvals
+            Students Logs and Details
           </span>
           <div className={"flex-1"} />
           {/* <DataTableFilters
@@ -118,6 +147,18 @@ const StudentApprovals = () => {
           />
         </div>
       </div>
+      <Dialog
+        open={open}
+        onOpenChange={() => {
+          setOpen(false);
+        }}
+      >
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader className="flex flex-row items-center justify-between mt-4">
+            <DialogTitle>Student Logs</DialogTitle>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

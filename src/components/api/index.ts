@@ -22,6 +22,7 @@ export const QUERY_KEYS = {
   sendEmail: "sendEmail",
   getStudentsByExamId: "getStudentsByExamId",
   verifyStudent: "verifyStudent",
+  getStudentLogs: "getStudentLogs",
 };
 
 export const useCreateAdminMutation = () => {
@@ -115,3 +116,7 @@ export const useVerifyStudentMutation = () => {
 // export const useAddStudentsMutation = () => {
 //   return useMutation([QUERY_KEYS.addStudents], ENDPOINTS.addStudents);
 // };
+
+export const useStudentLogsMutation = () => {
+  return useMutation([QUERY_KEYS.getStudentLogs], ENDPOINTS.getLLMLogs);
+};

@@ -113,7 +113,7 @@ const CreateQuestionModal = ({
       }
       values = {
         ...values,
-        questionType: correct_count <= 1 ? "single_select" : "multiple_select",
+        questionType: correct_count <= 1 ? "single_select" : "multi_select",
       };
     }
 
@@ -251,7 +251,7 @@ const CreateQuestionModal = ({
                       <div className="relative col-span-3">
                         <FormControl className="">
                           <Input
-                            placeholder="Enter negative marks"
+                            placeholder="Enter  marks"
                             type="number"
                             className=""
                             {...field}
