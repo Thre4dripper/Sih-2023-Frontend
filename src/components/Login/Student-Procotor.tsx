@@ -32,14 +32,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useToast } from "../ui/use-toast";
 
 interface Props {
   setOpen: (x: boolean) => any;
 }
 
 const StudentProctorLogin = ({ setOpen }: Props) => {
-  const toast = useToast();
   let [searchParams, setSearchParams] = useSearchParams();
   const { mutate: loginStudentFn } = useLoginStudentMutation();
   const [serverErrors, setServerErrors] = React.useState({
