@@ -3,6 +3,8 @@ import { Play, Plus, Shield } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { VideoPlayer } from "../video/video-player";
+import ProuctVideoPlayer from "./productVideoPlayer";
 
 interface Props {}
 
@@ -44,7 +46,7 @@ const Hero: React.FC<Props> = () => {
           </Link>
         </div>
         <div className="mx-auto max-w-6xl px-6 lg:px-8">
-          <div className="mt-16 flow-root sm:mt-24">
+          <div className="mt-16 flex flex-col sm:mt-24  gap-10">
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
               <img
                 src="/images/hero.png"
@@ -53,6 +55,17 @@ const Hero: React.FC<Props> = () => {
                 height={1024}
                 className="rounded-md bg-white p-2 sm:p-8 md:-20 shadow-2xl ring-1 ring-gray-900/10"
               />
+            </div>
+            <div className="-m-2 rounded-xl bg-gray-900/5 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl ">
+              <ProuctVideoPlayer videoUrl={"/code-verse.mov"} />
+              {/* <video
+                src="/code-verse.mov"
+                autoPlay
+                loop
+                width={1440}
+                height={1024}
+                className="rounded-md bg-white  md:-20 shadow-2xl ring-1 ring-gray-900/10"
+              /> */}
             </div>
           </div>
         </div>
