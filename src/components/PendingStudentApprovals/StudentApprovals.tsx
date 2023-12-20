@@ -63,7 +63,7 @@ const StudentApprovals = () => {
       { body: { studentId, examId } },
       {
         onSuccess: (data: any) => {
-          setLogData(data?.data?.[0].activities);
+          setLogData(data?.data?.[0]);
           setOpen(true);
           toast({
             title: "Logs Fetched",
@@ -153,9 +153,10 @@ const StudentApprovals = () => {
           setOpen(false);
         }}
       >
-        <DialogContent className="sm:max-w-[800px]">
+        <DialogContent className="w-full h-full">
           <DialogHeader className="flex flex-row items-center justify-between mt-4">
             <DialogTitle>Student Logs</DialogTitle>
+            {JSON.stringify(logData)}
           </DialogHeader>
         </DialogContent>
       </Dialog>

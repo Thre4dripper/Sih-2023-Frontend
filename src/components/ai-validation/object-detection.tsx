@@ -102,6 +102,20 @@ export const ObjectDetection = ({ className }: IProps) => {
   const renderPredictions = (predictions: any) => {
     predictions.forEach((prediction: any) => {
       var multiple_face = 0;
+
+      for (let i = 0; i < predictions.length; i++) {
+        if (prediction.class == "person") {
+          multiple_face = multiple_face + 1;
+          if (multiple_face >= 2) {
+            handleObjectDetectedEvent("Multiple face detected");
+            toast({
+              title: "Multiple face detected",
+              variant: "destructive",
+              duration: 1000,
+            });
+          }
+        }
+      }
       if (prediction.score >= accuracyThreshold) {
         if (prediction.class === "cell phone") {
           handleObjectDetectedEvent("Cell Phone Detected");
@@ -135,12 +149,12 @@ export const ObjectDetection = ({ className }: IProps) => {
           count_facedetect = count_facedetect + 1;
         } else if (prediction.class !== "person") {
           handleObjectDetectedEvent(`${prediction.class} Detected`);
-          // toast({
-          //   title: `${prediction.class} Detected`,
-          //   description: "Please remove this object",
-          //   variant: "destructive",
-          //   duration: 1000,
-          // });
+          toast({
+            title: `${prediction.class} Detected`,
+            description: "Please remove this object",
+            variant: "destructive",
+            duration: 1000,
+          });
           count_facedetect = count_facedetect + 1;
         }
       }
