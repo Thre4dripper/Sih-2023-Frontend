@@ -2,14 +2,18 @@ import { CheckCircle2, Gauge } from "lucide-react";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 
-const InternetCheck: React.FC = () => {
+interface IProps {
+  setPermissionCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const InternetCheck = ({ setPermissionCount }: IProps) => {
   const [speedCheck, setSpeedCheck] = useState<boolean | null>(null);
   const [speed, setSpeed] = useState<number | null>(null);
 
   const checkInternetSpeed = async () => {
-    const fileSizeInBytes = 7000000; // Size of file in bytes (7MB)
+    const fileSizeInBytes = 11000000; // Size of file in bytes (7MB)
     const url =
-      "https://api41.ilovepdf.com/v1/download/71b19ykcdkzbcp1pyx7t0dlxq7wpq9tdpz8lqpdh6A44xv0f20g6r8tyxz29bxd8nhb9jz986ky7ty604pd8kfmcxys371r6jm31lgztdc3fh40x1jhqp3434nldzr4qcxj7x0p895rtkrAwnbmqrx90nby3bvm9tmyxdtyprj8f1rb0v101"; // URL of a test file of known size
+      "https://drive.google.com/file/d/1TVAzEcOyKvMMSn9mG6dQ7rgdLV0m-m56/view?usp=sharing"; // URL of a test file of known size
 
     const startTime = Date.now();
     await fetch(url);
@@ -24,6 +28,7 @@ const InternetCheck: React.FC = () => {
     if (speedMbps < 8) {
       setSpeedCheck(false);
     } else {
+      setPermissionCount((prevState) => prevState + 1);
       setSpeedCheck(true);
     }
     setSpeed(Number(speedMbps));

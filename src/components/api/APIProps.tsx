@@ -20,7 +20,7 @@ export interface LoginUserProps {
 }
 
 export interface LoginStudentProps {
-  body: { email: string; password: string; organizationId: number };
+  body: { email: string; password: string; organizationId: string };
 }
 
 export interface CreateProctorProps {

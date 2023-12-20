@@ -2,7 +2,11 @@ import { Camera, CheckCircle2 } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 
-const VideoCheck: React.FC = () => {
+interface IProps {
+  setPermissionCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const VideoCheck = ({ setPermissionCount }: IProps) => {
   const [videoPermission, setVideoPermission] = React.useState<boolean | null>(
     null
   );
@@ -11,6 +15,7 @@ const VideoCheck: React.FC = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       setVideoPermission(true);
       stream.getTracks().forEach((track) => track.stop()); // Stop the stream after you're done with it
+      setPermissionCount((prevState) => prevState + 1);
     } catch (err) {
       setVideoPermission(false);
       console.error(err);

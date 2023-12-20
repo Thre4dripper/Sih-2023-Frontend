@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -8,8 +7,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  //   FormMessage,
 } from "@/components/ui/form";
+import React from "react";
 // import {
 //   Select,
 //   SelectContent,
@@ -17,27 +16,37 @@ import {
 //   SelectTrigger,
 //   SelectValue,
 // } from "@/components/ui/select";
+import { userState } from "@/atoms/userState";
 import { Input } from "@/components/ui/input";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLoginProctorMutation } from "../api";
-import { useForm } from "react-hook-form";
 import { StudentProctorValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { userState } from "@/atoms/userState";
+import { z } from "zod";
+import { useLoginProctorMutation, useLoginStudentMutation } from "../api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { useToast } from "../ui/use-toast";
 
 interface Props {
   setOpen: (x: boolean) => any;
 }
 
 const StudentProctorLogin = ({ setOpen }: Props) => {
+  const toast = useToast();
   let [searchParams, setSearchParams] = useSearchParams();
-  // const { mutate: loginStudentFn } = useLoginStudentMutation();
+  const { mutate: loginStudentFn } = useLoginStudentMutation();
   const [serverErrors, setServerErrors] = React.useState({
     email: false,
     organizationId: false,
   });
+
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
 
@@ -55,32 +64,46 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
   interface BSProps {
     email: string;
     password: string;
-    organizationId: number;
+    organizationId: string;
   }
 
-  // const loginStudent = (body: BSProps) => {
-  //   loginStudentFn(
-  //     { body },
-  //     {
-  //       onSuccess: (data: any) => {
-  //         console.log(data);
-  //         localStorage.setItem(
-  //           "accessToken",
-  //           data?.data?.accessTokens?.accessToken
-  //         );
-  //         setSearchParams({});
-  //         setOpen(false);
-  //       },
-  //       onError: (err: any) => {
-  //         console.log(err);
-  //         toast({
-  //           title:
-  //             "User Not Found!! Please check your email/password and try again.",
-  //         });
-  //       },
-  //     }
-  //   );
-  // };
+  const loginStudent = (body: BSProps) => {
+    loginStudentFn(
+      { body },
+      {
+        onSuccess: (data: any) => {
+          console.log(data);
+          localStorage.setItem(
+            "accessToken",
+            data?.data?.accessTokens?.accessToken
+          );
+          localStorage.setItem("role", data?.data?.role);
+          setOpen(false);
+          if (searchParams.get("examId") !== null) {
+            navigate(
+              `/student/exam/${searchParams.get(
+                "examId"
+              )}/system-check?examId=${searchParams.get("examId")}`
+            );
+            return;
+          }
+          if (data?.data?.role === "student") {
+            navigate("/student/account/profile");
+          }
+          // setSearchParams({});
+        },
+        onError: (err: any) => {
+          console.log(err);
+          // toast({
+          //   id: "login",
+
+          //   title:
+          //     "User Not Found!! Please check your email/password and try again.",
+          // });
+        },
+      }
+    );
+  };
 
   const loginProctor = (body: BSProps) => {
     loginProctorFn(
@@ -132,28 +155,28 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
 
     // api call to save user to database
 
-    // if (values?.userType === "student") {
-    //   loginStudent({
-    //     email: values?.email,
-    //     password: values?.password,
-    //     organizationId: Number(values?.organizationId),
-    //   });
-    // } else if (values?.userType === "proctor") {
-    loginProctor({
-      email: values?.email,
-      password: values?.password,
-      organizationId: Number(values?.organizationId),
-    });
-    // }
+    if (values?.userType === "student") {
+      loginStudent({
+        email: values?.email,
+        password: values?.password,
+        organizationId: values?.organizationId,
+      });
+    } else if (values?.userType === "proctor") {
+      loginProctor({
+        email: values?.email,
+        password: values?.password,
+        organizationId: values?.organizationId,
+      });
+      // }
+    }
   };
-
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-start gap-5"
       >
-        {/* <FormField
+        <FormField
           control={form.control}
           name="userType"
           render={({ field }) => (
@@ -168,7 +191,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
                 >
                   <FormControl className="">
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
+                      <SelectValue placeholder="Select a user type" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -184,7 +207,7 @@ const StudentProctorLogin = ({ setOpen }: Props) => {
               </div>
             </FormItem>
           )}
-        /> */}
+        />
         <FormField
           control={form.control}
           name="email"
